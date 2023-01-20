@@ -4,6 +4,7 @@ import com.example.GeekShop.model.images.ImageProduct;
 import com.example.GeekShop.model.product_fields.Category;
 import com.example.GeekShop.model.product_fields.Season;
 import com.example.GeekShop.model.product_fields.Theme;
+import com.example.GeekShop.model.user.User;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
@@ -51,6 +52,10 @@ public class Product {
     @OneToMany(mappedBy = "element", cascade = CascadeType.ALL)
     @ToString.Exclude
     private List<ImageProduct> images = new ArrayList<>();
+    @ManyToMany(mappedBy = "basketOfProducts")
+    private List<User> usersWhoOrdered = new ArrayList<>();
+    @ManyToMany(mappedBy = "listOfLikedProducts")
+    private List<User> usersWhoLiked = new ArrayList<>();
 
     public void addImages(ImageProduct image, Product element) {
         image.setElement(element);

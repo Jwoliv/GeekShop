@@ -7,12 +7,15 @@ import com.example.GeekShop.repository.product_fields.ThemeRepository;
 import com.example.GeekShop.service.images_product_fields.ImageThemeService;
 import com.example.GeekShop.service.product_fields.ThemeService;
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
-@Data
+@Getter
+@Setter
 @RequestMapping("/theme")
 public class ThemesController extends AbstractProductFieldsController<
         Theme,

@@ -7,12 +7,15 @@ import com.example.GeekShop.repository.product_fields.CategoryRepository;
 import com.example.GeekShop.service.images_product_fields.ImageCategoryService;
 import com.example.GeekShop.service.product_fields.CategoryService;
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
-@Data
+@Getter
+@Setter
 @RequestMapping("/category")
 public class CategoriesController extends AbstractProductFieldsController<
         Category,

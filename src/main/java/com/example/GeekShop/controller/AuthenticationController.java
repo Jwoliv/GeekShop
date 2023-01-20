@@ -44,7 +44,7 @@ public class AuthenticationController {
             model.addAttribute("user", new User());
             return "/registration";
         }
-        else if (!Objects.equals(user.getPassword(), user.getRepeatPassword())) {
+        else if (!Objects.equals(user.getPassword(), user.getRepeatPassword()) || userService.findByEmail(user.getEmail()) != null) {
             model.addAttribute("user", new User());
             model.addAttribute("error-email", "User with so email has already exist");
             model.addAttribute("error-password", "Passwords aren't equals");

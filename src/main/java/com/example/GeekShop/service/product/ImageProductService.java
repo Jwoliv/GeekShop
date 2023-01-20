@@ -10,7 +10,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @Data
-@Transactional(readOnly = true)
 public class ImageProductService {
     private ImageProductRepository repository;
     @Autowired

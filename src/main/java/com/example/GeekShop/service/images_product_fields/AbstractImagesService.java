@@ -10,7 +10,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @Data
-@Transactional(readOnly = true)
 public abstract class AbstractImagesService<
         E extends AbstractProductField<E, TI>,
         TI extends ImageProductField<E>,

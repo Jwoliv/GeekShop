@@ -7,12 +7,15 @@ import com.example.GeekShop.repository.product_fields.SeasonRepository;
 import com.example.GeekShop.service.images_product_fields.ImageSeasonService;
 import com.example.GeekShop.service.product_fields.SeasonService;
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
-@Data
+@Getter
+@Setter
 @RequestMapping("/season")
 public class SeasonsController extends AbstractProductFieldsController<
         Season,

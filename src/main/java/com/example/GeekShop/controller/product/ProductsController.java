@@ -2,11 +2,13 @@ package com.example.GeekShop.controller.product;
 
 import com.example.GeekShop.model.Product;
 import com.example.GeekShop.model.images.ImageProduct;
+import com.example.GeekShop.model.user.User;
 import com.example.GeekShop.service.product.ImageProductService;
 import com.example.GeekShop.service.product.ProductService;
 import com.example.GeekShop.service.product_fields.CategoryService;
 import com.example.GeekShop.service.product_fields.SeasonService;
 import com.example.GeekShop.service.product_fields.ThemeService;
+import com.example.GeekShop.service.user.UserService;
 import jakarta.validation.Valid;
 import lombok.NonNull;
 import org.springframework.stereotype.Controller;
@@ -16,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.security.Principal;
 import java.util.ArrayList;
 
 @Controller
@@ -26,19 +29,22 @@ public class ProductsController {
     private final ThemeService themeService;
     private final SeasonService seasonService;
     private final CategoryService categoryService;
+    private final UserService userService;
 
     public ProductsController(
             ProductService productService,
             ImageProductService imageProductService,
             ThemeService themeService,
             SeasonService seasonService,
-            CategoryService categoryService
+            CategoryService categoryService,
+            UserService userService
     ) {
         this.productService = productService;
         this.imageProductService = imageProductService;
         this.themeService = themeService;
         this.seasonService = seasonService;
         this.categoryService = categoryService;
+        this.userService = userService;
     }
     @GetMapping
     public String pageAllProducts(@NonNull Model model) {
@@ -137,6 +143,36 @@ public class ProductsController {
             return "product/change_photo";
         }
         saveImages(file1, file2, file3, file4, file5, productService.findById(id));
+        return "redirect:/product/{id}";
+    }
+    @PostMapping("/{id}/add_to_basket")
+    public String addProductToBasket(@PathVariable Long id, Principal principal) {
+        Product product = productService.findById(id);
+        User user = userService.findByEmail(principal.getName());
+        if (user != null || product != null) {
+            if (user.getBasketOfProducts().contains(product)) {
+                user.getBasketOfProducts().remove(product);
+            }
+            else {
+                user.getBasketOfProducts().add(product);
+            }
+            userService.saveAfterChange(user);
+        }
+        return "redirect:/product/{id}";
+    }
+    @PostMapping("/{id}/liked_product")
+    public String addProductToLikedList(@PathVariable Long id, Principal principal) {
+        Product product = productService.findById(id);
+        User user = userService.findByEmail(principal.getName());
+        if (productService.findById(id) != null && user != null) {
+            if (user.getListOfLikedProducts().contains(product)) {
+                user.getListOfLikedProducts().remove(product);
+            }
+            else {
+                user.getListOfLikedProducts().add(product);
+            }
+            userService.saveAfterChange(user);
+        }
         return "redirect:/product/{id}";
     }
     private ImageProduct toImageEntity(MultipartFile file) throws IOException {

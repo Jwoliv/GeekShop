@@ -49,7 +49,7 @@ public class SecurityConfig {
                                 "/theme/**",
                                 "/season/**",
                                 "/category/**"
-                        ).hasRole(Role.USER.name())
+                        ).hasAnyRole(Role.USER.name(), Role.ADMIN.name())
                         .anyRequest().authenticated()
                 )
                 .formLogin((form) -> form

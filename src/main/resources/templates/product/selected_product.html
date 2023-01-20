@@ -4,11 +4,17 @@
   <meta charset="UTF-8">
   <title th:text="${product.name}"></title>
 </head>
-<body>
-<img th:src="@{/product/images/{id}(id=${product.previewsId})}" alt="">
-<img th:src="@{/product/images/{id}(id=${product.previewsId} + 1)}" alt="">
-<img th:src="@{/product/images/{id}(id=${product.previewsId} + 2)}" alt="">
-<img th:src="@{/product/images/{id}(id=${product.previewsId} + 3)}" alt="">
-<img th:src="@{/product/images/{id}(id=${product.previewsId} + 4)}" alt="">
-</body>
+  <body>
+    <img th:src="@{/product/images/{id}(id=${product.previewsId})}" alt="">
+    <img th:src="@{/product/images/{id}(id=${product.previewsId} + 1)}" alt="">
+    <img th:src="@{/product/images/{id}(id=${product.previewsId} + 2)}" alt="">
+    <img th:src="@{/product/images/{id}(id=${product.previewsId} + 3)}" alt="">
+    <img th:src="@{/product/images/{id}(id=${product.previewsId} + 4)}" alt="">
+    <form method="post" th:action="@{/product/{id}/add_to_basket(id=${product.id})}">
+      <button type="submit">Add to basket</button>
+    </form>
+    <form method="post" th:action="@{/product/{id}/liked_product(id=${product.id})}">
+      <button type="submit">Liked product</button>
+    </form>
+  </body>
 </html>

@@ -30,17 +30,17 @@ public class UserService {
         return userRepository.findById(id).orElse(null);
     }
     public User findByEmail(String email) {
-        User user = userRepository.findUserByEmail(email).orElse(null);
-        if (user == null) {
-            throw new UsernameNotFoundException("User with so email isn't found");
-        }
-        return user;
+        return userRepository.findUserByEmail(email).orElse(null);
     }
     @Transactional
     public void save(User user) {
         user.setActive(true);
         user.setRole(Role.USER);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
+        userRepository.save(user);
+    }
+    @Transactional
+    public void saveAfterChange(User user) {
         userRepository.save(user);
     }
     @Transactional
