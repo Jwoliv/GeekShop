@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Change photo</title>
+</head>
+    <body>
+        <form th:method="patch" enctype="multipart/form-data" th:action="@{/{url}/{id}/change_photo(url=${url}, id=${element.getId()})}">
+            <input type="file" name="file1">
+            <input type="file" name="file2">
+            <input type="file" name="file3">
+            <button type="submit">Change photo</button>
+        </form>
+    </body>
+</html>

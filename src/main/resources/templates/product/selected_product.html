@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title th:text="${product.name}"></title>
+</head>
+<body>
+<img th:src="@{/product/images/{id}(id=${product.previewsId})}" alt="">
+<img th:src="@{/product/images/{id}(id=${product.previewsId} + 1)}" alt="">
+<img th:src="@{/product/images/{id}(id=${product.previewsId} + 2)}" alt="">
+<img th:src="@{/product/images/{id}(id=${product.previewsId} + 3)}" alt="">
+<img th:src="@{/product/images/{id}(id=${product.previewsId} + 4)}" alt="">
+</body>
+</html>

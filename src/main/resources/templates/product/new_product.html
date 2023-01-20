@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>New product</title>
+</head>
+<body>
+<form method="post" th:action="@{/product}" th:object="${product}" enctype="multipart/form-data">
+  <label><input type="text" th:field="${product.name}" placeholder="Name"></label>
+  <label><input type="text" th:field="${product.price}" placeholder="Price"></label>
+  <label><input type="text" th:field="${product.discount}" placeholder="Discount"></label>
+  <label><input type="text" th:field="${product.numberProduct}" placeholder="Number product"></label>
+  <label>
+    <select th:field="${product.theme}">
+      <option th:each="theme: ${themes}" th:value="${theme.id}" th:text="${theme.name}"/>
+    </select>
+  </label>
+  <label>
+    <select th:field="${product.category}">
+      <option th:each="category: ${categories}" th:value="${category.id}" th:text="${category.name}"/>
+    </select>
+  </label>
+  <label>
+    <select th:field="${product.season}">
+      <option th:each="season: ${seasons}" th:value="${season.id}" th:text="${season.name}"/>
+    </select>
+  </label>
+  <input type="file" name="file1">
+  <input type="file" name="file2">
+  <input type="file" name="file3">
+  <input type="file" name="file4">
+  <input type="file" name="file5">
+  <button type="submit">New product</button>
+</form>
+</body>
+</html>

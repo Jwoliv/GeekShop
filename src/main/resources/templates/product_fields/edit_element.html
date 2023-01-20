@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Edit element</title>
+</head>
+  <body>
+    <form th:method="patch"  th:action="@{/{url}/{id}(url=${url}, id=${element.getId()})}" th:object="${element}">
+      <label>
+        <input th:field="${element.name}" type="text" placeholder="Name">
+        <div th:if="${#fields.hasErrors('name')}" th:errors="${element.name}"></div>
+      </label>
+      <button type="submit">Edit <th:block th:text="${nameOfPage}"/></button>
+    </form>
+    <form th:method="delete"  th:action="@{/{url}/{id}(url=${url}, id=${element.getId()})}">
+      <button type="submit">Delete <th:block th:text="${nameOfPage}"/></button>
+    </form>
+  </body>
+</html>

@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="${nameOfPage}"/>
+</head>
+  <body>
+      <form method="post"  th:action="@{/{url}(url=${url})}" th:object="${element}" enctype="multipart/form-data">
+          <label>
+              <input th:field="${element.name}" type="text" placeholder="Name">
+              <div th:if="${#fields.hasErrors('name')}" th:errors="${element.name}"></div>
+          </label>
+          <input type="file" name="file1">
+          <input type="file" name="file2">
+          <input type="file" name="file3">
+          <button type="submit"><th:block th:text="${nameOfPage}"/></button>
+      </form>
+  </body>
+</html>

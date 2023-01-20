@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Edit product</title>
+</head>
+<body>
+<form th:method="patch" th:action="@{/product/{id}(id=${product.id})}" th:object="${product}">
+    <label><input type="text" th:field="${product.name}" placeholder="Name"></label>
+    <label><input type="text" th:field="${product.price}" placeholder="Price"></label>
+    <label><input type="text" th:field="${product.discount}" placeholder="Discount"></label>
+    <label><input type="text" th:field="${product.numberProduct}" placeholder="Number product"></label>
+    <label>
+        <select th:field="*{theme.id}">
+            <option th:each="theme: ${themes}" th:value="${theme.id}" th:text="${theme.name}"></option>
+        </select>
+    </label>
+    <label>
+        <select th:field="*{category.id}">
+            <option th:each="category: ${categories}" th:value="${category.id}" th:text="${category.name}"></option>
+        </select>
+    </label>
+    <label>
+        <select th:field="*{season.id}">
+            <option th:each="season: ${seasons}" th:value="${season.id}" th:text="${season.name}"></option>
+        </select>
+    </label>
+    <button type="submit">New product</button>
+</form>
+<form th:method="delete" th:action="@{/product/{id}(id=${product.id})}">
+    <button type="submit">Delete product</button>
+</form>
+</body>
+</html>

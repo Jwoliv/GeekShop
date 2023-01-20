@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="${nameOfPage}"></title>
+</head>
+    <body>
+        <ul>
+            <li th:each="element: ${all_elements}">
+                <img th:src="@{{url}/images/{id}(url=${url}, id=${element.previewsId})}" alt="">
+                <a th:href="@{/{url}/{id}(url=${url}, id=${element.id})}" th:text="${element.name}"></a>
+            </li>
+        </ul>
+    </body>
+</html>
