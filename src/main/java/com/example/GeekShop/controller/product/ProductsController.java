@@ -1,5 +1,6 @@
 package com.example.GeekShop.controller.product;
 
+import com.example.GeekShop.model.Comment;
 import com.example.GeekShop.model.Product;
 import com.example.GeekShop.model.images.ImageProduct;
 import com.example.GeekShop.model.user.User;
@@ -20,6 +21,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.security.Principal;
 import java.util.ArrayList;
+import java.util.Objects;
 
 @Controller
 @RequestMapping("/product")
@@ -53,6 +55,7 @@ public class ProductsController {
     }
     @GetMapping("/{id}")
     public String pageSelectedProduct(@PathVariable Long id, @NonNull Model model) {
+        model.addAttribute("comment", new Comment());
         model.addAttribute("product", productService.findById(id));
         return "product/selected_product";
     }
@@ -150,7 +153,7 @@ public class ProductsController {
         Product product = productService.findById(id);
         User user = userService.findByEmail(principal.getName());
         if (user != null || product != null) {
-            if (user.getBasketOfProducts().contains(product)) {
+            if (Objects.requireNonNull(user).getBasketOfProducts().contains(product)) {
                 user.getBasketOfProducts().remove(product);
             }
             else {
@@ -175,6 +178,28 @@ public class ProductsController {
         }
         return "redirect:/product/{id}";
     }
+    @PostMapping("/{id}/add_comment")
+    private String addComment(
+            @PathVariable Long id,
+            Principal principal,
+            @ModelAttribute @Valid Comment comment,
+            BindingResult bindingResult
+    ) {
+        User user = userService.findByEmail(principal.getName());
+        Product product = productService.findById(id);
+        if (comment == null || product == null || bindingResult.hasErrors() || user == null) {
+            return "redirect:/product/{id}";
+        }
+        comment.setId(null);
+        comment.setProduct(product);
+        comment.setUser(user);
+        product.getComments().add(comment);
+        productService.save(product);
+        product.calculateRating();
+        productService.save(product);
+        return "redirect:/product/{id}";
+    }
+
     private ImageProduct toImageEntity(MultipartFile file) throws IOException {
         ImageProduct image = new ImageProduct();
         image.setName(file.getName());

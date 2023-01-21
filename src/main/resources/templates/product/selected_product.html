@@ -16,5 +16,14 @@
     <form method="post" th:action="@{/product/{id}/liked_product(id=${product.id})}">
       <button type="submit">Liked product</button>
     </form>
+    <form method="post" th:action="@{/product/{id}/add_comment(id=${product.id})}" th:object="${comment}">
+      <label>
+        <textarea th:field="*{text}"></textarea>
+      </label>
+      <label>
+        <input type="number" th:field="*{rating}">
+      </label>
+      <button type="submit">Add comment</button>
+    </form>
   </body>
 </html>

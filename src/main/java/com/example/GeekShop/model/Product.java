@@ -10,17 +10,15 @@ import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Data
+@Getter
+@Setter
 @ToString
 @Component
 @NoArgsConstructor
@@ -49,16 +47,28 @@ public class Product {
     private Category category;
     @ManyToOne
     private Season season;
-    @OneToMany(mappedBy = "element", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "element", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @ToString.Exclude
     private List<ImageProduct> images = new ArrayList<>();
     @ManyToMany(mappedBy = "basketOfProducts")
+    @ToString.Exclude
     private List<User> usersWhoOrdered = new ArrayList<>();
     @ManyToMany(mappedBy = "listOfLikedProducts")
+    @ToString.Exclude
     private List<User> usersWhoLiked = new ArrayList<>();
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @ToString.Exclude
+    private List<Comment> comments = new ArrayList<>();
 
     public void addImages(ImageProduct image, Product element) {
         image.setElement(element);
         images.add(image);
+    }
+    public void calculateRating() {
+        Float sum = 0.0F;
+        for (Comment comment: getComments()) {
+            sum += comment.getRating();
+        }
+        rating = sum / getComments().size();
     }
 }

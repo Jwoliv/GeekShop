@@ -1,5 +1,6 @@
 package com.example.GeekShop.model.user;
 
+import com.example.GeekShop.model.Comment;
 import com.example.GeekShop.model.Product;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
@@ -53,4 +54,7 @@ public class User {
     )
     @ToString.Exclude
     private List<Product> listOfLikedProducts = new ArrayList<>();
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @ToString.Exclude
+    private List<Comment> comments = new ArrayList<>();
 }
