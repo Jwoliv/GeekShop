@@ -49,7 +49,7 @@ public abstract class AbstractProductFieldsController<
     public String pageAllElement(@NonNull Model model) {
         model.addAttribute("all_elements", getService().findAll());
         model.addAttribute("url", url);
-        model.addAttribute("nameOfPage", "All " + namePlural);
+        model.addAttribute("nameOfPage", namePlural);
         return "product_fields/all_elements";
     }
 

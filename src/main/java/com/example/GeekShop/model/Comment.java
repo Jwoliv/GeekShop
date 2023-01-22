@@ -21,7 +21,7 @@ public class Comment {
     @ManyToOne
     private Product product;
     @NotBlank
-    @Size(max = 400)
+    @Size(max = 500)
     private String text;
     @NotNull
     @Max(value = 5)

@@ -57,4 +57,8 @@ public class User {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @ToString.Exclude
     private List<Comment> comments = new ArrayList<>();
+
+    public String getFullName() {
+        return firstname + " " + lastname;
+    }
 }
