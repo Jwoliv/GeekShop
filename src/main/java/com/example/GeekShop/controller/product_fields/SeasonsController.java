@@ -32,8 +32,8 @@ public class SeasonsController extends AbstractProductFieldsController<
         this.seasonService = seasonService;
         this.imageSeasonService = imageSeasonService;
         this.setUrl("season");
-        this.setNameSingle("season");
-        this.setNamePlural("seasons");
+        this.setNameSingle("Season");
+        this.setNamePlural("Seasons");
         this.setNewElement(new Season());
     }
 

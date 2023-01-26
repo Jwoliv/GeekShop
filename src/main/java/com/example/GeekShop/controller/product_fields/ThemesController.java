@@ -33,8 +33,8 @@ public class ThemesController extends AbstractProductFieldsController<
         this.themeService = themeService;
         this.imageThemeService = imageThemeService;
         this.setUrl("theme");
-        this.setNameSingle("theme");
-        this.setNamePlural("themes");
+        this.setNameSingle("Theme");
+        this.setNamePlural("Themes");
         this.setNewElement(new Theme());
     }
 

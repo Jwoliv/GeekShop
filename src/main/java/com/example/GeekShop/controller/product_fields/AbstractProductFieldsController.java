@@ -39,6 +39,7 @@ public abstract class AbstractProductFieldsController<
     private String nameSingle;
     private String namePlural;
     private IS imageService;
+    private String nameOfPage;
 
     @Override
     public S getService() {

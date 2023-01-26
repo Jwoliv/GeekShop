@@ -49,14 +49,25 @@ public class ProductsController {
         this.userService = userService;
     }
     @GetMapping
-    public String pageAllProducts(@NonNull Model model) {
+    public String pageAllProducts(@NonNull Model model, Principal principal) {
+        model.addAttribute("principal", principal);
+        model.addAttribute("nameOfPage", "Products");
         model.addAttribute("all_products", productService.findAll());
         return "product/all_products";
     }
     @GetMapping("/{id}")
-    public String pageSelectedProduct(@PathVariable Long id, @NonNull Model model) {
+    public String pageSelectedProduct(@PathVariable Long id, @NonNull Model model, Principal principal) {
+        Product product = productService.findById(id);
+        model.addAttribute("principal", principal);
         model.addAttribute("comment", new Comment());
-        model.addAttribute("product", productService.findById(id));
+        model.addAttribute("product", product);
+        model.addAttribute("recommended_products",
+                productService.findRecommendedProduct(
+                        product.getCategory().getId(),
+                        product.getTheme().getId(),
+                        product.getSeason().getId()
+                )
+        );
         return "product/selected_product";
     }
     @DeleteMapping("/{id}")

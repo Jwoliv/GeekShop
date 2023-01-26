@@ -32,8 +32,8 @@ public class CategoriesController extends AbstractProductFieldsController<
         this.categoryService = categoryService;
         this.imageCategoryService = imageCategoryService;
         this.setUrl("category");
-        this.setNameSingle("category");
-        this.setNamePlural("categories");
+        this.setNameSingle("Category");
+        this.setNamePlural("Categories");
         this.setNewElement(new Category());
     }
 

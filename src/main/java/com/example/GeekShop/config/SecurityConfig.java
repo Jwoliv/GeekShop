@@ -35,14 +35,21 @@ public class SecurityConfig {
                                 "/product",
                                 "/theme",
                                 "/season",
-                                "/category"
+                                "/category",
+                                "/style/**",
+                                "/img/*", "/img/**",
+                                "/script/**",
+                                "/product/images/**",
+                                "/category/images/**",
+                                "/theme/images/**",
+                                "/season/images/**"
                         ).permitAll()
                         .requestMatchers(
                                 "/admin/**",
-                                "/product/**", "/product/new", "/product/*/**",
-                                "/theme/**", "/theme/new", "/theme/*/**",
-                                "/season/**", "/season/new", "/season/*/**",
-                                "/category/**", "/category/new", "/category/*/**"
+                                 "/product/new", "/product/*/edit",
+                                 "/theme/new", "/theme/*/edit",
+                                 "/season/new", "/season/*/edit",
+                                 "/category/new", "/category/*/edit"
                         ).hasRole(Role.ADMIN.name())
                         .requestMatchers(
                                 "/product/**",

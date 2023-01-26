@@ -1,17 +1,33 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sing in</title>
+    <link rel="stylesheet" th:href="@{/style/css/style.css}">
 </head>
-    <body>
-        <form th:action="@{/registration}" method="post" th:object="${user}">
-            <label><input type="text" th:field="*{firstname}"></label>
-            <label><input type="text" th:field="*{lastname}"></label>
-            <label><input type="email" th:field="*{email}"></label>
-            <label><input type="password" th:field="*{password}"></label>
-            <label><input type="password" th:field="*{repeatPassword}"></label>
-            <button type="submit">Sing in</button>
-        </form>
-    </body>
+<body>
+<div class="background-img">
+    <div class="wrapper">
+        <main class="main">
+            <div class="main__container container auth-container">
+                <div class="main__content content auth-content">
+                    <div class="auth">
+                        <h1 class="auth-title">Sing in</h1>
+                        <form class="auth-form"  th:action="@{/registration}" method="post" th:object="${user}">
+                            <input class="sing-in-field user-field" type="text" th:field="*{firstname}" placeholder="Firstname">
+                            <input class="sing-in-field user-field" type="text" th:field="*{lastname}" placeholder="Lastname">
+                            <input class="sing-in-field user-field" type="email" th:field="*{email}" placeholder="Email">
+                            <input class="sing-in-field user-field" type="password" th:field="*{password}" placeholder="Password">
+                            <input class="sing-in-field user-field" type="password" th:field="*{repeatPassword}" placeholder="Repeat password">
+                            <button class="auth-button user-button" type="submit">Sing in</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+</div>
+</body>
 </html>

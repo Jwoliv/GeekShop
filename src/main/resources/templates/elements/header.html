@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<body>
+  <header th:fragment="header_full" class="header">
+    <div class="header__container container">
+      <div class="header__content content">
+        <div class="header__auth auth-header">
+          <a th:href="@{/login}" class="auth-header__button white__button" th:if="${principal == null}">Login</a>
+          <form th:action="@{/logout}" method="post">
+            <button type="submit" class="auth-header__button white__button" th:if="${principal != null}">Logout</button>
+          </form>
+          <a th:href="@{/registration}" class="auth-header__button white__button" th:if="${principal == null}">Sing in</a>
+        </div>
+      </div>
+      <img class="header__img" th:src="@{/img/header.png}" alt="">
+      <div class="header__content content">
+        <div class="header__row">
+          <div class="header__left">
+            <h1 class="header__left-title" th:text="${nameOfPage}"></h1>
+          </div>
+          <div class="header__right">
+            <h2 class="header__right-title">オタクショップ</h2>
+          </div>
+        </div>
+        <nav class="header__navbar navbar">
+          <ul class="navbar__list">
+            <li class="navbar__item"><a th:href="@{/}" class="navbar__link white__button">About us</a></li>
+            <li class="navbar__item"><a th:href="@{/category}" class="navbar__link white__button">Categories</a></li>
+            <li class="navbar__item"><a th:href="@{/theme}" class="navbar__link white__button">Themes</a></li>
+            <li class="navbar__item"><a th:href="@{/season}" class="navbar__link white__button">Seasons</a></li>
+            <li class="navbar__item"><a th:href="@{/product}" class="navbar__link white__button">Products</a></li>
+            <li class="navbar__item"><a th:href="@{/profile}" class="navbar__link white__button">Profile</a></li>
+          </ul>
+        </nav>
+        <div class="navbar__burger burger">
+          <span class="burger__one"></span>
+          <span class="burger__two"></span>
+          <span class="burger__three"></span>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <header th:fragment="header_only_navbar" class="header">
+    <div class="header__container container">
+      <div class="header__content content">
+        <div class="header__auth auth-header">
+          <a th:href="@{/login}" class="auth-header__button white__button" th:if="${principal == null}">Login</a>
+          <form th:action="@{/logout}" method="post">
+            <button type="submit" class="auth-header__button white__button" th:if="${principal != null}">Logout</button>
+          </form>
+          <a th:href="@{/registration}" class="auth-header__button white__button" th:if="${principal == null}">Sing in</a>
+        </div>
+      </div>
+      <div class="header__content content">
+        <nav class="header__navbar navbar header-without-img">
+          <ul class="navbar__list">
+            <li class="navbar__item"><a th:href="@{/}" class="navbar__link white__button">About us</a></li>
+            <li class="navbar__item"><a th:href="@{/category}" class="navbar__link white__button">Categories</a></li>
+            <li class="navbar__item"><a th:href="@{/theme}" class="navbar__link white__button">Themes</a></li>
+            <li class="navbar__item"><a th:href="@{/season}" class="navbar__link white__button">Seasons</a></li>
+            <li class="navbar__item"><a th:href="@{/product}" class="navbar__link white__button">Products</a></li>
+            <li class="navbar__item"><a th:href="@{/profile}" class="navbar__link white__button">Profile</a></li>
+          </ul>
+        </nav>
+        <div class="navbar__burger burger">
+          <span class="burger__one"></span>
+          <span class="burger__two"></span>
+          <span class="burger__three"></span>
+        </div>
+      </div>
+    </div>
+</header>
+</body>
+</html>

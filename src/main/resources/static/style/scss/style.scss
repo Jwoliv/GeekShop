@@ -1,0 +1,124 @@
+@import url("https://fonts.googleapis.com/css2?family=Bellota:wght@300;400;700&display=swap");
+@import "_css_reset";
+@import "_header";
+@import "_footer";
+@import "_all_products";
+@import "_all_elements";
+@import "_auth";
+@import "selected_product";
+@import "about-us";
+body {
+	font-family: 'Bellota';
+	height: 100%;
+	background-color: #303030;
+}
+body.lock {
+	overflow: hidden;
+}
+html {
+	height: 100%;
+}
+.wrapper {
+	min-height: 100%;
+	display: flex;
+	flex-direction: column;
+}
+.container {
+	max-width: 1628px;
+	margin: 0 auto;
+}
+.main {
+	flex: 1 1 auto;
+}
+.content {
+	max-width: 1502px;
+	padding: 0px 10px;
+	margin: 0 auto;
+}
+.white__button {
+	transition-duration: 0.3s;
+	&:hover {
+		color: #ffffff;
+		background-color: #FF0024;
+	}
+	&:active {
+		color: #ffffff;
+		transition-duration: 0.2s;
+		background-color: #000000;
+	}
+}
+@media (max-width: 1618px) {
+	.container {
+		max-width: 970px;
+	}
+}
+@media (max-width: 992px) {
+	.container {
+		max-width: 750px;
+	}
+}
+@media (max-width: 767px) {
+	.container {
+		max-width: none;
+	}
+}
+.auth-content {
+	margin-top: 200px;
+}
+.user-field {
+	width: 765px;
+	height: 105px;
+	left: 396px;
+	top: 870px;
+	background: #D9D9D9;
+	border-radius: 15px;
+	font-weight: 700;
+	font-size: 36px;
+	line-height: 45px;
+	color: #000000;
+	padding: 0px 30px;
+	margin-bottom: 16px;
+	&:focus {
+		box-shadow: 0px 0px 5px 0px #ffffff;
+	}
+	@media (max-width: 1618px) {
+		width: 600px;
+	}
+	@media (max-width: 992px) {
+		min-width: 200px;
+		width: 400px;
+		height: 70px;
+	}
+	@media (max-width: 767px) {
+		min-width: 100px;
+	}
+}
+.user-button {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 363px;
+	height: 108px;
+	font-weight: 700;
+	font-size: 36px;
+	line-height: 45px;
+	display: flex;
+	align-items: center;
+	color: #ffffff;
+	background-color: #ff0024;
+	border-radius: 15px;
+	transition-duration: .3s;
+	@media (max-width: 992px) {
+		margin-top: 20px;
+		height: 70px;
+		width: 100%;
+	}
+	&:hover {
+		transition-duration: .3s;
+		background-color: #ff5050;
+	}
+	&:active {
+		background-color: #ffffff;
+		color: #000000;
+	}
+}

@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>About us</title>
+  <link rel="stylesheet" th:href="@{/style/css/style.css}">
+</head>
+  <body>
+    <div class="wrapper">
+      <div th:insert="~{/elements/header :: header_full}"></div>
+
+      <main class="main">
+        <div class="main__container container">
+          <div class="main__content content">
+            <div class="about__text-block text-block">
+              <h2 class="text-block__title">What is Lorem Ipsum?</h2>
+              <p class="text-block__text">
+                Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum
+                has been the industry's standard dummy text ever since the 1500s, when an unknown printer
+                took a galley of type and scrambled it to make a type specimen book. It has survived not only
+                five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.
+                It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages,
+                and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
+              </p>
+            </div>
+            <div class="about__images images">
+              <div class="images__row1 row1">
+                <img class="row1__img1 about-img" th:src="@{/img/about/image1.png}" alt="">
+                <img class="row1__img2 about-img" th:src="@{/img/about/image2.png}" alt="">
+              </div>
+              <div class="images__row2 row2">
+                <img class="row2__img1 about-img" th:src="@{/img/about/image3.png}" alt="">
+              </div>
+              <div class="images__row3 row3">
+                <img class="row3__img1 about-img" th:src="@{/img/about/image4.png}" alt="">
+                <img class="row3__img2 about-img" th:src="@{/img/about/image5.png}" alt="">
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
+
+      <div th:insert="~{/elements/footer :: footer}"></div>
+    </div>
+  </body>
+<script src="/static/script/script.js"></script>
+</html>

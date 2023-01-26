@@ -2,28 +2,133 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title th:text="${product.name}"></title>
+  <link rel="stylesheet" th:href="@{/style/css/style.css}">
+  <link rel="stylesheet" th:href="@{https://use.fontawesome.com/releases/v5.13.0/css/all.css}">
 </head>
-  <body>
-    <img th:src="@{/product/images/{id}(id=${product.previewsId})}" alt="">
-    <img th:src="@{/product/images/{id}(id=${product.previewsId} + 1)}" alt="">
-    <img th:src="@{/product/images/{id}(id=${product.previewsId} + 2)}" alt="">
-    <img th:src="@{/product/images/{id}(id=${product.previewsId} + 3)}" alt="">
-    <img th:src="@{/product/images/{id}(id=${product.previewsId} + 4)}" alt="">
-    <form method="post" th:action="@{/product/{id}/add_to_basket(id=${product.id})}">
-      <button type="submit">Add to basket</button>
-    </form>
-    <form method="post" th:action="@{/product/{id}/liked_product(id=${product.id})}">
-      <button type="submit">Liked product</button>
-    </form>
-    <form method="post" th:action="@{/product/{id}/add_comment(id=${product.id})}" th:object="${comment}">
-      <label>
-        <textarea th:field="*{text}"></textarea>
-      </label>
-      <label>
-        <input type="number" th:field="*{rating}">
-      </label>
-      <button type="submit">Add comment</button>
-    </form>
-  </body>
+<body>
+  <div class="wrapper">
+    <div th:insert="~{/elements/header :: header_only_navbar}"></div>
+
+    <main class="main">
+      <div class="main__container container">
+        <div class="main__content content">
+          <div class="product">
+            <div class="product__row">
+              <div class="product__row-left-side product-left-side">
+                <div class="product-left-side__images-list">
+                  <img th:src="@{/product/images/{id}(id=${product.previewsId})}" alt="" class="product__row-img is-active">
+                  <img th:src="@{/product/images/{id}(id=${product.previewsId} + 1)}" alt="" class="product__row-img">
+                  <img th:src="@{/product/images/{id}(id=${product.previewsId} + 2)}" alt="" class="product__row-img">
+                  <img th:src="@{/product/images/{id}(id=${product.previewsId} + 3)}" alt="" class="product__row-img">
+                  <img th:src="@{/product/images/{id}(id=${product.previewsId} + 4)}" alt="" class="product__row-img">
+                </div>
+                <ul class="product-left-side__images-tabs">
+                  <li><img th:src="@{/product/images/{id}(id=${product.previewsId})}" alt="" class="product-left-side-tab is-active"></li>
+                  <li><img th:src="@{/product/images/{id}(id=${product.previewsId} + 1)}" alt="" class="product-left-side-tab"></li>
+                  <li><img th:src="@{/product/images/{id}(id=${product.previewsId} + 2)}" alt="" class="product-left-side-tab"></li>
+                  <li><img th:src="@{/product/images/{id}(id=${product.previewsId} + 3)}" alt="" class="product-left-side-tab"></li>
+                  <li><img th:src="@{/product/images/{id}(id=${product.previewsId} + 4)}" alt="" class="product-left-side-tab"></li>
+                </ul>
+              </div>
+              <div class="product-row-right-size product-right-side">
+                <h1 class="product-right-side-title" th:text="${product.name}"></h1>
+                <div class="product-right-side-block">
+                  <p class="product-right-side-text">
+                    Lorem Ipsum is simply dummy text of the printing and typesetting industry.
+                    Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of typ
+                  </p>
+                  <ul class="product-right-side-list">
+                    <li class="product-right-side-item">Category: <a th:href="@{/category/{id}(id=${product.category.id})}" class="product-right-side-link" th:text="${product.category.name}"></a></li>
+                    <li class="product-right-side-item">Theme: <a th:href="@{/theme/{id}(id=${product.theme.id})}" class="product-right-side-link" th:text="${product.theme.name}"></a></li>
+                    <li class="product-right-side-item">Season: <a th:href="@{/season/{id}(id=${product.season.id})}" class="product-right-side-link" th:text="${product.season.name}"></a></li>
+                    <li class="product-right-side-item">Available sizes: X, XL, L</li>
+                    <li class="product-right-side-item">Rating: <th:block th:text="${product.rating}"/></li>
+                    <li class="product-right-side-item new-price" th:text="'Price: ' + ${product.price - (product.price * product.discount) / 100} + '$'"></li>
+                    <li class="product-right-side-item old-price" th:if="${product.discount != 0}" th:text="'Old price: ' + ${product.price} + '$'"></li>
+                  </ul>
+                  <div class="product-right-side-properties">
+                    <h4 class="product-right-side-point" th:text="${product.discount} + '%'"></h4>
+                    <h4 class="product-right-side-point" th:if="${product.numberProduct <= 10}">ends</h4>
+                  </div>
+                </div>
+                <div class="product-right-side-buttons">
+                  <form method="post" th:action="@{/product/{id}/add_to_basket(id=${product.id})}">
+                    <button class="button-buy" type="submit">Buy</button>
+                  </form>
+                  <form th:action="@{/product/{id}/liked_product(id=${product.id})}" class="item__form" method="post">
+                    <button type="submit" class="item__heart">
+                      <svg width="30" height="29" viewBox="0 0 30 29" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M28.111 13.0547C25.7366 17.8897 19.3844 24.4653 15.7922 27.968C15.406 28.3372 14.8187 28.3372 14.4325 27.968C10.8201 24.4653 4.46787 17.8897 2.0934 13.0547C-3.1223 2.41772 10.0286 -4.67363 15.1022 5.96339C20.1759 -4.67363 33.3268 2.41772 28.111 13.0547Z" fill="black"/>
+                      </svg>
+                    </button>
+                  </form>
+                </div>
+              </div>
+            </div>
+            <div class="comments">
+              <form class="add-comment" method="post" th:action="@{/product/{id}/add_comment(id=${product.id})}" th:object="${comment}">
+                <label>
+                  <textarea class="add-comment__text" th:field="*{text}" placeholder="Comment..."></textarea>
+                </label>
+                <label class="form-rating">
+                  <input class="add-comment__check" name="star" type="radio" th:value="1" th:field="*{rating}" id="star1"><label class="star-element" for="star1"><i class="fa fa-star"></i></label>
+                  <input class="add-comment__check" name="star" type="radio" th:value="2" th:field="*{rating}" id="star2"><label class="star-element" for="star2"><i class="fa fa-star"></i></label>
+                  <input class="add-comment__check" name="star" type="radio" th:value="3" th:field="*{rating}" id="star3"><label class="star-element" for="star3"><i class="fa fa-star"></i></label>
+                  <input class="add-comment__check" name="star" type="radio" th:value="4" th:field="*{rating}" id="star4"><label class="star-element" for="star4"><i class="fa fa-star"></i></label>
+                  <input class="add-comment__check" name="star" type="radio" th:value="5" th:field="*{rating}" id="star5"><label class="star-element" for="star5"><i class="fa fa-star"></i></label>
+                </label>
+                <button type="submit">Add comment</button>
+              </form>
+              <div class="comments__all" th:each="commentByProduct: ${product.comments}">
+                <div class="comment-by-user">
+                  <h4 class="comment__username" th:text="${commentByProduct.user.getFullName()}"></h4>
+                  <p class="comment__text" th:text="${commentByProduct.text}"></p>
+                  <ul class="comment__rating">
+                    <li><i class="fa fa-star" th:each="star: ${#numbers.sequence(0, commentByProduct.rating - 1)}"></i></li>
+                  </ul>
+                </div>
+              </div>
+              <div class="comments__show-more">Show more</div>
+            </div>
+            <h2 class="product__row-title">Recommended products</h2>
+            <div class="product__row-products selected-product-recomendation-items">
+              <div class="item item-under-product" th:each="recommended_product: ${recommended_products}">
+                <img class="item__img selected-product-recomendation-img" th:src="@{/product/images/{id}(id=${recommended_product.previewsId})}" alt="Error image">
+                <div class="header__item">
+                  <h4 class="item__discount" th:if="${recommended_product.discount}" th:text="${recommended_product.discount} + '%'"></h4>
+                  <h4 class="item__ends" th:if="${recommended_product.numberProduct <= 10}">ends</h4>
+                </div>
+                <div class="footer__item">
+                  <form th:action="@{/product/{id}/liked_product(id=${recommended_product.id})}" class="item__form" method="post">
+                    <button type="submit" class="item__heart">
+                      <svg width="30" height="29" viewBox="0 0 30 29" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M28.111 13.0547C25.7366 17.8897 19.3844 24.4653 15.7922 27.968C15.406 28.3372 14.8187 28.3372 14.4325 27.968C10.8201 24.4653 4.46787 17.8897 2.0934 13.0547C-3.1223 2.41772 10.0286 -4.67363 15.1022 5.96339C20.1759 -4.67363 33.3268 2.41772 28.111 13.0547Z" fill="black"/>
+                      </svg>
+                    </button>
+                  </form>
+                  <div class="footer__white">
+                    <a th:href="@{/product/{id}(id=${recommended_product.id})}" class="item__title selected-product-recomendation-title">Product example name</a>
+                    <div class="item-footer__row">
+                      <div class="footer__price">
+                        <h3 class="new-price" th:text="${recommended_product.price - (recommended_product.price * recommended_product.discount) / 100} + '$'"></h3>
+                        <h3 class="old-price" th:if="${recommended_product.discount != 0}" th:text="${recommended_product.price} + '$'"></h3>
+                      </div>
+                      <div class="footer__size">XL, X, X</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <div th:insert="~{/elements/footer :: footer}"></div>
+  </div>
+</body>
+<script th:src="@{/script/script.js}"></script>
 </html>
