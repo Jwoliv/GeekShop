@@ -10,6 +10,8 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.security.Principal;
+
 public interface CommonProductFieldsController<
         TI extends ImageProductField<E>,
         E extends AbstractProductField<E, TI>,
@@ -18,13 +20,13 @@ public interface CommonProductFieldsController<
         > {
     S getService();
     @GetMapping()
-    String pageAllElement(@NonNull Model model);
+    String pageAllElement(@NonNull Model model, Principal principal);
     @PostMapping()
     String saveNewElement(@RequestParam MultipartFile file1, @RequestParam MultipartFile file2, @RequestParam MultipartFile file3,@ModelAttribute E element, BindingResult bindingResult, @NonNull Model model);
     @GetMapping("/new")
     String formNewElement(@NonNull Model model);
     @GetMapping("/{id}")
-    String pageSelectedElement(@PathVariable Long id, @NonNull Model model);
+    String pageSelectedElement(@PathVariable Long id, @NonNull Model model, Principal principal);
     @DeleteMapping("/{id}")
     String deleteElement(@PathVariable Long id);
     @GetMapping("/{id}/edit")

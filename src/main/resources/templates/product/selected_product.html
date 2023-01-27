@@ -44,7 +44,7 @@
                     <li class="product-right-side-item">Category: <a th:href="@{/category/{id}(id=${product.category.id})}" class="product-right-side-link" th:text="${product.category.name}"></a></li>
                     <li class="product-right-side-item">Theme: <a th:href="@{/theme/{id}(id=${product.theme.id})}" class="product-right-side-link" th:text="${product.theme.name}"></a></li>
                     <li class="product-right-side-item">Season: <a th:href="@{/season/{id}(id=${product.season.id})}" class="product-right-side-link" th:text="${product.season.name}"></a></li>
-                    <li class="product-right-side-item">Available sizes: X, XL, L</li>
+                    <li class="product-right-side-item">Available sizes: <th:block th:each="size: ${product.sizes}" th:text="${size} + ' '"/></li>
                     <li class="product-right-side-item">Rating: <th:block th:text="${product.rating}"/></li>
                     <li class="product-right-side-item new-price" th:text="'Price: ' + ${product.price - (product.price * product.discount) / 100} + '$'"></li>
                     <li class="product-right-side-item old-price" th:if="${product.discount != 0}" th:text="'Old price: ' + ${product.price} + '$'"></li>

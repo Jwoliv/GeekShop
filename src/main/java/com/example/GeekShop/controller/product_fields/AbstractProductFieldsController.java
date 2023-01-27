@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.security.Principal;
 import java.util.ArrayList;
 
 @Data
@@ -47,10 +48,11 @@ public abstract class AbstractProductFieldsController<
     }
 
     @Override
-    public String pageAllElement(@NonNull Model model) {
+    public String pageAllElement(@NonNull Model model, Principal principal) {
         model.addAttribute("all_elements", getService().findAll());
         model.addAttribute("url", url);
         model.addAttribute("nameOfPage", namePlural);
+        model.addAttribute("principal", principal);
         return "product_fields/all_elements";
     }
 
@@ -86,9 +88,10 @@ public abstract class AbstractProductFieldsController<
     }
 
     @Override
-    public String pageSelectedElement(Long id, @NonNull Model model) {
+    public String pageSelectedElement(Long id, @NonNull Model model, Principal principal) {
         model.addAttribute("url", url);
         model.addAttribute("element", getService().findById(id));
+        model.addAttribute("principal", principal);
         return "product_fields/selected_element";
     }
 

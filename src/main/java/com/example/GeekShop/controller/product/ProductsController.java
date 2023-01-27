@@ -2,6 +2,7 @@ package com.example.GeekShop.controller.product;
 
 import com.example.GeekShop.model.Comment;
 import com.example.GeekShop.model.Product;
+import com.example.GeekShop.model.SizeOfProduct;
 import com.example.GeekShop.model.images.ImageProduct;
 import com.example.GeekShop.model.user.User;
 import com.example.GeekShop.service.product.ImageProductService;
@@ -21,7 +22,9 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.security.Principal;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 @Controller
 @RequestMapping("/product")
@@ -90,6 +93,11 @@ public class ProductsController {
             @RequestParam MultipartFile file3,
             @RequestParam MultipartFile file4,
             @RequestParam MultipartFile file5,
+            @RequestParam(required=false) SizeOfProduct size1,
+            @RequestParam(required=false) SizeOfProduct size2,
+            @RequestParam(required=false) SizeOfProduct size3,
+            @RequestParam(required=false) SizeOfProduct size4,
+            @RequestParam(required=false) SizeOfProduct size5,
             @ModelAttribute @Valid Product product,
             BindingResult bindingResult,
             @NonNull Model model
@@ -105,6 +113,7 @@ public class ProductsController {
             model.addAttribute("seasons", seasonService.findAll());
             return "product/new_product";
         }
+        product.getSizeForCheck(size1, size2, size3, size4, size5);
         productService.save(product);
         saveImages(file1, file2, file3, file4, file5, product);
         productService.save(product);
@@ -125,7 +134,12 @@ public class ProductsController {
             @PathVariable Long id,
             @ModelAttribute @Valid Product product,
             BindingResult bindingResult,
-            @NonNull Model model
+            @NonNull Model model,
+            @RequestParam(required=false) SizeOfProduct size1,
+            @RequestParam(required=false) SizeOfProduct size2,
+            @RequestParam(required=false) SizeOfProduct size3,
+            @RequestParam(required=false) SizeOfProduct size4,
+            @RequestParam(required=false) SizeOfProduct size5
     ) {
         if (bindingResult.hasErrors()) {
             model.addAttribute("themes", themeService.findAll());
@@ -133,6 +147,7 @@ public class ProductsController {
             model.addAttribute("seasons", seasonService.findAll());
             return "product/edit_product";
         }
+        product.getSizeForCheck(size1, size2, size3, size4, size5);
         product.setPreviewsId(productService.findById(id).getPreviewsId());
         productService.save(product);
         return "redirect:/product/{id}";

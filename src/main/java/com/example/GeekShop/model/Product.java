@@ -13,8 +13,7 @@ import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 @Entity
 @Getter
@@ -47,6 +46,11 @@ public class Product {
     private Category category;
     @ManyToOne
     private Season season;
+    @ElementCollection(targetClass = SizeOfProduct.class)
+    @CollectionTable(name = "product_size", joinColumns = @JoinColumn(name = "product_id"))
+    @Enumerated(EnumType.STRING)
+    @Column(name = "size_id")
+    private Set<SizeOfProduct> sizes = new HashSet<>();
     @OneToMany(mappedBy = "element", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @ToString.Exclude
     private List<ImageProduct> images = new ArrayList<>();
@@ -70,5 +74,23 @@ public class Product {
             sum += comment.getRating();
         }
         rating = sum / getComments().size();
+    }
+    public void getSizeForCheck(
+            SizeOfProduct size1,
+            SizeOfProduct size2,
+            SizeOfProduct size3,
+            SizeOfProduct size4,
+            SizeOfProduct size5
+    ) {
+        addSizeToCollection(size1);
+        addSizeToCollection(size2);
+        addSizeToCollection(size3);
+        addSizeToCollection(size4);
+        addSizeToCollection(size5);
+    }
+    public void addSizeToCollection(SizeOfProduct size) {
+        if (size != null) {
+            this.getSizes().add(size);
+        }
     }
 }

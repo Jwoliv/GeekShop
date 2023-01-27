@@ -35,7 +35,7 @@
                         <h3 class="new-price" th:text="${product.price - (product.price * product.discount / 100)} + '$'"></h3>
                         <h3 class="old-price" th:if="${product.discount != 0}" th:text="${product.price} + '$'"></h3>
                       </div>
-                      <div class="footer__size">XL, X, X</div>
+                      <div class="footer__size"><th:block th:each="size: ${product.sizes}" th:text="${size} + ' '"/></div>
                     </div>
                   </div>
                 </div>
