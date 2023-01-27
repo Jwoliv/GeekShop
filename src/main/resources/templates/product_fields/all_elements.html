@@ -2,14 +2,28 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title th:text="${nameOfPage}"></title>
+    <link rel="stylesheet" th:href="@{/style/css/style.css}">
 </head>
     <body>
-        <ul>
-            <li th:each="element: ${all_elements}">
-                <img th:src="@{{url}/images/{id}(url=${url}, id=${element.previewsId})}" alt="">
-                <a th:href="@{/{url}/{id}(url=${url}, id=${element.id})}" th:text="${element.name}"></a>
-            </li>
-        </ul>
+        <div class="wrapper">
+            <div th:insert="~{/elements/header :: header_full}"></div>
+            <main class="main">
+                <div class="main__container container">
+                    <div class="main__content content">
+                        <div class="categories">
+                            <div class="categories__category category" th:each="element: ${all_elements}">
+                                <img th:src="@{{url}/images/{id}(url=${url}, id=${element.previewsId})}" alt="" class="category-img">
+                                <a th:href="@{/{url}/{id}(url=${url}, id=${element.id})}" th:text="${element.name}"  class="category-title">Product example name</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </main>
+            <div th:insert="~{/elements/footer :: footer}"></div>
+        </div>
     </body>
+    <script th:src="@{/script/script.js}"></script>
 </html>

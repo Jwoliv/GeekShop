@@ -21,7 +21,7 @@
                   <h4 class="item__ends" th:if="${product.numberProduct <= 10}">ends</h4>
                 </div>
                 <div class="footer__item">
-                  <form th:action="@{/product/{id}/liked_product(id=${product.id})}" class="item__form" method="post">
+                  <form th:if="${principal != null}" th:action="@{/product/{id}/liked_product(id=${product.id})}" class="item__form" method="post">
                     <button type="submit" class="item__heart">
                       <svg width="30" height="29" viewBox="0 0 30 29" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path d="M28.111 13.0547C25.7366 17.8897 19.3844 24.4653 15.7922 27.968C15.406 28.3372 14.8187 28.3372 14.4325 27.968C10.8201 24.4653 4.46787 17.8897 2.0934 13.0547C-3.1223 2.41772 10.0286 -4.67363 15.1022 5.96339C20.1759 -4.67363 33.3268 2.41772 28.111 13.0547Z" fill="black"/>

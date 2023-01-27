@@ -50,7 +50,7 @@
                     <li class="product-right-side-item old-price" th:if="${product.discount != 0}" th:text="'Old price: ' + ${product.price} + '$'"></li>
                   </ul>
                   <div class="product-right-side-properties">
-                    <h4 class="product-right-side-point" th:text="${product.discount} + '%'"></h4>
+                    <h4 class="product-right-side-point" th:if="${product.discount != 0}" th:text="${product.discount} + '%'"></h4>
                     <h4 class="product-right-side-point" th:if="${product.numberProduct <= 10}">ends</h4>
                   </div>
                 </div>

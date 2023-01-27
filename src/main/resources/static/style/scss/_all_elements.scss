@@ -16,20 +16,35 @@
 	grid-template-columns: 1fr 1fr 1fr;
 	row-gap: 22px;
 	column-gap: 22px;
+	min-height: 600px;
 	@media (max-width: 1618px) {
 		margin-top: 29px;
 	}
 	@media (max-width: 992px) {
+		gap: 15px;
 		margin-top: 19px;
 	}
 	@media (max-width: 767px) {
 		grid-template-columns: 1fr 1fr;
+		gap: 10px;
+	}
+	@media (max-width: 600px) {
+		grid-template-columns: 1fr;
 	}
 	&__category {
 		position: relative;
 	}
 }
 .category {
+	@media (max-width: 1618px) {
+		height: 400px;
+	}
+	@media (max-width: 992px) {
+		height: 300px;
+	}
+	@media (max-width: 767px) {
+		height: 300px;
+	}
 }
 .category-img {
 	width: 100%;
