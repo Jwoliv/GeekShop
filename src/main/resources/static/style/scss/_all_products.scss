@@ -29,11 +29,21 @@
 }
 .item {
 	position: relative;
+	height: 600px;
 	&__img {
 		width: 100%;
 		height: 100%;
 		object-fit: cover;
 		transition-duration: .3s;
+	}
+	@media (max-width: 1618px) {
+		height: 550px;
+	}
+	@media (max-width: 992px) {
+		height: 400px;
+	}
+	@media (max-width: 767px) {
+		min-height: 300px;
 	}
 
 	&__discount {
@@ -156,6 +166,15 @@
 			font-size: 20px;
 		}
 	}
+}
+.item__heart.__check-heart {
+	svg {
+		path {
+			transition-duration: 0.3s;
+			fill: #ff0024;
+		}
+	}
+	background-color: #000000;
 }
 .new-price {
 	font-weight: 700;

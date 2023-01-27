@@ -45,6 +45,7 @@
                     <li class="product-right-side-item">Theme: <a th:href="@{/theme/{id}(id=${product.theme.id})}" class="product-right-side-link" th:text="${product.theme.name}"></a></li>
                     <li class="product-right-side-item">Season: <a th:href="@{/season/{id}(id=${product.season.id})}" class="product-right-side-link" th:text="${product.season.name}"></a></li>
                     <li class="product-right-side-item">Available sizes: <th:block th:each="size: ${product.sizes}" th:text="${size} + ' '"/></li>
+                    <li class="product-right-side-item">Color: <th:block th:text="${product.color}"/></li>
                     <li class="product-right-side-item">Rating: <th:block th:text="${product.rating}"/></li>
                     <li class="product-right-side-item new-price" th:text="'Price: ' + ${product.price - (product.price * product.discount) / 100} + '$'"></li>
                     <li class="product-right-side-item old-price" th:if="${product.discount != 0}" th:text="'Old price: ' + ${product.price} + '$'"></li>
@@ -58,7 +59,19 @@
                   <form method="post" th:action="@{/product/{id}/add_to_basket(id=${product.id})}">
                     <button class="button-buy" type="submit">Buy</button>
                   </form>
-                  <form th:action="@{/product/{id}/liked_product(id=${product.id})}" class="item__form" method="post">
+                  <form th:if="${isLikedProduct == true}"
+                        th:action="@{/product/{id}/liked_product(id=${product.id})}"
+                        class="item__form" method="post">
+                    <button type="submit" class="item__heart __check-heart">
+                      <svg width="30" height="29" viewBox="0 0 30 29" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M28.111 13.0547C25.7366 17.8897 19.3844 24.4653 15.7922 27.968C15.406 28.3372 14.8187 28.3372 14.4325 27.968C10.8201 24.4653 4.46787 17.8897 2.0934 13.0547C-3.1223 2.41772 10.0286 -4.67363 15.1022 5.96339C20.1759 -4.67363 33.3268 2.41772 28.111 13.0547Z" fill="black"/>
+                      </svg>
+                    </button>
+                  </form>
+                  <form th:if="${isLikedProduct == false}"
+                        th:action="@{/product/{id}/liked_product(id=${product.id})}"
+                        class="item__form"
+                        method="post">
                     <button type="submit" class="item__heart">
                       <svg width="30" height="29" viewBox="0 0 30 29" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path d="M28.111 13.0547C25.7366 17.8897 19.3844 24.4653 15.7922 27.968C15.406 28.3372 14.8187 28.3372 14.4325 27.968C10.8201 24.4653 4.46787 17.8897 2.0934 13.0547C-3.1223 2.41772 10.0286 -4.67363 15.1022 5.96339C20.1759 -4.67363 33.3268 2.41772 28.111 13.0547Z" fill="black"/>
@@ -93,30 +106,22 @@
               </div>
               <div class="comments__show-more">Show more</div>
             </div>
-            <h2 class="product__row-title">Recommended products</h2>
-            <div class="product__row-products selected-product-recomendation-items">
+            <h2 class="product__row-title" th:if="${recommended_products.size() >= 3}">Recommended products</h2>
+            <div class="product__row-products selected-product-recomendation-items" th:if="${recommended_products.size() >= 3}">
               <div class="item item-under-product" th:each="recommended_product: ${recommended_products}">
                 <img class="item__img selected-product-recomendation-img" th:src="@{/product/images/{id}(id=${recommended_product.previewsId})}" alt="Error image">
                 <div class="header__item">
                   <h4 class="item__discount" th:if="${recommended_product.discount}" th:text="${recommended_product.discount} + '%'"></h4>
                   <h4 class="item__ends" th:if="${recommended_product.numberProduct <= 10}">ends</h4>
                 </div>
-                <div class="footer__item">
-                  <form th:action="@{/product/{id}/liked_product(id=${recommended_product.id})}" class="item__form" method="post">
-                    <button type="submit" class="item__heart">
-                      <svg width="30" height="29" viewBox="0 0 30 29" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M28.111 13.0547C25.7366 17.8897 19.3844 24.4653 15.7922 27.968C15.406 28.3372 14.8187 28.3372 14.4325 27.968C10.8201 24.4653 4.46787 17.8897 2.0934 13.0547C-3.1223 2.41772 10.0286 -4.67363 15.1022 5.96339C20.1759 -4.67363 33.3268 2.41772 28.111 13.0547Z" fill="black"/>
-                      </svg>
-                    </button>
-                  </form>
                   <div class="footer__white">
-                    <a th:href="@{/product/{id}(id=${recommended_product.id})}" class="item__title selected-product-recomendation-title">Product example name</a>
+                    <a th:href="@{/product/{id}(id=${recommended_product.id})}" th:text="${recommended_product.name}" class="item__title selected-product-recomendation-title"></a>
                     <div class="item-footer__row">
                       <div class="footer__price">
                         <h3 class="new-price" th:text="${recommended_product.price - (recommended_product.price * recommended_product.discount) / 100} + '$'"></h3>
                         <h3 class="old-price" th:if="${recommended_product.discount != 0}" th:text="${recommended_product.price} + '$'"></h3>
                       </div>
-                      <div class="footer__size">XL, X, X</div>
+                      <div class="footer__size"><th:block th:each="size: ${recommended_product.sizes}" th:text="${size} + ' '"/></div>
                     </div>
                   </div>
                 </div>

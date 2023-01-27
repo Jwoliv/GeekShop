@@ -29,7 +29,7 @@ public abstract class AbstractProductField<E extends AbstractProductField<E, TI>
     @ToString.Exclude
     protected List<TI> images = new ArrayList<>();
     protected Long previewsId;
-    @OneToMany(fetch = FetchType.LAZY)
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @ToString.Exclude
     protected List<Product> products = new ArrayList<>();
     public void addImages(TI image, E element) {

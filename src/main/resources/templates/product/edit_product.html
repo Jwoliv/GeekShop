@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Edit product</title>
@@ -25,7 +25,10 @@
             <option th:each="season: ${seasons}" th:value="${season.id}" th:text="${season.name}"></option>
         </select>
     </label>
-    <label>S
+    <select th:field="${product.color}">
+        <option th:each="color : ${T(com.example.GeekShop.model.Color).values()}" th:value="${color}" th:text="${color}"></option>
+    </select>
+    <label>
         <input type="radio" name="size1" th:value="${T(com.example.GeekShop.model.SizeOfProduct).L}" th:text="L">
     </label>
     <label>

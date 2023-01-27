@@ -38,7 +38,7 @@ public class Product {
     @NotNull
     @Min(value = 0)
     private Integer numberProduct;
-    private Float rating = 0.0F;
+    private Float rating;
     private Long previewsId;
     @ManyToOne
     private Theme theme;
@@ -46,6 +46,8 @@ public class Product {
     private Category category;
     @ManyToOne
     private Season season;
+    @Enumerated(EnumType.STRING)
+    private Color color;
     @ElementCollection(targetClass = SizeOfProduct.class)
     @CollectionTable(name = "product_size", joinColumns = @JoinColumn(name = "product_id"))
     @Enumerated(EnumType.STRING)
@@ -54,12 +56,15 @@ public class Product {
     @OneToMany(mappedBy = "element", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @ToString.Exclude
     private List<ImageProduct> images = new ArrayList<>();
-    @ManyToMany(mappedBy = "basketOfProducts")
+    @ManyToMany(mappedBy = "basketOfProducts", cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
     @ToString.Exclude
     private List<User> usersWhoOrdered = new ArrayList<>();
-    @ManyToMany(mappedBy = "listOfLikedProducts")
+    @ManyToMany(mappedBy = "listOfLikedProducts", cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
     @ToString.Exclude
     private List<User> usersWhoLiked = new ArrayList<>();
+    @ManyToMany(mappedBy = "viewedProducts", cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+    @ToString.Exclude
+    private List<User> usersWhoViewed = new ArrayList<>();
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @ToString.Exclude
     private List<Comment> comments = new ArrayList<>();
@@ -74,6 +79,8 @@ public class Product {
             sum += comment.getRating();
         }
         rating = sum / getComments().size();
+        rating = Math.round(rating * 100.0F) / 100.0F;
+        setRating(rating);
     }
     public void getSizeForCheck(
             SizeOfProduct size1,

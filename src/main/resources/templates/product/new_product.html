@@ -40,6 +40,10 @@
   <label>
     <input type="radio" name="size5" th:value="${T(com.example.GeekShop.model.SizeOfProduct).XXL}" th:text="XXL">
   </label>
+  <select th:field="${product.color}">
+    <option th:each="color : ${T(com.example.GeekShop.model.Color).values()}"
+            th:value="${color}" th:text="${color}"></option>
+  </select>
   <input type="file" name="file1">
   <input type="file" name="file2">
   <input type="file" name="file3">

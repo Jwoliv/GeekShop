@@ -22,9 +22,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.security.Principal;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.Objects;
-import java.util.Set;
 
 @Controller
 @RequestMapping("/product")
@@ -62,22 +60,36 @@ public class ProductsController {
     public String pageSelectedProduct(@PathVariable Long id, @NonNull Model model, Principal principal) {
         Product product = productService.findById(id);
         model.addAttribute("principal", principal);
+        model.addAttribute("isLikedProduct", userService.findByEmail(principal.getName()).getListOfLikedProducts().contains(product));
         model.addAttribute("comment", new Comment());
         model.addAttribute("product", product);
-        model.addAttribute("recommended_products",
-                productService.findRecommendedProduct(
-                        product.getCategory().getId(),
-                        product.getTheme().getId(),
-                        product.getSeason().getId()
-                )
-        );
+        model.addAttribute("recommended_products", productService.findRecommendedProduct(principal));
+        User user = userService.findByEmail(principal.getName());
+        if (user != null && !user.getViewedProducts().contains(product)) {
+            if (user.getViewedProducts().size() == 40) {
+                user.getViewedProducts().remove(0);
+            }
+            user.getViewedProducts().add(product);
+            userService.saveAfterChange(user);
+        }
         return "product/selected_product";
     }
     @DeleteMapping("/{id}")
     public String deleteProduct(@PathVariable Long id) {
+        removeProductInTheUser(productService.findById(id));
         productService.deleteById(id);
         return "redirect:/product";
     }
+
+    private void removeProductInTheUser(Product product) {
+        for (User user: userService.findAll()) {
+            user.getViewedProducts().remove(product);
+            user.getListOfLikedProducts().remove(product);
+            user.getBasketOfProducts().remove(product);
+            userService.saveAfterChange(user);
+        }
+    }
+
     @GetMapping("/new")
     public String formNewProduct(@NonNull Model model) {
         model.addAttribute("product", new Product());

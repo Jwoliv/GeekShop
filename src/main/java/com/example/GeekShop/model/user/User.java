@@ -38,7 +38,7 @@ public class User {
     private String password;
     @Transient
     private String repeatPassword;
-    @ManyToMany(fetch = FetchType.LAZY)
+    @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
     @JoinTable(
             name = "user_basket_products",
             joinColumns = @JoinColumn(name = "user_id"),
@@ -46,7 +46,7 @@ public class User {
     )
     @ToString.Exclude
     private List<Product> basketOfProducts = new ArrayList<>();
-    @ManyToMany(fetch = FetchType.LAZY)
+    @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
     @JoinTable(
             name = "user_liked_product",
             joinColumns = @JoinColumn(name = "user_id"),
@@ -54,6 +54,14 @@ public class User {
     )
     @ToString.Exclude
     private List<Product> listOfLikedProducts = new ArrayList<>();
+    @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+    @JoinTable(
+            name = "user_view_product",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "view_product_id")
+    )
+    @ToString.Exclude
+    private List<Product> viewedProducts = new ArrayList<>();
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @ToString.Exclude
     private List<Comment> comments = new ArrayList<>();

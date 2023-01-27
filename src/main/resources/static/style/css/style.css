@@ -537,6 +537,7 @@ h1, h2, h3, h4, h5, h6 {
 
 .item {
   position: relative;
+  height: 600px;
 }
 .item__img {
   width: 100%;
@@ -544,6 +545,21 @@ h1, h2, h3, h4, h5, h6 {
   -o-object-fit: cover;
   object-fit: cover;
   transition-duration: 0.3s;
+}
+@media (max-width: 1618px) {
+  .item {
+    height: 550px;
+  }
+}
+@media (max-width: 992px) {
+  .item {
+    height: 400px;
+  }
+}
+@media (max-width: 767px) {
+  .item {
+    min-height: 300px;
+  }
 }
 .item__discount {
   font-weight: 700;
@@ -651,6 +667,14 @@ h1, h2, h3, h4, h5, h6 {
   .footer__size {
     font-size: 20px;
   }
+}
+
+.item__heart.__check-heart {
+  background-color: #000000;
+}
+.item__heart.__check-heart svg path {
+  transition-duration: 0.3s;
+  fill: #ff0024;
 }
 
 .new-price {
@@ -1359,6 +1383,7 @@ h1, h2, h3, h4, h5, h6 {
   margin-bottom: 20px;
   font-size: 24px;
   line-height: 30px;
+  max-width: 100%;
 }
 @media (max-width: 992px) {
   .comment__text {
