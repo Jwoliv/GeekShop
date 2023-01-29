@@ -5,7 +5,6 @@ import com.example.GeekShop.model.user.User;
 import com.example.GeekShop.repository.UserRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -37,6 +36,9 @@ public class UserService {
         user.setActive(true);
         user.setRole(Role.USER);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
+        user.setSpendMoney(0);
+        user.setBonusPoints(0);
+        user.selectLevelOfSupport();
         userRepository.save(user);
     }
     @Transactional

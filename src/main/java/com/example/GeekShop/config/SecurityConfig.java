@@ -55,7 +55,8 @@ public class SecurityConfig {
                                 "/product/**",
                                 "/theme/**",
                                 "/season/**",
-                                "/category/**"
+                                "/category/**",
+                                "/profile/**"
                         ).hasAnyRole(Role.USER.name(), Role.ADMIN.name())
                         .anyRequest().authenticated()
                 )

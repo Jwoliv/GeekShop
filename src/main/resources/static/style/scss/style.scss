@@ -5,8 +5,10 @@
 @import "_all_products";
 @import "_all_elements";
 @import "_auth";
-@import "selected_product";
-@import "about-us";
+@import "_selected_product";
+@import "_about-us";
+@import "_profile";
+
 body {
 	font-family: 'Bellota';
 	height: 100%;

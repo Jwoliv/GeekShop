@@ -1,9 +1,9 @@
-// Bugrer functional
-const bugrer = document.querySelector(".burger");
+// Burger functional
+const burger = document.querySelector(".burger");
 const burgerActive = () => {
-	if (bugrer) {
+	if (burger) {
 		const menu = document.querySelector(".navbar");
-		bugrer.addEventListener("click", function(e) {
+		burger.addEventListener("click", () => {
 			document.body.classList.toggle("_lock");
 			menu.classList.toggle("_active");
 		});
@@ -36,11 +36,11 @@ tabsItems.forEach(checkOutTabs);
 const stars = Array.from(document.getElementsByClassName('star-element'));
 const paintStars = (item, index) => {
 	item.addEventListener("click", () => {
-		for (var i = 0; i <= index; i++) {
+		for (let i = 0; i <= index; i++) {
 			stars[i].classList.remove("_checked-star");
 			stars[i].classList.add("_checked-star");
 		}
-		for (var i = index + 1; i <= 4; i++) {
+		for (let i = index + 1; i <= 4; i++) {
 			stars[i].classList.remove("_checked-star");
 		}
 	});
@@ -48,38 +48,43 @@ const paintStars = (item, index) => {
 stars.forEach(paintStars);
 
 // Show more comments
-const showMoreButton = Array.from(document.getElementsByClassName("comments__show-more"));
-const commentsByUsers = Array.from(document.getElementsByClassName("comment-by-user"));
+const showMoreButton = document.querySelector(".comments__show-more");
+const commentsByUsers = Array.from(document.querySelectorAll(".comment-by-user"));
 
 const showComments = (items) => {
-	var length = items.length;
-	if (items.length <= 3) {
-		showMoreButton[0].classList.add("_hidden");
+	if (items == null || showMoreButton == null) {
+		return;
 	}
-	for (var i = 0; i < 3; i++) {
-		items[i].classList.add("_show-comment");
+	if (items.length <= 3) {
+		showMoreButton.classList.add("_hidden");
+	}
+	if (items.length !== 0) {
+		for (let i = 0; i < 3; i++) {
+			items[i].classList.add("_show-comment");
+		}
 	}
 };
 showComments(commentsByUsers);
 
 // Functional of button `Show more` in the comments
 const pressShowMore = (button) => {
-	button.addEventListener("click", () => {
-		const indexOfLastShowedComment = Array.from(document.getElementsByClassName("_show-comment")).length - 1;
-		if (indexOfLastShowedComment + 4 < commentsByUsers.length) {
-			for (let i = indexOfLastShowedComment; i < indexOfLastShowedComment + 4; i++) {
-				commentsByUsers[i].classList.add("_show-comment");
+	if (button != null || commentsByUsers == null) {
+		button.addEventListener("click", () => {
+			const indexOfLastShowedComment = Array.from(document.getElementsByClassName("_show-comment")).length - 1;
+			if (indexOfLastShowedComment + 4 < commentsByUsers.length) {
+				for (let i = indexOfLastShowedComment; i < indexOfLastShowedComment + 4; i++) {
+					commentsByUsers[i].classList.add("_show-comment");
+				}
+			} else {
+				for (let i = indexOfLastShowedComment; i < commentsByUsers.length; i++) {
+					commentsByUsers[i].classList.add("_show-comment");
+				}
 			}
-		}
-		else {
-			for (let i = indexOfLastShowedComment; i < commentsByUsers.length; i++) {
-				commentsByUsers[i].classList.add("_show-comment");
-			}
-		}
-		hiddenButtonOfShowComments(commentsByUsers);
-	});
+			hiddenButtonOfShowComments(commentsByUsers);
+		});
+	}
 }
-pressShowMore(showMoreButton[0]);
+pressShowMore(showMoreButton);
 
 const hiddenButtonOfShowComments = (items) => {
 	let existHiddenComments = false;
@@ -90,6 +95,25 @@ const hiddenButtonOfShowComments = (items) => {
 		}
 	}
 	if (!existHiddenComments) {
-		showMoreButton[0].classList.add("_hidden");
+		showMoreButton.classList.add("_hidden");
 	}
 };
+
+//Code for profile page
+const buttonsOfProductRow = document.querySelectorAll(".lists__navbar-item");
+const listsOfProduct = document.querySelectorAll(".lists__list");
+
+const pressProfileButton = (button, index) => {
+	button.addEventListener("click", () => {
+		if (button.classList.contains("_active")) return;
+		for (let i = 0; i < buttonsOfProductRow.length; i++) {
+			buttonsOfProductRow[i].classList.remove("_active");
+		}
+		for (let i = 0; i < listsOfProduct.length; i++) {
+			listsOfProduct[i].classList.remove("_active");
+		}
+		listsOfProduct[index].classList.add("_active");
+		button.classList.add("_active");
+	});
+};
+buttonsOfProductRow.forEach(pressProfileButton);

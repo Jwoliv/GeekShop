@@ -4,6 +4,7 @@ import com.example.GeekShop.model.Comment;
 import com.example.GeekShop.model.Product;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import lombok.*;
 import org.springframework.stereotype.Component;
@@ -36,6 +37,12 @@ public class User {
     private boolean active;
     @NotBlank
     private String password;
+    @Min(value = 0)
+    private Integer spendMoney;
+    @Min(value = 0)
+    private Integer bonusPoints;
+    @Enumerated(EnumType.STRING)
+    private LevelSupport levelSupport;
     @Transient
     private String repeatPassword;
     @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
@@ -68,5 +75,22 @@ public class User {
 
     public String getFullName() {
         return firstname + " " + lastname;
+    }
+    public void selectLevelOfSupport() {
+        if (this.spendMoney <= 4000) this.levelSupport = LevelSupport.Start;
+        else if (this.spendMoney <= 10500) this.levelSupport = LevelSupport.Standard;
+        else if (this.spendMoney <= 20000) this.levelSupport = LevelSupport.Ultra;
+        else this.levelSupport = LevelSupport.UltraPlus;
+    }
+    public int getTotalBillOfBasket() {
+        int totalBill = 0;
+        for (Product product: this.basketOfProducts) {
+            if (product.getDiscount() != 0) {
+                totalBill += product.getPrice()  - product.getPrice() * product.getDiscount() / 100;
+                continue;
+            }
+            totalBill += product.getPrice();
+        }
+        return totalBill;
     }
 }

@@ -61,6 +61,7 @@ public class ProductsController {
         Product product = productService.findById(id);
         model.addAttribute("principal", principal);
         model.addAttribute("isLikedProduct", userService.findByEmail(principal.getName()).getListOfLikedProducts().contains(product));
+        model.addAttribute("productInTheBasket", userService.findByEmail(principal.getName()).getBasketOfProducts().contains(product));
         model.addAttribute("comment", new Comment());
         model.addAttribute("product", product);
         model.addAttribute("recommended_products", productService.findRecommendedProduct(principal));

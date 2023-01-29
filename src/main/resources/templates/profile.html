@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="${user.getFullName()}"></title>
+    <link rel="stylesheet" th:href="@{/style/css/style.css}">
+</head>
+<body>
+<div class="wrapper profile-page">
+    <div th:insert="~{/elements/header :: header_only_navbar}"></div>
+    <main class="main">
+        <div class="main__container container">
+            <div class="main__content content">
+                <div class="info-user">
+                    <div class="info-user__block">
+                        <ul class="info-user__list">
+                            <li class="info-user__item" th:text="'Firstname: ' + ${user.firstname}"></li>
+                            <li class="info-user__item" th:text="'Lastname: ' + ${user.lastname}"></li>
+                            <li class="info-user__item" th:text="'Email: ' + ${user.email}"></li>
+                            <li class="info-user__item" th:text="'Spend money: ' + ${user.spendMoney} + '$'"></li>
+                            <li class="info-user__item" th:text="'Bonus points: ' + ${user.bonusPoints}"></li>
+                            <li class="info-user__item" th:text="'Level support: ' + ${user.levelSupport}"></li>
+                        </ul>
+                        <a th:href="@{/profile/settings}" class="info-user__button">Settings</a>
+                    </div>
+                </div>
+                <div class="info-user__lists lists">
+                    <ul class="lists__navbar">
+                        <li class="lists__navbar-item _active">Basket</li>
+                        <li class="lists__navbar-item">Liked products</li>
+                        <li class="lists__navbar-item">Viewed products</li>
+                        <li class="lists__navbar-item">Orders</li>
+                    </ul>
+                    <div class="lists__list _active">
+                        <h4 class="list-is-empty" th:if="${user.getBasketOfProducts().isEmpty()}">This list is empty</h4>
+                        <div class="liked-list-item item-product-profile" th:each="product: ${user.basketOfProducts}">
+                            <a th:href="@{/product/{id}(id=${product.id})}" class="item-product-profile__title" th:text="${product.name}"></a>
+                            <h4 class="item-product-profile__price" th:if="${product.discount == 0}" th:text="${product.price} + '$'"></h4>
+                            <h4 class="item-product-profile__price" th:if="${product.discount != 0}"  th:text="${product.price - (product.price * product.discount) / 100} + '$'"></h4>
+                            <form method="post" th:action="@{/profile/{id}/delete_prouct_from_basket(id=${product.id})}">
+                                <button class="item-product-profile__delete-item" type="submit">
+                                    <svg width="100" height="100" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <g clip-path="url(#clip0_180_433)">
+                                            <path d="M50 0C22.4267 0 0 22.4267 0 50C0 77.5733 22.4267 100 50 100C77.5733 100 100 77.5733 100 50C100 22.4267 77.5733 0 50 0ZM50 93.3333C26.1067 93.3333 6.66667 73.8933 6.66667 50C6.66667 26.1067 26.1067 6.66667 50 6.66667C73.8933 6.66667 93.3333 26.1067 93.3333 50C93.3333 73.8933 73.8933 93.3333 50 93.3333Z" fill="black"/>
+                                            <path d="M67.6399 27.6399L49.9999 45.2866L32.3599 27.6399L27.6399 32.3599L45.2866 49.9999L27.6399 67.6399L32.3599 72.3599L49.9999 54.7132L67.6399 72.3599L72.3599 67.6399L54.7132 49.9999L72.3599 32.3599L67.6399 27.6399Z" fill="black"/>
+                                        </g>
+                                        <defs>
+                                            <clipPath id="clip0_180_433">
+                                                <rect width="100" height="100" fill="white"/>
+                                            </clipPath>
+                                        </defs>
+                                    </svg>
+                                </button>
+                            </form>
+                        </div>
+                        <div class="basket-footer">
+                            <a th:href="@{/profile/order}" class="order-button">Create order</a>
+                            <h5 class="order-total-bill" th:text="${totalBill} + '$'"></h5>
+                        </div>
+                    </div>
+                    <div class="lists__list">
+                        <h4 class="list-is-empty" th:if="${user.getListOfLikedProducts().isEmpty()}">This list is empty</h4>
+                        <div class="liked-list-item item-product-profile" th:each="product: ${user.getListOfLikedProducts()}">
+                            <a href="#" class="item-product-profile__title" th:text="${product.name}"></a>
+                            <h4 class="item-product-profile__price" th:text="${product.price} + '$'"></h4>
+                            <form method="post" th:action="@{/profile/{id}/delete_product_from_liked(id=${product.id})}">
+                                <button class="item-product-profile__delete-item" type="submit">
+                                    <svg width="100" height="100" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <g clip-path="url(#clip0_180_433)">
+                                            <path d="M50 0C22.4267 0 0 22.4267 0 50C0 77.5733 22.4267 100 50 100C77.5733 100 100 77.5733 100 50C100 22.4267 77.5733 0 50 0ZM50 93.3333C26.1067 93.3333 6.66667 73.8933 6.66667 50C6.66667 26.1067 26.1067 6.66667 50 6.66667C73.8933 6.66667 93.3333 26.1067 93.3333 50C93.3333 73.8933 73.8933 93.3333 50 93.3333Z" fill="black"/>
+                                            <path d="M67.6399 27.6399L49.9999 45.2866L32.3599 27.6399L27.6399 32.3599L45.2866 49.9999L27.6399 67.6399L32.3599 72.3599L49.9999 54.7132L67.6399 72.3599L72.3599 67.6399L54.7132 49.9999L72.3599 32.3599L67.6399 27.6399Z" fill="black"/>
+                                        </g>
+                                        <defs>
+                                            <clipPath id="clip0_180_433">
+                                                <rect width="100" height="100" fill="white"/>
+                                            </clipPath>
+                                        </defs>
+                                    </svg>
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+
+                    <div class="main__items lists__list view-product">
+                        <div class="main__item item item-in-the-profile" th:each="product: ${user.getViewedProducts()}">
+                            <img class="item__img" th:src="@{/product/images/{id}(id=${product.previewsId})}" alt="Error image">
+                            <div class="header__item">
+                                <h4 class="item__discount" th:if="${product.discount != 0}" th:text="${product.discount} + '%'"></h4>
+                                <h4 class="item__ends" th:if="${product.numberProduct <= 10}">ends</h4>
+                            </div>
+                            <div class="footer__item">
+                                <div class="footer__white">
+                                    <a th:href="@{/product/{id}(id=${product.id})}" class="item__title" th:text="${product.name}"></a>
+                                    <div class="item-footer__row">
+                                        <div class="footer__price">
+                                            <h3 class="new-price" th:text="${product.price - (product.price * product.discount / 100)} + '$'"></h3>
+                                            <h3 class="old-price" th:if="${product.discount != 0}" th:text="${product.price} + '$'"></h3>
+                                        </div>
+                                        <div class="footer__size"><th:block th:each="size: ${product.sizes}" th:text="${size} + ' '"/></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="lists__list">
+                        <div class="liked-list-item item-product-profile">
+                            <a href="#" class="item-product-profile__title">Order name example</a>
+                            <h4 class="item-product-profile__title">Finished</h4>
+                        </div>
+                        <div class="liked-list-item item-product-profile">
+                            <a href="#" class="item-product-profile__title">Order name example</a>
+                            <h4 class="item-product-profile__title">Finished</h4>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <div th:insert="~{/elements/footer :: footer}"></div>
+</div>
+</body>
+<script th:src="@{/script/script.js}"></script>
+</html>
