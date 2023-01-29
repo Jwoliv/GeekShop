@@ -1,4 +1,4 @@
-package com.example.GeekShop.model;
+package com.example.GeekShop.model.product;
 
 import com.example.GeekShop.model.user.User;
 import jakarta.persistence.*;

@@ -1,6 +1,6 @@
 package com.example.GeekShop.model.product_fields;
 
-import com.example.GeekShop.model.Product;
+import com.example.GeekShop.model.product.Product;
 import com.example.GeekShop.model.images.ImageProductField;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;

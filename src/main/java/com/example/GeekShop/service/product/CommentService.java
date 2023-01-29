@@ -1,7 +1,7 @@
-package com.example.GeekShop.service;
+package com.example.GeekShop.service.product;
 
-import com.example.GeekShop.model.Comment;
-import com.example.GeekShop.repository.CommentRepository;
+import com.example.GeekShop.model.product.Comment;
+import com.example.GeekShop.repository.product.CommentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

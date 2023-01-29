@@ -1,6 +1,6 @@
 package com.example.GeekShop.model.images;
 
-import com.example.GeekShop.model.Product;
+import com.example.GeekShop.model.product.Product;
 import jakarta.persistence.Entity;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;

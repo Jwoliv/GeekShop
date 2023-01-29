@@ -1,7 +1,8 @@
 package com.example.GeekShop.model.user;
 
-import com.example.GeekShop.model.Comment;
-import com.example.GeekShop.model.Product;
+import com.example.GeekShop.model.order.Order;
+import com.example.GeekShop.model.product.Comment;
+import com.example.GeekShop.model.product.Product;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Min;
@@ -72,7 +73,9 @@ public class User {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @ToString.Exclude
     private List<Comment> comments = new ArrayList<>();
-
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @ToString.Exclude
+    private List<Order> orders = new ArrayList<>();
     public String getFullName() {
         return firstname + " " + lastname;
     }

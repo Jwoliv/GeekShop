@@ -1,6 +1,6 @@
-package com.example.GeekShop.repository;
+package com.example.GeekShop.repository.product;
 
-import com.example.GeekShop.model.Comment;
+import com.example.GeekShop.model.product.Comment;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

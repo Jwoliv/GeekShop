@@ -57,8 +57,9 @@
                 </div>
                 <div class="product-right-side-buttons">
                   <form method="post" th:action="@{/product/{id}/add_to_basket(id=${product.id})}">
-                    <button th:if="${productInTheBasket == false}" class="button-buy" type="submit">Buy</button>
-                    <button th:if="${productInTheBasket == true}" class="button-buy" type="submit">Refuse</button>
+                    <button th:if="${!productInTheBasket && !isNotAvailiable}" class="button-buy" type="submit">Buy</button>
+                    <button th:if="${productInTheBasket}" class="button-buy" type="submit">Refuse</button>
+                    <div th:if="${isNotAvailiable && !productInTheBasket}" class="button-buy">Not available</div>
                   </form>
                   <form th:if="${isLikedProduct == true}"
                         th:action="@{/product/{id}/liked_product(id=${product.id})}"

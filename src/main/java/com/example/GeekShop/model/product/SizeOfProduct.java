@@ -1,4 +1,4 @@
-package com.example.GeekShop.model;
+package com.example.GeekShop.model.product;
 
 public enum SizeOfProduct {
     L,

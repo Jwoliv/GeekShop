@@ -1,6 +1,6 @@
 package com.example.GeekShop.service.product;
 
-import com.example.GeekShop.model.Product;
+import com.example.GeekShop.model.product.Product;
 import com.example.GeekShop.model.images.ImageProduct;
 import com.example.GeekShop.repository.product.ImageProductRepository;
 import lombok.Data;

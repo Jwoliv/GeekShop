@@ -1,6 +1,7 @@
-package com.example.GeekShop.model;
+package com.example.GeekShop.model.product;
 
 import com.example.GeekShop.model.images.ImageProduct;
+import com.example.GeekShop.model.order.Order;
 import com.example.GeekShop.model.product_fields.Category;
 import com.example.GeekShop.model.product_fields.Season;
 import com.example.GeekShop.model.product_fields.Theme;
@@ -58,13 +59,24 @@ public class Product {
     private List<ImageProduct> images = new ArrayList<>();
     @ManyToMany(mappedBy = "basketOfProducts", cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
     @ToString.Exclude
-    private List<User> usersWhoOrdered = new ArrayList<>();
+    private List<User> usersWhoAddedToBasket = new ArrayList<>();
     @ManyToMany(mappedBy = "listOfLikedProducts", cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
     @ToString.Exclude
     private List<User> usersWhoLiked = new ArrayList<>();
     @ManyToMany(mappedBy = "viewedProducts", cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
     @ToString.Exclude
     private List<User> usersWhoViewed = new ArrayList<>();
+    @ManyToMany(mappedBy = "orders", cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+    @ToString.Exclude
+    private List<User> usersWhoOrdered = new ArrayList<>();
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinTable(
+            name = "product_order",
+            joinColumns = @JoinColumn(name = "product_id"),
+            inverseJoinColumns = @JoinColumn(name ="order_id")
+    )
+    private List<Order> orders = new ArrayList<>();
+
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @ToString.Exclude
     private List<Comment> comments = new ArrayList<>();

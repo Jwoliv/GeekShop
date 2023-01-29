@@ -1,6 +1,6 @@
 package com.example.GeekShop.repository.product;
 
-import com.example.GeekShop.model.Product;
+import com.example.GeekShop.model.product.Product;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;

@@ -1,8 +1,8 @@
 package com.example.GeekShop.controller.product;
 
-import com.example.GeekShop.model.Comment;
-import com.example.GeekShop.model.Product;
-import com.example.GeekShop.model.SizeOfProduct;
+import com.example.GeekShop.model.product.Comment;
+import com.example.GeekShop.model.product.Product;
+import com.example.GeekShop.model.product.SizeOfProduct;
 import com.example.GeekShop.model.images.ImageProduct;
 import com.example.GeekShop.model.user.User;
 import com.example.GeekShop.service.product.ImageProductService;
@@ -65,6 +65,7 @@ public class ProductsController {
         model.addAttribute("comment", new Comment());
         model.addAttribute("product", product);
         model.addAttribute("recommended_products", productService.findRecommendedProduct(principal));
+        model.addAttribute("isNotAvailiable", product.getNumberProduct() == 0);
         User user = userService.findByEmail(principal.getName());
         if (user != null && !user.getViewedProducts().contains(product)) {
             if (user.getViewedProducts().size() == 40) {
@@ -194,9 +195,11 @@ public class ProductsController {
         if (user != null || product != null) {
             if (Objects.requireNonNull(user).getBasketOfProducts().contains(product)) {
                 user.getBasketOfProducts().remove(product);
+                product.setNumberProduct(product.getNumberProduct() + 1);
             }
             else {
                 user.getBasketOfProducts().add(product);
+                product.setNumberProduct(product.getNumberProduct() - 1);
             }
             userService.saveAfterChange(user);
         }
@@ -263,16 +266,23 @@ public class ProductsController {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        try { element.addImages(toImageEntity(file2), element); }
-        catch (IOException e) { throw new RuntimeException(e); }
-        try { element.addImages(toImageEntity(file3), element); }
-        catch (IOException e) { throw new RuntimeException(e); }
-        try { element.addImages(toImageEntity(file4), element); }
-        catch (IOException e) { throw new RuntimeException(e); }
-        try { element.addImages(toImageEntity(file5), element); }
-        catch (IOException e) { throw new RuntimeException(e); }
+        addImageForElement(element, file1);
+        addImageForElement(element, file2);
+        addImageForElement(element, file3);
+        addImageForElement(element, file4);
+        addImageForElement(element, file5);
         productService.save(element);
         element.setPreviewsId(element.getImages().get(0).getId());
         productService.save(element);
     }
+
+    private void addImageForElement(Product element, MultipartFile file) {
+        try {
+            element.addImages(toImageEntity(file), element);
+        }
+        catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
 }
