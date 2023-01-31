@@ -57,19 +57,22 @@
                 </div>
                 <div class="product-right-side-buttons">
                   <form method="post" th:action="@{/product/{id}/add_to_basket(id=${product.id})}">
-                    <button th:if="${!productInTheBasket && !isNotAvailiable}" class="button-buy" type="submit">Buy</button>
+                    <button th:if="${!isNotAvailiable}" class="button-buy" type="submit">Buy</button>
 
-                    <select th:if="${!productInTheBasket && !isNotAvailiable && product.numberProduct > 5}" name="numberProduct">
+                    <select th:if="${!isNotAvailiable && product.numberProduct > 5}" name="numberProduct">
                       <option th:each="number: ${#numbers.sequence(1, 5)}" th:value="${number}" th:text="${number}"></option>
                     </select>
 
-                    <select th:if="${!productInTheBasket && !isNotAvailiable && product.numberProduct <= 5}" name="numberProduct">
+                    <select th:if="${!isNotAvailiable && product.numberProduct <= 5}" name="numberProduct">
                       <option th:each="number: ${#numbers.sequence(1, product.numberProduct)}" th:value="${number}" th:text="${number}"></option>
                     </select>
 
-                    <button th:if="${productInTheBasket}" class="button-buy" type="submit">Refuse</button>
+                    <select th:if="${!isNotAvailiable}" name="sizeOfProduct">
+                      <option th:each="size: ${product.sizes}" th:value="${size}" th:text="${size}"></option>
+                    </select>
 
-                    <div th:if="${isNotAvailiable && !productInTheBasket}" class="button-buy">Not available</div>
+
+                    <div th:if="${isNotAvailiable}" class="button-buy">Not available</div>
                   </form>
                   <form th:if="${isLikedProduct == true}"
                         th:action="@{/product/{id}/liked_product(id=${product.id})}"

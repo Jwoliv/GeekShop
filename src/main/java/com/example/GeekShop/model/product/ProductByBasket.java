@@ -30,4 +30,6 @@ public class ProductByBasket {
     )
     @ToString.Exclude
     private List<Order> orders = new ArrayList<>();
+    @Enumerated(EnumType.STRING)
+    private SizeOfProduct size;
 }

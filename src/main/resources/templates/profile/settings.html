@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Settings</title>
+</head>
+  <body>
+    <form th:method="patch" th:action="@{/profile}" th:object="${user}">
+        <input name="firstname" th:value="${user.firstname}" type="text">
+        <input name="lastname" th:value="${user.lastname}" type="text">
+        <button type="submit">Set updates</button>
+    </form>
+    <form th:method="patch" th:action="@{/profile/settings/change_password}">
+        <input name="newPassword" type="password">
+        <input name="newPasswordRepeat" type="password">
+        <button type="submit">Change password</button>
+    </form>
+  </body>
+</html>

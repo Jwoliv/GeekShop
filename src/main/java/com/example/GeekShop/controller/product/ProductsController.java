@@ -35,16 +35,13 @@ public class ProductsController {
     private final SeasonService seasonService;
     private final CategoryService categoryService;
     private final UserService userService;
-    private final ProductByBasketService productByBasketService;
-
     public ProductsController(
             ProductService productService,
             ImageProductService imageProductService,
             ThemeService themeService,
             SeasonService seasonService,
             CategoryService categoryService,
-            UserService userService,
-            ProductByBasketService productByBasketService
+            UserService userService
     ) {
         this.productService = productService;
         this.imageProductService = imageProductService;
@@ -52,7 +49,6 @@ public class ProductsController {
         this.seasonService = seasonService;
         this.categoryService = categoryService;
         this.userService = userService;
-        this.productByBasketService = productByBasketService;
     }
     @GetMapping
     public String pageAllProducts(@NonNull Model model, Principal principal) {
@@ -66,7 +62,6 @@ public class ProductsController {
         Product product = productService.findById(id);
         model.addAttribute("principal", principal);
         model.addAttribute("isLikedProduct", userService.findByEmail(principal.getName()).getListOfLikedProducts().contains(product));
-        model.addAttribute("productInTheBasket", userService.findByEmail(principal.getName()).getBasketOfProducts().contains(product));
         model.addAttribute("comment", new Comment());
         model.addAttribute("product", product);
         model.addAttribute("recommended_products", productService.findRecommendedProduct(principal));
@@ -194,7 +189,8 @@ public class ProductsController {
     }
     @PostMapping("/{id}/add_to_basket")
     public String addProductToBasket(
-            @RequestParam("numberProduct") Integer numberProduct,
+            @RequestParam Integer numberProduct,
+            @RequestParam SizeOfProduct sizeOfProduct,
             @PathVariable Long id,
             Principal principal
     ) {
@@ -205,12 +201,11 @@ public class ProductsController {
             productByBasket.setProduct(product);
             productByBasket.setNumberProduct(numberProduct);
             Objects.requireNonNull(user).getBasketOfProducts().add(productByBasket);
+            product.setNumberProduct(product.getNumberProduct() - numberProduct);
+            productByBasket.setSize(sizeOfProduct);
             userService.saveAfterChange(user);
         }
         return "redirect:/product/{id}";
-    }
-    public void reduceQuantityAfterAddingToBasket(Long id, Integer numberOfProduct) {
-
     }
 
     @PostMapping("/{id}/liked_product")
