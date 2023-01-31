@@ -1,6 +1,6 @@
 package com.example.GeekShop.model.order;
 
-import com.example.GeekShop.model.product.Product;
+import com.example.GeekShop.model.product.ProductByBasket;
 import com.example.GeekShop.model.user.User;
 import jakarta.persistence.*;
 import lombok.*;
@@ -23,12 +23,12 @@ public class Order {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @ManyToOne
-    @JoinColumn
     private User user;
     private Date dateOfCreate;
     @Enumerated(EnumType.STRING)
     private StatusOfOrder statusOfOrder;
-    @ManyToMany(mappedBy = "orders", cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+    private Integer priceOfOrder;
+    @ManyToMany(mappedBy = "orders", cascade = CascadeType.ALL)
     @ToString.Exclude
-    private List<Product> productsOfOrders = new ArrayList<>();
+    private List<ProductByBasket> productsOfOrders = new ArrayList<>();
 }

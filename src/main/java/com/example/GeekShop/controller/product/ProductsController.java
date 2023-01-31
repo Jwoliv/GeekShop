@@ -2,10 +2,12 @@ package com.example.GeekShop.controller.product;
 
 import com.example.GeekShop.model.product.Comment;
 import com.example.GeekShop.model.product.Product;
+import com.example.GeekShop.model.product.ProductByBasket;
 import com.example.GeekShop.model.product.SizeOfProduct;
 import com.example.GeekShop.model.images.ImageProduct;
 import com.example.GeekShop.model.user.User;
 import com.example.GeekShop.service.product.ImageProductService;
+import com.example.GeekShop.service.product.ProductByBasketService;
 import com.example.GeekShop.service.product.ProductService;
 import com.example.GeekShop.service.product_fields.CategoryService;
 import com.example.GeekShop.service.product_fields.SeasonService;
@@ -33,6 +35,7 @@ public class ProductsController {
     private final SeasonService seasonService;
     private final CategoryService categoryService;
     private final UserService userService;
+    private final ProductByBasketService productByBasketService;
 
     public ProductsController(
             ProductService productService,
@@ -40,7 +43,8 @@ public class ProductsController {
             ThemeService themeService,
             SeasonService seasonService,
             CategoryService categoryService,
-            UserService userService
+            UserService userService,
+            ProductByBasketService productByBasketService
     ) {
         this.productService = productService;
         this.imageProductService = imageProductService;
@@ -48,6 +52,7 @@ public class ProductsController {
         this.seasonService = seasonService;
         this.categoryService = categoryService;
         this.userService = userService;
+        this.productByBasketService = productByBasketService;
     }
     @GetMapping
     public String pageAllProducts(@NonNull Model model, Principal principal) {
@@ -87,7 +92,6 @@ public class ProductsController {
         for (User user: userService.findAll()) {
             user.getViewedProducts().remove(product);
             user.getListOfLikedProducts().remove(product);
-            user.getBasketOfProducts().remove(product);
             userService.saveAfterChange(user);
         }
     }
@@ -189,22 +193,26 @@ public class ProductsController {
         return "redirect:/product/{id}";
     }
     @PostMapping("/{id}/add_to_basket")
-    public String addProductToBasket(@PathVariable Long id, Principal principal) {
+    public String addProductToBasket(
+            @RequestParam("numberProduct") Integer numberProduct,
+            @PathVariable Long id,
+            Principal principal
+    ) {
         Product product = productService.findById(id);
         User user = userService.findByEmail(principal.getName());
         if (user != null || product != null) {
-            if (Objects.requireNonNull(user).getBasketOfProducts().contains(product)) {
-                user.getBasketOfProducts().remove(product);
-                product.setNumberProduct(product.getNumberProduct() + 1);
-            }
-            else {
-                user.getBasketOfProducts().add(product);
-                product.setNumberProduct(product.getNumberProduct() - 1);
-            }
+            ProductByBasket productByBasket = new ProductByBasket();
+            productByBasket.setProduct(product);
+            productByBasket.setNumberProduct(numberProduct);
+            Objects.requireNonNull(user).getBasketOfProducts().add(productByBasket);
             userService.saveAfterChange(user);
         }
         return "redirect:/product/{id}";
     }
+    public void reduceQuantityAfterAddingToBasket(Long id, Integer numberOfProduct) {
+
+    }
+
     @PostMapping("/{id}/liked_product")
     public String addProductToLikedList(@PathVariable Long id, Principal principal) {
         Product product = productService.findById(id);

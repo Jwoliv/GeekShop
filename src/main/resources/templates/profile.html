@@ -36,9 +36,9 @@
                     <div class="lists__list _active">
                         <h4 class="list-is-empty" th:if="${user.getBasketOfProducts().isEmpty()}">This list is empty</h4>
                         <div class="liked-list-item item-product-profile" th:each="product: ${user.basketOfProducts}">
-                            <a th:href="@{/product/{id}(id=${product.id})}" class="item-product-profile__title" th:text="${product.name}"></a>
-                            <h4 class="item-product-profile__price" th:if="${product.discount == 0}" th:text="${product.price} + '$'"></h4>
-                            <h4 class="item-product-profile__price" th:if="${product.discount != 0}"  th:text="${product.price - (product.price * product.discount) / 100} + '$'"></h4>
+                            <a th:href="@{/product/{id}(id=${product.id})}" class="item-product-profile__title" th:text="${product.product.name} + ' x ' + ${product.numberProduct}"></a>
+                            <h4 class="item-product-profile__price" th:if="${product.product.discount == 0}" th:text="${product.product.price * product.numberProduct} + '$'"></h4>
+                            <h4 class="item-product-profile__price" th:if="${product.product.discount != 0}"  th:text="${(product.product.price - (product.product.price * product.product.discount) / 100) * product.numberProduct} + '$'"></h4>
                             <form method="post" th:action="@{/profile/{id}/delete_product_from_basket(id=${product.id})}">
                                 <button class="item-product-profile__delete-item" type="submit">
                                     <svg width="100" height="100" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -56,7 +56,7 @@
                             </form>
                         </div>
                         <div th:if="${!user.getBasketOfProducts().isEmpty()}" class="basket-footer">
-                            <a th:href="@{/profile/order}" class="order-button">Create order</a>
+                            <a th:href="@{/order/new}" class="order-button">Create order</a>
                             <h5 class="order-total-bill" th:text="${totalBill} + '$'"></h5>
                         </div>
                     </div>
@@ -64,7 +64,8 @@
                         <h4 class="list-is-empty" th:if="${user.getListOfLikedProducts().isEmpty()}">This list is empty</h4>
                         <div class="liked-list-item item-product-profile" th:each="product: ${user.getListOfLikedProducts()}">
                             <a th:href="@{/product/{id}(id=${product.id})}" class="item-product-profile__title" th:text="${product.name}"></a>
-                            <h4 class="item-product-profile__price" th:text="${product.price} + '$'"></h4>
+                            <h4 class="item-product-profile__price" th:if="${product.discount == 0}" th:text="${product.price} + '$'"></h4>
+                            <h4 class="item-product-profile__price" th:if="${product.discount != 0}"  th:text="${product.price - (product.price * product.discount) / 100} + '$'"></h4>
                             <form method="post" th:action="@{/profile/{id}/delete_product_from_liked(id=${product.id})}">
                                 <button class="item-product-profile__delete-item" type="submit">
                                     <svg width="100" height="100" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -109,9 +110,9 @@
                         <h4 class="list-is-empty" th:if="${user.getOrders().isEmpty()}">This list is empty</h4>
                         <div class="liked-list-item item-product-profile" th:each="order: ${user.orders}">
                             <a th:href="@{/order/{id}(id=${order.id})}" class="item-product-profile__title">
-                              <ul th:each="product: ${order.getProductsOfOrders()}">
-                                  <li th:text="${product.name}"></li>
-                              </ul>
+                                <ul>
+                                    <li th:each="product: ${order.productsOfOrders}" th:text="${product.product.name}"></li>
+                                </ul>
                             </a>
                             <h4 class="item-product-profile__title" th:text="${order.statusOfOrder}"></h4>
                         </div>

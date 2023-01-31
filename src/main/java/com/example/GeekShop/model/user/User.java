@@ -3,6 +3,7 @@ package com.example.GeekShop.model.user;
 import com.example.GeekShop.model.order.Order;
 import com.example.GeekShop.model.product.Comment;
 import com.example.GeekShop.model.product.Product;
+import com.example.GeekShop.model.product.ProductByBasket;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Min;
@@ -53,7 +54,7 @@ public class User {
             inverseJoinColumns = @JoinColumn(name = "basket_product_id")
     )
     @ToString.Exclude
-    private List<Product> basketOfProducts = new ArrayList<>();
+    private List<ProductByBasket> basketOfProducts = new ArrayList<>();
     @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
     @JoinTable(
             name = "user_liked_product",
@@ -87,12 +88,12 @@ public class User {
     }
     public int getTotalBillOfBasket() {
         int totalBill = 0;
-        for (Product product: this.basketOfProducts) {
-            if (product.getDiscount() != 0) {
-                totalBill += product.getPrice()  - product.getPrice() * product.getDiscount() / 100;
+        for (ProductByBasket product: this.basketOfProducts) {
+            if (product.getProduct().getDiscount() != 0) {
+                totalBill += product.getNumberProduct() * (product.getProduct().getPrice()  - product.getProduct().getPrice() * product.getProduct().getDiscount() / 100);
                 continue;
             }
-            totalBill += product.getPrice();
+            totalBill +=  product.getNumberProduct() *  product.getProduct().getPrice();
         }
         return totalBill;
     }

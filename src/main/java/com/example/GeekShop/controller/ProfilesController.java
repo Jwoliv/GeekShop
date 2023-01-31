@@ -1,5 +1,6 @@
 package com.example.GeekShop.controller;
 
+import com.example.GeekShop.service.product.ProductByBasketService;
 import com.example.GeekShop.service.product.ProductService;
 import com.example.GeekShop.service.user.UserService;
 import lombok.NonNull;
@@ -14,13 +15,15 @@ import org.springframework.web.bind.annotation.PostMapping;
 import java.security.Principal;
 
 @Controller
-public class UsersController {
+public class ProfilesController {
     private final UserService userService;
     private final ProductService productService;
+    private final ProductByBasketService productByBasketService;
     @Autowired
-    public UsersController(UserService userService, ProductService productService) {
+    public ProfilesController(UserService userService, ProductService productService, ProductByBasketService productByBasketService) {
         this.userService = userService;
         this.productService = productService;
+        this.productByBasketService = productByBasketService;
     }
 
     @GetMapping("/profile")
@@ -37,7 +40,8 @@ public class UsersController {
             Principal principal
     ) {
         User user = userService.findByEmail(principal.getName());
-        user.getBasketOfProducts().remove(productService.findById(id));
+        user.getBasketOfProducts().remove(productByBasketService.findById(id));
+        productByBasketService.deleteById(id);
         userService.saveAfterChange(user);
         return "redirect:/profile";
     }
