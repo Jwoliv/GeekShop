@@ -1,5 +1,6 @@
 package com.example.GeekShop.model.user;
 
+import com.example.GeekShop.model.message.Message;
 import com.example.GeekShop.model.order.Order;
 import com.example.GeekShop.model.product.Comment;
 import com.example.GeekShop.model.product.Product;
@@ -77,6 +78,11 @@ public class User {
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @ToString.Exclude
     private List<Order> orders = new ArrayList<>();
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @ToString.Exclude
+    private List<Message> messages = new ArrayList<>();
+
+
     public String getFullName() {
         return firstname + " " + lastname;
     }

@@ -42,10 +42,13 @@ public class Product {
     private Float rating;
     private Long previewsId;
     @ManyToOne
+    @JoinColumn(name = "theme_id")
     private Theme theme;
     @ManyToOne
+    @JoinColumn(name = "category_id")
     private Category category;
     @ManyToOne
+    @JoinColumn(name = "season_id")
     private Season season;
     @Enumerated(EnumType.STRING)
     private Color color;

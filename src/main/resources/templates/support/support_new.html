@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">>
+<head>
+    <meta charset="UTF-8">
+    <title>Support</title>
+</head>
+    <body>
+        <form method="post" th:action="@{/message}" th:object="${message}">
+            <input th:field="*{title}" type="text">
+            <textarea th:field="*{text}" style="resize: none; height: 200px; width: 300px;"></textarea>
+            <select th:field="*{typeOfMessage}">
+                <option th:each="value: ${T(com.example.GeekShop.model.message.TypeOfMessage).values()}"
+                        th:value="${value}" th:text="${value}"></option>
+            </select>
+            <button type="submit">Send message</button>
+        </form>
+    </body>
+</html>

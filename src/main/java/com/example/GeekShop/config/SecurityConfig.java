@@ -49,10 +49,12 @@ public class SecurityConfig {
                                  "/product/new", "/product/*/edit",
                                  "/theme/new", "/theme/*/edit",
                                  "/season/new", "/season/*/edit",
-                                 "/category/new", "/category/*/edit"
+                                 "/category/new", "/category/*/edit",
+                                 "/message/new"
                         ).hasRole(Role.ADMIN.name())
                         .requestMatchers(
                                 "/product/**",
+                                "/message/**",
                                 "/theme/**",
                                 "/season/**",
                                 "/category/**",

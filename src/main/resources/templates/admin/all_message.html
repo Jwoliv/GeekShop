@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>All messages for admin</title>
+</head>
+  <body>
+    <ul>
+        <li th:each="message: ${messages}">
+            <h3 th:text="${message.title}"></h3>
+            <h4 th:text="${message.typeOfMessage}"></h4>
+            <p th:text="${message.text}"></p>
+        </li>
+    </ul>
+  </body>
+</html>

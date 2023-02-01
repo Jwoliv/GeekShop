@@ -1,5 +1,6 @@
 package com.example.GeekShop.controller;
 
+import com.example.GeekShop.service.MessageService;
 import com.example.GeekShop.service.product.ProductService;
 import com.example.GeekShop.service.product_fields.CategoryService;
 import com.example.GeekShop.service.product_fields.SeasonService;
@@ -21,19 +22,22 @@ public class AdminController {
     private final SeasonService seasonService;
     private final ThemeService themeService;
     private final UserService userService;
+    private final MessageService messageService;
     @Autowired
     public AdminController(
             ProductService productService,
             CategoryService categoryService,
             SeasonService seasonService,
             ThemeService themeService,
-            UserService userService
+            UserService userService,
+            MessageService messageService
     ) {
         this.productService = productService;
         this.categoryService = categoryService;
         this.seasonService = seasonService;
         this.themeService = themeService;
         this.userService = userService;
+        this.messageService = messageService;
     }
 
     @GetMapping
@@ -77,5 +81,10 @@ public class AdminController {
     public String pageOfSelectedUser(@PathVariable Long id, @NotNull Model model) {
         model.addAttribute("user", userService.findById(id));
         return "/admin/selected_user";
+    }
+    @GetMapping("/message")
+    public String pageOfMessages(@NotNull Model model) {
+        model.addAttribute("messages", messageService.findAll());
+        return "/admin/all_message";
     }
 }

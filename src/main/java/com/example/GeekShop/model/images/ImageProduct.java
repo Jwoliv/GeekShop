@@ -18,6 +18,5 @@ import org.springframework.stereotype.Component;
 @AllArgsConstructor
 public class ImageProduct extends AbstractImage {
     @ManyToOne
-    @JoinColumn
     protected Product element;
 }
