@@ -6,10 +6,14 @@
 </head>
   <body>
     <ul>
-        <li th:each="message: ${messages}">
+        <li th:each="message: ${messages}" th:if="${message.adminAnswer == null}">
             <h3 th:text="${message.title}"></h3>
-            <h4 th:text="${message.typeOfMessage}"></h4>
+            <a th:href="@{/admin/user{id}(id=${message.user.id})}" th:text="'User: ' + ${message.user.getFullName()}"></a>
             <p th:text="${message.text}"></p>
+            <form th:action="@{/admin/message/{id}(id=${message.id})}" th:method="patch">
+                <textarea name="adminAnswer"></textarea>
+                <button type="submit">Add an answer</button>
+            </form>
         </li>
     </ul>
   </body>

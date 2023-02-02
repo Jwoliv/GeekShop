@@ -1,13 +1,12 @@
 package com.example.GeekShop.controller.product;
 
+import com.example.GeekShop.model.images.ImageProduct;
 import com.example.GeekShop.model.product.Comment;
 import com.example.GeekShop.model.product.Product;
 import com.example.GeekShop.model.product.ProductByBasket;
 import com.example.GeekShop.model.product.SizeOfProduct;
-import com.example.GeekShop.model.images.ImageProduct;
 import com.example.GeekShop.model.user.User;
 import com.example.GeekShop.service.product.ImageProductService;
-import com.example.GeekShop.service.product.ProductByBasketService;
 import com.example.GeekShop.service.product.ProductService;
 import com.example.GeekShop.service.product_fields.CategoryService;
 import com.example.GeekShop.service.product_fields.SeasonService;
@@ -197,13 +196,15 @@ public class ProductsController {
         Product product = productService.findById(id);
         User user = userService.findByEmail(principal.getName());
         if (user != null || product != null) {
-            ProductByBasket productByBasket = new ProductByBasket();
-            productByBasket.setProduct(product);
-            productByBasket.setNumberProduct(numberProduct);
-            Objects.requireNonNull(user).getBasketOfProducts().add(productByBasket);
-            product.setNumberProduct(product.getNumberProduct() - numberProduct);
-            productByBasket.setSize(sizeOfProduct);
-            userService.saveAfterChange(user);
+            ProductByBasket productByBasket = Objects.requireNonNull(user).getProductByBasketIfItExist(product, sizeOfProduct);
+            if (productByBasket != null) {
+                productByBasket.setNumberProduct(productByBasket.getNumberProduct() + numberProduct);
+                userService.saveAfterChange(user);
+            }
+            else {
+                setFieldsForProductByBasket(product, numberProduct, user, sizeOfProduct);
+                userService.saveAfterChange(user);
+            }
         }
         return "redirect:/product/{id}";
     }
@@ -244,7 +245,6 @@ public class ProductsController {
         productService.save(product);
         return "redirect:/product/{id}";
     }
-
     private ImageProduct toImageEntity(MultipartFile file) throws IOException {
         ImageProduct image = new ImageProduct();
         image.setName(file.getName());
@@ -278,7 +278,6 @@ public class ProductsController {
         element.setPreviewsId(element.getImages().get(0).getId());
         productService.save(element);
     }
-
     private void addImageForElement(Product element, MultipartFile file) {
         try {
             element.addImages(toImageEntity(file), element);
@@ -287,5 +286,12 @@ public class ProductsController {
             throw new RuntimeException(e);
         }
     }
-
+    private void setFieldsForProductByBasket(Product product, Integer numberProduct, User user, SizeOfProduct sizeOfProduct) {
+        ProductByBasket newProductByBasket = new ProductByBasket();
+        newProductByBasket.setProduct(product);
+        newProductByBasket.setNumberProduct(numberProduct);
+        Objects.requireNonNull(user).getBasketOfProducts().add(newProductByBasket);
+        product.setNumberProduct(product.getNumberProduct() - numberProduct);
+        newProductByBasket.setSize(sizeOfProduct);
+    }
 }

@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Orders</title>
+</head>
+    <body>
+        <ul>
+            <li th:each="order: ${orders}">
+                <a th:href="@{/admin/user/{id}(id=${order.user.id})}" th:text="${order.user.fullName}"></a>
+                <h3 th:text="${order.dateOfCreate}"></h3>
+                <ul>
+                    <li th:each="product: ${order.productsOfOrders}">
+                        <a th:href="@{/product/{id}(id=${product.product.id})}" th:text="${product.product.name}"></a>
+                        <h5 th:text="'Count: ' + ${product.numberProduct}"></h5>
+                        <h5 th:text="'Size:' + ${product.size}"></h5>
+                    </li>
+                    <h5 th:text="${order.statusOfOrder}"></h5>
+                    <h4 th:text="'Sum: ' + ${order.priceOfOrder} + '$'"></h4>
+                </ul>
+                <form th:if="${order.statusOfOrder != T(com.example.GeekShop.model.order.StatusOfOrder).Completed}"
+                      th:method="patch"
+                      th:action="@{/admin/order/{id}/change_status(id=${order.id})}">
+                    <select name="status">
+                        <option th:each="value: ${T(com.example.GeekShop.model.order.StatusOfOrder).values()}"
+                            th:text="${value.name()}"
+                            th:value="${value.name()}">
+                        </option>
+                    </select>
+                    <button type="submit">Change the status</button>
+                </form>
+                <a th:href="@{/admin/order/{id}(id=${order.id})}">Read more</a>
+            </li>
+        </ul>
+    </body>
+</html>

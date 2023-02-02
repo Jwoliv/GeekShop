@@ -5,6 +5,7 @@ import com.example.GeekShop.model.order.Order;
 import com.example.GeekShop.model.product.Comment;
 import com.example.GeekShop.model.product.Product;
 import com.example.GeekShop.model.product.ProductByBasket;
+import com.example.GeekShop.model.product.SizeOfProduct;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Min;
@@ -102,5 +103,13 @@ public class User {
             totalBill +=  product.getNumberProduct() *  product.getProduct().getPrice();
         }
         return totalBill;
+    }
+    public ProductByBasket getProductByBasketIfItExist(Product product, SizeOfProduct sizeOfProduct) {
+        for (ProductByBasket productByUser: getBasketOfProducts()) {
+            if (productByUser.getProduct().equals(product) && productByUser.getSize() == sizeOfProduct) {
+                return productByUser;
+            }
+        }
+        return null;
     }
 }
