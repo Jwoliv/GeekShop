@@ -1,10 +1,96 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title th:text="${user.getFullName()}"></title>
+    <link rel="stylesheet" th:href="@{/style/css/style.css}">
 </head>
-    <body>
+<body>
+<div class="wrapper profile-page">
+    <div th:insert="~{/elements/header :: header_only_navbar}"></div>
+    <main class="main">
+        <div class="main__container container">
+            <div class="main__content content">
+                <div class="info-user">
+                    <div class="info-user__block">
+                        <ul class="info-user__list">
+                            <li class="info-user__item" th:text="'Firstname: ' + ${user.firstname}"></li>
+                            <li class="info-user__item" th:text="'Lastname: ' + ${user.lastname}"></li>
+                            <li class="info-user__item" th:text="'Email: ' + ${user.email}"></li>
+                            <li class="info-user__item" th:text="'Spend money: ' + ${user.spendMoney} + '$'"></li>
+                            <li class="info-user__item" th:text="'Bonus points: ' + ${user.bonusPoints}"></li>
+                            <li class="info-user__item" th:text="'Level support: ' + ${user.levelSupport}"></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="info-user__lists lists">
+                    <ul class="lists__navbar">
+                        <li class="lists__navbar-item _active">Basket</li>
+                        <li class="lists__navbar-item">Liked products</li>
+                        <li class="lists__navbar-item">Viewed products</li>
+                        <li class="lists__navbar-item">Orders</li>
+                    </ul>
+                    <div class="lists__list _active">
+                        <h4 class="list-is-empty" th:if="${user.getBasketOfProducts().isEmpty()}">This list is empty</h4>
+                        <div class="liked-list-item item-product-profile" th:each="product: ${user.basketOfProducts}">
+                            <a th:href="@{/product/{id}(id=${product.id})}" class="item-product-profile__title" th:text="${product.product.name} + ' (' + ${product.numberProduct}  + ', ' + ${product.size} + ')'"></a>
+                            <h4 class="item-product-profile__price" th:if="${product.product.discount == 0}" th:text="${product.product.price * product.numberProduct} + '$'"></h4>
+                            <h4 class="item-product-profile__price" th:if="${product.product.discount != 0}"  th:text="${(product.product.price - (product.product.price * product.product.discount) / 100) * product.numberProduct} + '$'"></h4>
+                        </div>
+                        <div th:if="${!user.getBasketOfProducts().isEmpty()}" class="basket-footer">
+                            <h5 class="order-total-bill" th:text="${totalBill} + '$'"></h5>
+                        </div>
+                    </div>
+                    <div class="lists__list">
+                        <h4 class="list-is-empty" th:if="${user.getListOfLikedProducts().isEmpty()}">This list is empty</h4>
+                        <div class="liked-list-item item-product-profile" th:each="product: ${user.getListOfLikedProducts()}">
+                            <a th:href="@{/product/{id}(id=${product.id})}" class="item-product-profile__title" th:text="${product.name}"></a>
+                            <h4 class="item-product-profile__price" th:if="${product.discount == 0}" th:text="${product.price} + '$'"></h4>
+                            <h4 class="item-product-profile__price" th:if="${product.discount != 0}"  th:text="${product.price - (product.price * product.discount) / 100} + '$'"></h4>
+                        </div>
+                    </div>
 
-    </body>
+                    <div class="main__items lists__list view-product">
+                        <h4 class="list-is-empty" th:if="${user.getViewedProducts().isEmpty()}">This list is empty</h4>
+                        <div class="main__item item item-in-the-profile" th:each="product: ${user.getViewedProducts()}">
+                            <img class="item__img" th:src="@{/product/images/{id}(id=${product.previewsId})}" alt="Error image">
+                            <div class="header__item">
+                                <h4 class="item__discount" th:if="${product.discount != 0}" th:text="${product.discount} + '%'"></h4>
+                                <h4 class="item__ends" th:if="${product.numberProduct <= 10}">ends</h4>
+                            </div>
+                            <div class="footer__item">
+                                <div class="footer__white">
+                                    <a th:href="@{/product/{id}(id=${product.id})}" class="item__title" th:text="${product.name}"></a>
+                                    <div class="item-footer__row">
+                                        <div class="footer__price">
+                                            <h3 class="new-price" th:text="${product.price - (product.price * product.discount / 100)} + '$'"></h3>
+                                            <h3 class="old-price" th:if="${product.discount != 0}" th:text="${product.price} + '$'"></h3>
+                                        </div>
+                                        <div class="footer__size"><th:block th:each="size: ${product.sizes}" th:text="${size} + ' '"/></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="lists__list">
+                        <h4 class="list-is-empty" th:if="${user.getOrders().isEmpty()}">This list is empty</h4>
+                        <div class="liked-list-item item-product-profile" th:each="order: ${user.orders}">
+                            <a th:href="@{/order/{id}(id=${order.id})}" class="item-product-profile__title">
+                                <ul>
+                                    <li th:each="product: ${order.productsOfOrders}" th:text="${product.product.name}"></li>
+                                </ul>
+                            </a>
+                            <h4 class="item-product-profile__title" th:text="${order.statusOfOrder}"></h4>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+    <div th:insert="~{/elements/footer :: footer}"></div>
+</div>
+</body>
+<script th:src="@{/script/script.js}"></script>
 </html>

@@ -102,7 +102,7 @@ public class User {
             }
             totalBill +=  product.getNumberProduct() *  product.getProduct().getPrice();
         }
-        return totalBill;
+        return totalBill - this.bonusPoints;
     }
     public ProductByBasket getProductByBasketIfItExist(Product product, SizeOfProduct sizeOfProduct) {
         for (ProductByBasket productByUser: getBasketOfProducts()) {

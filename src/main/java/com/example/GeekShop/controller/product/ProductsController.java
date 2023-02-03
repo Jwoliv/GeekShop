@@ -13,6 +13,7 @@ import com.example.GeekShop.service.product_fields.SeasonService;
 import com.example.GeekShop.service.product_fields.ThemeService;
 import com.example.GeekShop.service.user.UserService;
 import jakarta.validation.Valid;
+import jakarta.websocket.server.PathParam;
 import lombok.NonNull;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -23,6 +24,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.security.Principal;
 import java.util.ArrayList;
+import java.util.Locale;
 import java.util.Objects;
 
 @Controller
@@ -56,8 +58,23 @@ public class ProductsController {
         model.addAttribute("all_products", productService.findAll());
         return "product/all_products";
     }
+    @GetMapping("/find")
+    public String pageOfProductsLikeName(
+            @PathParam("name") String name,
+            @NonNull Model model,
+            Principal principal
+    ) {
+        model.addAttribute("principal", principal);
+        model.addAttribute("nameOfPage", "Products");
+        model.addAttribute("all_products", productService.findProductsByName( name.toUpperCase(Locale.ROOT)));
+        return "product/all_products";
+    }
     @GetMapping("/{id}")
-    public String pageSelectedProduct(@PathVariable Long id, @NonNull Model model, Principal principal) {
+    public String pageSelectedProduct(
+            @PathVariable Long id,
+            @NonNull Model model,
+            Principal principal
+    ) {
         Product product = productService.findById(id);
         model.addAttribute("principal", principal);
         model.addAttribute("isLikedProduct", userService.findByEmail(principal.getName()).getListOfLikedProducts().contains(product));
@@ -196,7 +213,9 @@ public class ProductsController {
         Product product = productService.findById(id);
         User user = userService.findByEmail(principal.getName());
         if (user != null || product != null) {
-            ProductByBasket productByBasket = Objects.requireNonNull(user).getProductByBasketIfItExist(product, sizeOfProduct);
+            ProductByBasket productByBasket = Objects.requireNonNull(user)
+                    .getProductByBasketIfItExist(product, sizeOfProduct);
+            product.setNumberProduct(product.getNumberProduct() - numberProduct);
             if (productByBasket != null) {
                 productByBasket.setNumberProduct(productByBasket.getNumberProduct() + numberProduct);
                 userService.saveAfterChange(user);
@@ -286,12 +305,16 @@ public class ProductsController {
             throw new RuntimeException(e);
         }
     }
-    private void setFieldsForProductByBasket(Product product, Integer numberProduct, User user, SizeOfProduct sizeOfProduct) {
+    private void setFieldsForProductByBasket(
+            Product product,
+            Integer numberProduct,
+            User user,
+            SizeOfProduct sizeOfProduct
+    ) {
         ProductByBasket newProductByBasket = new ProductByBasket();
         newProductByBasket.setProduct(product);
         newProductByBasket.setNumberProduct(numberProduct);
         Objects.requireNonNull(user).getBasketOfProducts().add(newProductByBasket);
-        product.setNumberProduct(product.getNumberProduct() - numberProduct);
         newProductByBasket.setSize(sizeOfProduct);
     }
 }

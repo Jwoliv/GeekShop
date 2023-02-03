@@ -10,15 +10,6 @@ import java.util.List;
 
 @Repository
 public interface ProductRepository extends JpaRepository<Product, Long> {
-    @Query("SELECT P FROM Product AS P " +
-           "WHERE P.category.id = :categoryId " +
-                "AND P.theme.id = :themeId " +
-                "AND P.season.id = :seasonId " +
-            "ORDER BY P.id DESC LIMIT 3"
-    )
-    List<Product> findRecommendedProducts(
-            @Param("categoryId") Long categoryId,
-            @Param("themeId") Long themeId,
-            @Param("seasonId") Long seasonId
-    );
+    @Query("SELECT P FROM Product AS P WHERE UPPER(P.name) LIKE %:name%")
+    List<Product> findProductsByName(@Param("name") String name);
 }

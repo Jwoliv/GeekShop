@@ -51,4 +51,9 @@ public class MessagesController {
         messageService.save(message);
         return "redirect:/message";
     }
+    @DeleteMapping("/{id}")
+    public String deleteMessageByUser(@PathVariable Long id) {
+        messageService.deleteById(id);
+        return "redirect:/message";
+    }
 }

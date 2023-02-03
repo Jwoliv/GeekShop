@@ -29,6 +29,9 @@
                     </select>
                     <button type="submit">Change the status</button>
                 </form>
+                <form th:method="delete" th:action="@{/admin/order/{id}(id=${order.id})}">
+                    <button type="submit">Delete</button>
+                </form>
                 <a th:href="@{/admin/order/{id}(id=${order.id})}">Read more</a>
             </li>
         </ul>

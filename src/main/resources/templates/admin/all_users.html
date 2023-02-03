@@ -7,7 +7,7 @@
     <body>
         <ul>
             <li th:each="user: ${users}">
-                <a th:href="@{/admin/users/{id}(id=${user.id})}" th:text="${user.getFullName()}"></a>
+                <a th:href="@{/admin/user/{id}(id=${user.id})}" th:text="${user.getFullName()}"></a>
                 <h4 th:text="${user.getRole()}"></h4>
             </li>
         </ul>

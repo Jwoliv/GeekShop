@@ -13,6 +13,10 @@
       <main class="main">
         <div class="main__container container">
           <div class="main__content content">
+            <form method="get" th:action="@{/product/find}">
+              <input name="name" type="text">
+              <button type="submit">Find products</button>
+            </form>
             <div class="main__items">
               <div class="main__item item" th:each="product: ${all_products}">
                 <img class="item__img" th:src="@{/product/images/{id}(id=${product.previewsId})}" alt="Error image">

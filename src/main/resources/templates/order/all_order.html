@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Orders</title>
+</head>
+    <body>
+        <ul>
+            <li th:each="order: ${all_order}">
+                <ul>
+                    <li th:each="product: ${order.productsOfOrders}">
+                        <a th:href="@{/product/{id}(id=${product.product.id})}">
+                            <h3 th:text="${product.product.name}"></h3>
+                            <h4 th:text="${product.product.price}"></h4>
+                            <h4 th:if="${product.product.discount != 0}" th:text="${product.product.discount}"></h4>
+                            <h5 th:text="${product.size}"></h5>
+                            <h5 th:text="${product.numberProduct}"></h5>
+                        </a>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+    </body>
+</html>

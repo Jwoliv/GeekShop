@@ -1879,6 +1879,137 @@ h1, h2, h3, h4, h5, h6 {
   justify-content: center;
 }
 
+.messages {
+  margin-top: 10px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  row-gap: 10px;
+  -moz-column-gap: 10px;
+  column-gap: 10px;
+}
+.messages__item {
+  display: flex;
+  flex-direction: column;
+  background-color: #ffffff;
+  padding: 10px;
+  border-radius: 10px;
+}
+@media (max-width: 1618px) {
+  .messages {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+@media (max-width: 767px) {
+  .messages {
+    grid-template-columns: 1fr;
+  }
+}
+
+.messages-item__title {
+  font-size: 25px;
+  margin-bottom: 10px;
+}
+@media (max-width: 1618px) {
+  .messages-item__title {
+    font-size: 20px;
+  }
+}
+@media (max-width: 767px) {
+  .messages-item__title {
+    font-size: 17px;
+  }
+}
+.messages-item__text {
+  font-size: 18px;
+  line-height: 20px;
+  margin-bottom: 10px;
+  flex: 1 1 auto;
+}
+@media (max-width: 1618px) {
+  .messages-item__text {
+    font-size: 17px;
+    line-height: 19px;
+  }
+}
+@media (max-width: 767px) {
+  .messages-item__text {
+    font-size: 15px;
+    line-height: 18px;
+  }
+}
+.messages-item__link {
+  display: block;
+  font-size: 25px;
+  color: #000000;
+  margin-bottom: 10px;
+  position: relative;
+}
+.messages-item__link:hover {
+  text-decoration: underline;
+}
+@media (max-width: 1618px) {
+  .messages-item__link {
+    font-size: 20px;
+  }
+}
+@media (max-width: 767px) {
+  .messages-item__link {
+    font-size: 17px;
+  }
+}
+.messages-item__status {
+  font-size: 20px;
+  margin-bottom: 10px;
+  color: #ff0024;
+}
+@media (max-width: 767px) {
+  .messages-item__status {
+    font-size: 17px;
+  }
+}
+.messages-item__form {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+.messages-item__textarea {
+  border: 1px solid #000000;
+  resize: none;
+  min-height: 100px;
+  width: 100%;
+  max-height: 400px;
+  border-radius: 10px;
+  padding: 10px;
+  font-size: 16px;
+}
+.messages-item__textarea:focus {
+  box-shadow: 0px 0px 5px 0px #000000;
+}
+.messages-item__button {
+  margin-top: 10px;
+  background-color: #ff0024;
+  color: #ffffff;
+  width: 100%;
+  height: 40px;
+  border-radius: 10px;
+  font-size: 20px;
+  transition-duration: 0.3s;
+}
+@media (max-width: 1618px) {
+  .messages-item__button {
+    margin-top: 5px;
+  }
+}
+.messages-item__button:hover {
+  transition-duration: 0.3s;
+  background-color: #000000;
+}
+.messages-item__button:active {
+  color: #000000;
+  background-color: #ffffff;
+  outline: 1px solid #000000;
+}
+
 body {
   font-family: "Bellota";
   height: 100%;

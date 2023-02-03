@@ -12,6 +12,9 @@
             <h4 th:text="${message.typeOfMessage}"></h4>
             <p th:text="${message.text}"></p>
             <p style="color: #ff0024" th:if="${message.adminAnswer != null}" th:text="${message.adminAnswer}"></p>
+            <form th:method="delete" th:action="@{/message/{id}(id=${message.id})}">
+                <button type="submit">Delete message</button>
+            </form>
         </li>
     </ul>
   </body>

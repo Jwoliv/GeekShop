@@ -23,7 +23,9 @@ public class ProductService {
         this.productRepository = productRepository;
         this.userService = userService;
     }
-
+    public List<Product> findProductsByName(String name) {
+        return productRepository.findProductsByName(name);
+    }
     public List<Product> findAll() {
         return productRepository.findAll();
     }
