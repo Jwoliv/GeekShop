@@ -13,10 +13,11 @@
       <main class="main">
         <div class="main__container container">
           <div class="main__content content">
-            <form method="get" th:action="@{/product/find}">
-              <input name="name" type="text">
-              <button type="submit">Find products</button>
+            <form class="products-form" method="get" th:action="@{/product/find}">
+              <input th:value="*{find_content}" class="product-fields" placeholder="Search..." name="name" type="text">
+              <button class="product-button" type="submit">Search</button>
             </form>
+            <h5 class="not-found" th:if="${find_content != null && all_products.size() == 0}">Not found</h5>
             <div class="main__items">
               <div class="main__item item" th:each="product: ${all_products}">
                 <img class="item__img" th:src="@{/product/images/{id}(id=${product.previewsId})}" alt="Error image">
@@ -29,7 +30,7 @@
                     <a th:href="@{/product/{id}(id=${product.id})}" class="item__title" th:text="${product.name}"></a>
                     <div class="item-footer__row">
                       <div class="footer__price">
-                        <h3 class="new-price" th:text="${product.price - (product.price * product.discount / 100)} + '$'"></h3>
+                        <h3 class="new-price" th:text="${product.priceAfterDiscount()} + '$'"></h3>
                         <h3 class="old-price" th:if="${product.discount != 0}" th:text="${product.price} + '$'"></h3>
                       </div>
                       <div class="footer__size"><th:block th:each="size: ${product.sizes}" th:text="${size} + ' '"/></div>

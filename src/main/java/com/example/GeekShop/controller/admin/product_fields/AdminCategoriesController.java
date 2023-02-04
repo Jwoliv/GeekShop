@@ -22,7 +22,7 @@ public class AdminCategoriesController {
     public String pageOfCategories(@NotNull Model model) {
         model.addAttribute("url", "category");
         model.addAttribute("title", "Categories");
-        model.addAttribute("categories", categoryService.findAll());
+        model.addAttribute("elements", categoryService.findAll());
         return "/admin/all_elements";
     }
 }

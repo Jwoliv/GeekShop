@@ -1,12 +1,15 @@
 package com.example.GeekShop.controller;
 
 import com.example.GeekShop.model.order.Order;
+import com.example.GeekShop.model.order.StatusOfOrder;
+import com.example.GeekShop.model.product.ProductByBasket;
 import com.example.GeekShop.model.user.User;
 import com.example.GeekShop.service.OrderService;
 import com.example.GeekShop.service.user.UserService;
 import lombok.NonNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -14,6 +17,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.security.Principal;
+import java.util.ArrayList;
+import java.util.Date;
 
 @Controller
 @RequestMapping("/order")
@@ -53,8 +58,24 @@ public class OrdersController {
     @PostMapping
     public String formNewOrder(Principal principal) {
         User user = userService.findByEmail(principal.getName());
-        orderService.setFieldsForOrder(user, order);
-        orderService.setFieldsForUserAfterCreateOrder(user, order);
+        setFieldsForOrder(user, order);
+        setFieldsForUserAfterCreateOrder(user, order);
         return "redirect:/profile";
+    }
+    public void setFieldsForOrder(User user, Order order) {
+        order.setProductsOfOrders(user.getBasketOfProducts());
+        order.setStatusOfOrder(StatusOfOrder.Processed);
+        order.setDateOfCreate(new Date());
+        order.setUser(user);
+        order.setPriceOfOrder(user.getTotalBillOfBasket());
+        for (ProductByBasket productByBasket: order.getProductsOfOrders()) {
+            productByBasket.getOrders().add(order);
+        }
+    }
+    public void setFieldsForUserAfterCreateOrder(User user, Order order) {
+        user.getOrders().add(order);
+        user.setBasketOfProducts(new ArrayList<>());
+        user.setBonusPoints(0);
+        userService.saveAfterChange(user);
     }
 }

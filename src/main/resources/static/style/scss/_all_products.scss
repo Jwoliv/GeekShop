@@ -198,3 +198,34 @@
 	display: flex;
 	justify-content: space-between;
 }
+.products-form {
+	margin-top: 10px;
+	display: grid;
+	grid-template-columns: 4fr 1fr;
+	gap: 10px;
+	@media (max-width: 767px) {
+		display: flex;
+		flex-direction: column;
+	}
+}
+.product-fields {
+	display: inline-block;
+	height: 50px;
+	border-radius: 10px;
+	padding: 10px;
+	font-size: 20px;
+}
+.product-button {
+	height: 50px;
+	font-size: 20px;
+	padding: 0px 10px;
+	background-color: #ff0024;
+	color: #ffffff;
+	border-radius: 10px;
+}
+.not-found {
+	margin-top: 10px;
+	font-size: 40px;
+	color: #ffffff;
+	text-align: center;
+}

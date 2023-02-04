@@ -107,4 +107,10 @@ public class Product {
             this.getSizes().add(size);
         }
     }
+    public Integer priceAfterDiscount() {
+        if (discount != 0) {
+            return price - (price * discount / 100);
+        }
+        return price;
+    }
 }

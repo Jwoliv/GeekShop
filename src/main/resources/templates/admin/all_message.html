@@ -14,7 +14,7 @@
                     <ul class="admin__messages messages">
                         <li class="messages__item messages-item" th:if="${message.adminAnswer == null}" th:each="message: ${messages}">
                             <h3 class="messages-item__title" th:text="${message.title}"></h3>
-                            <a class="messages-item__link" th:href="@{/user/{id}(id=${message.user.id})}" th:text="${message.user.fullName}"></a>
+                            <a class="messages-item__link" th:href="@{/admin/user/{id}(id=${message.user.id})}" th:text="${message.user.fullName}"></a>
                             <p class="messages-item__text" th:text="${message.text}">
                             </p>
                             <h3 class="messages-item__status" th:text="'Type: ' + ${message.typeOfMessage}"></h3>
@@ -22,7 +22,7 @@
                                 <label><textarea class="messages-item__textarea" name="adminAnswer"></textarea></label>
                                 <button class="messages-item__button" type="submit">Add an answer</button>
                             </form>
-                            <form class="messages-item__form"  th:action="@{/message/{id}(id=${message.id})}" th:method="delete">
+                            <form class="messages-item__form"  th:action="@{/admin/message/{id}(id=${message.id})}" th:method="delete">
                                 <button class="messages-item__button" type="submit">Delete message</button>
                             </form>
                         </li>

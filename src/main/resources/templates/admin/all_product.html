@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Products for admin</title>
+  <link rel="stylesheet" th:href="@{/style/css/style.css}">
+</head>
+<body>
+<div class="wrapper wrapper-admin-main">
+  <main class="main">
+    <div class="main__container container">
+      <div class="main__content content">
+        <a th:href="@{/product/new}" class="create-new-product admin-product__link">New product</a>
+        <ul class="admin-products">
+          <li class="admin-products__product admin-product" th:each="product: ${all_product}">
+            <div class="admin-product-info">
+              <a th:href="@{/product/{id}(id=${product.id})}" class="admin-product__link">Name example</a>
+              <a th:href="@{/product/{id}/edit(id=${product.id})}" class="admin-product__link">Edit</a>
+              <a th:href="@{/product/{id}/change_photo(id=${product.id})}" class="admin-product__link">Change photo</a>
+              <form th:action="@{/product/{id}(id=${product.id})}" th:method="delete">
+                <button type="submit" class="admin-product__link">Delete</button>
+              </form>
+              <a th:href="@{/admin/product/user}" class="admin-product__link">Interested users</a>
+            </div>
+            <img class="admin-product-img" th:src="@{/product/images/{id}(id=${product.previewsId})}" alt="">
+          </li>
+        </ul>
+      </div>
+    </div>
+  </main>
+</div>
+</body>
+<script th:src="@{/script/script.js}"></script>
+</html>

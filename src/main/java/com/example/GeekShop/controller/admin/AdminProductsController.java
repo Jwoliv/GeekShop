@@ -22,7 +22,7 @@ public class AdminProductsController {
     private String pageOfProducts(@NotNull Model model) {
         model.addAttribute("url", "product");
         model.addAttribute("title", "Products");
-        model.addAttribute("elements", productService.findAll());
-        return "/admin/all_elements";
+        model.addAttribute("all_product", productService.findAll());
+        return "/admin/all_product";
     }
 }

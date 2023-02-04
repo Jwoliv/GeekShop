@@ -2,12 +2,45 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Admin main page</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin</title>
+    <link rel="stylesheet" th:href="@{/style/css/style.css}">
 </head>
-    <body>
-        <a th:href="@{/admin/theme}">Themes</a>
-        <a th:href="@{/admin/season}">Seasons</a>
-        <a th:href="@{/admin/category}">Categories</a>
-        <a th:href="@{/admin/user}">Users</a>
-    </body>
+<body>
+<div class="wrapper wrapper-admin-main">
+    <div th:insert="~{/elements/header :: header_only_navbar}"></div>
+    <main class="main">
+        <div class="main__container container">
+            <div class="main__content content">
+                <ul class="admin-list">
+                    <li class="admin-list__item admin-item">
+                        <a class="admin-item__link" th:href="@{/admin/product}">Products</a>
+                    </li>
+                    <li class="admin-list__item admin-item">
+                        <a class="admin-item__link" th:href="@{/admin/theme}">Themes</a>
+                    </li>
+                    <li class="admin-list__item admin-item">
+                        <a class="admin-item__link" th:href="@{/admin/season}">Seasons</a>
+                    </li>
+                    <li class="admin-list__item admin-item">
+                        <a class="admin-item__link" th:href="@{/admin/category}">Categories</a>
+                    </li>
+                    <li class="admin-list__item admin-item">
+                        <a class="admin-item__link" th:href="@{/admin/order}">Orders</a>
+                    </li>
+                    <li class="admin-list__item admin-item">
+                        <a class="admin-item__link" th:href="@{/admin/message}">Message</a>
+                    </li>
+                    <li class="admin-list__item admin-item">
+                        <a class="admin-item__link" th:href="@{/admin/user}">Users</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </main>
+    <div th:insert="~{/elements/footer :: footer}"></div>
+</div>
+</body>
+<script th:src="@{/script/script.js}"></script>
 </html>

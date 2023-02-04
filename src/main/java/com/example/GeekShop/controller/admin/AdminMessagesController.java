@@ -9,7 +9,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 @Controller
-@RequestMapping("/admin")
+@RequestMapping("/admin/message")
 public class AdminMessagesController {
     private final MessageService messageService;
 
@@ -18,16 +18,21 @@ public class AdminMessagesController {
         this.messageService = messageService;
     }
 
-    @GetMapping("/message")
+    @GetMapping
     public String pageOfMessages(@NotNull Model model) {
         model.addAttribute("messages", messageService.findAll());
         return "/admin/all_message";
     }
-    @PatchMapping("message/{id}")
+    @PatchMapping("/{id}")
     public String updateMessage(@PathVariable Long id, @RequestParam String adminAnswer) {
         Message message = messageService.findById(id);
         message.setAdminAnswer(adminAnswer);
         messageService.save(message);
+        return "redirect:/admin/message";
+    }
+    @DeleteMapping("/{id}")
+    public String deleteMessage(@PathVariable Long id) {
+        messageService.deleteById(id);
         return "redirect:/admin/message";
     }
 }

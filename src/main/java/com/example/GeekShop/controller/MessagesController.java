@@ -1,6 +1,7 @@
 package com.example.GeekShop.controller;
 
 import com.example.GeekShop.model.message.Message;
+import com.example.GeekShop.model.user.User;
 import com.example.GeekShop.service.MessageService;
 import com.example.GeekShop.service.user.UserService;
 import jakarta.validation.Valid;
@@ -26,7 +27,11 @@ public class MessagesController {
 
     @GetMapping
     public String pageOfAllMessagesByUser(Principal principal, @NonNull Model model) {
-        model.addAttribute("messages", userService.findByEmail(principal.getName()).getMessages());
+        User user = userService.findByEmail(principal.getName());
+        model.addAttribute("principal", principal);
+        model.addAttribute("user", user);
+        model.addAttribute("nameOfPage", "Messages");
+        model.addAttribute("messages", user.getMessages());
         return "/message/all_message";
     }
     @GetMapping("/new")

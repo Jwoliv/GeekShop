@@ -1,0 +1,40 @@
+.wrapper-admin-main {
+  background: url("/static/img/background.jpg") center center no-repeat;
+  background-size: cover;
+}
+.admin-list {
+  display: flex;
+  margin-top: 100px;
+  flex-direction: column;
+  align-items: center;
+
+  &__item {
+  }
+}
+.admin-item {
+
+  &__link {
+    width: 300px;
+    height: 70px;
+    background-color: #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 10px;
+    border-radius: 10px;
+    font-size: 25px;
+    color: #000000;
+    transition-duration: .3s;
+    &:hover {
+      transition-duration: .3s;
+      background-color: #000000;
+      color: #ffffff;
+    }
+    &:active {
+      transition-duration: .1s;
+      background-color: #ff0024;
+      color: #ffffff;
+      transform: scale(1.01);
+    }
+  }
+}

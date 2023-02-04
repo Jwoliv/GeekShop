@@ -26,6 +26,8 @@
                         <a th:href="@{/profile/settings}" class="info-user__button">Settings</a>
                         <br>
                         <a th:href="@{/message}" class="info-user__button">Support</a>
+                        <br>
+                        <a th:if="${user.role == T(com.example.GeekShop.model.user.Role).ADMIN}" th:href="@{/admin}" class="info-user__button">Admin</a>
                     </div>
                 </div>
                 <div class="info-user__lists lists">

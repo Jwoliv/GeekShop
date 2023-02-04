@@ -66,7 +66,8 @@ public class ProductsController {
     ) {
         model.addAttribute("principal", principal);
         model.addAttribute("nameOfPage", "Products");
-        model.addAttribute("all_products", productService.findProductsByName( name.toUpperCase(Locale.ROOT)));
+        model.addAttribute("all_products", productService.findProductsByName(name.toUpperCase(Locale.ROOT)));
+        model.addAttribute("find_content", name);
         return "product/all_products";
     }
     @GetMapping("/{id}")
@@ -83,13 +84,7 @@ public class ProductsController {
         model.addAttribute("recommended_products", productService.findRecommendedProduct(principal));
         model.addAttribute("isNotAvailiable", product.getNumberProduct() == 0);
         User user = userService.findByEmail(principal.getName());
-        if (user != null && !user.getViewedProducts().contains(product)) {
-            if (user.getViewedProducts().size() == 40) {
-                user.getViewedProducts().remove(0);
-            }
-            user.getViewedProducts().add(product);
-            userService.saveAfterChange(user);
-        }
+        addProductToTheViewProducts(user, product);
         return "product/selected_product";
     }
     @DeleteMapping("/{id}")
@@ -316,5 +311,14 @@ public class ProductsController {
         newProductByBasket.setNumberProduct(numberProduct);
         Objects.requireNonNull(user).getBasketOfProducts().add(newProductByBasket);
         newProductByBasket.setSize(sizeOfProduct);
+    }
+    private void addProductToTheViewProducts(User user, Product product) {
+        if (user != null && !user.getViewedProducts().contains(product)) {
+            if (user.getViewedProducts().size() == 40) {
+                user.getViewedProducts().remove(0);
+            }
+            user.getViewedProducts().add(product);
+            userService.saveAfterChange(user);
+        }
     }
 }
