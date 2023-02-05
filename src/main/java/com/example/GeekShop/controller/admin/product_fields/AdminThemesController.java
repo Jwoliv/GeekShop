@@ -8,6 +8,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import java.security.Principal;
+
 @Controller
 @RequestMapping("/admin")
 public class AdminThemesController {
@@ -19,10 +21,11 @@ public class AdminThemesController {
     }
 
     @GetMapping("/theme")
-    public String pageOfThemes(@NotNull Model model) {
+    public String pageOfThemes(@NotNull Model model, Principal principal) {
         model.addAttribute("url", "theme");
         model.addAttribute("title", "Themes");
-        model.addAttribute("elements", themeService.findAll());
+        model.addAttribute("principal", principal);
+        model.addAttribute("all_elements", themeService.findAll());
         return "/admin/all_elements";
     }
 }

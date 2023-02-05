@@ -22,6 +22,9 @@ public class OrderService {
     public Order findById(Long id) {
         return orderRepository.findById(id).orElse(null);
     }
+    public List<Order> findByUsername(String name) {
+        return orderRepository.findByUsername(name);
+    }
     @Transactional
     public void save(Order order) {
         orderRepository.save(order);

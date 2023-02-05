@@ -8,6 +8,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
+
 @Controller
 @RequestMapping("/admin/message")
 public class AdminMessagesController {
@@ -19,8 +21,9 @@ public class AdminMessagesController {
     }
 
     @GetMapping
-    public String pageOfMessages(@NotNull Model model) {
+    public String pageOfMessages(@NotNull Model model, Principal principal) {
         model.addAttribute("messages", messageService.findAll());
+        model.addAttribute("principal", principal);
         return "/admin/all_message";
     }
     @PatchMapping("/{id}")

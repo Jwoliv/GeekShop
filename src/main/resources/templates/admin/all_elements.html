@@ -2,19 +2,36 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title th:text="${title}"></title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="${title} + ' for admin'"></title>
+    <link rel="stylesheet" th:href="@{/style/css/style.css}">
 </head>
-    <body>
-        <ul>
-            <li th:each="element: ${elements}">
-                <img th:src="@{/{url}/images/{id}(url=${url}, id=${element.previewsId})}" alt="Error img">
-                <a th:href="@{/{url}/{id}(url=${url}, id=${element.id})}" th:text="${element.name}"></a>
-                <a th:href="@{/{url}/{id}/edit(url=${url}, id=${element.id})}">Edit</a>
-                <a th:href="@{/{url}/{id}/change_photo(url=${url}, id=${element.id})}">Change photo</a>
-                <form th:method="delete" th:action="@{/{url}/{id}(url=${url}, id=${element.id})}">
-                    <button type="submit">Delete</button>
-                </form>
-            </li>
-        </ul>
-    </body>
+<body>
+<div class="wrapper wrapper-background">
+    <div th:insert="~{/elements/header :: header_only_navbar}"></div>
+    <main class="main">
+        <div class="main__container container">
+            <div class="main__content content">
+                <a th:href="@{/product/new}" class="create-new-product admin-product__link">New product</a>
+                <ul class="admin-products" th:if="${all_elements != null}">
+                    <li class="admin-products__product admin-product" th:each="element: ${all_elements}">
+                        <div class="admin-product-info">
+                            <a th:href="@{/{url}/{id}(url=${url}, id=${element.id})}" th:text="${element.name}" class="admin-product__link"></a>
+                            <a th:href="@{/{url}/{id}/edit(url=${url}, id=${element.id})}" class="admin-product__link">Edit</a>
+                            <a th:href="@{/{url}/{id}/change_photo(url=${url}, id=${element.id})}" class="admin-product__link">Change photo</a>
+                            <form th:action="@{/{url}/{id}(url=${url}, id=${element.id})}" th:method="delete">
+                                <button type="submit" class="admin-product__link">Delete</button>
+                            </form>
+                        </div>
+                        <img class="admin-product-img" th:src="@{/{url}/images/{id}(url=${url}, id=${element.previewsId})}" alt="">
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </main>
+    <div th:insert="~{/elements/footer :: footer}"></div>
+</div>
+</body>
+<script th:src="@{/script/script.js}"></script>
 </html>

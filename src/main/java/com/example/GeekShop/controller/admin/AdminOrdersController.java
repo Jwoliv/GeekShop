@@ -6,10 +6,14 @@ import com.example.GeekShop.model.user.User;
 import com.example.GeekShop.service.OrderService;
 import com.example.GeekShop.service.user.UserService;
 import jakarta.validation.constraints.NotNull;
+import jakarta.websocket.server.PathParam;
+import lombok.NonNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+
+import java.security.Principal;
 
 @Controller
 @RequestMapping("/admin")
@@ -24,8 +28,15 @@ public class AdminOrdersController {
     }
 
     @GetMapping("/order")
-    public String pageOfAllOrders(@NotNull Model model) {
+    public String pageOfAllOrders(@NotNull Model model, Principal principal) {
         model.addAttribute("orders", orderService.findAll());
+        model.addAttribute("principal", principal);
+        return "admin/all_orders";
+    }
+    @GetMapping("/order/find")
+    public String searchByName(@PathParam("username") String username, @NonNull Model model, Principal principal) {
+        model.addAttribute("orders", orderService.findByUsername(username));
+        model.addAttribute("principal", principal);
         return "admin/all_orders";
     }
     @GetMapping("order/{id}")

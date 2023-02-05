@@ -8,6 +8,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import java.security.Principal;
+
 @Controller
 @RequestMapping("/admin")
 public class AdminSeasonsController {
@@ -19,10 +21,11 @@ public class AdminSeasonsController {
     }
 
     @GetMapping("/season")
-    public String pageOfSeasons(@NotNull Model model) {
+    public String pageOfSeasons(@NotNull Model model, Principal principal) {
         model.addAttribute("url", "season");
         model.addAttribute("title", "Seasons");
-        model.addAttribute("elements", seasonService.findAll());
+        model.addAttribute("principal", principal);
+        model.addAttribute("all_elements", seasonService.findAll());
         return "/admin/all_elements";
     }
 }

@@ -1,39 +1,47 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Orders</title>
+    <link rel="stylesheet" th:href="@{/style/css/style.css}">
 </head>
-    <body>
-        <ul>
-            <li th:each="order: ${orders}">
-                <a th:href="@{/admin/user/{id}(id=${order.user.id})}" th:text="${order.user.fullName}"></a>
-                <h3 th:text="${order.dateOfCreate}"></h3>
-                <ul>
-                    <li th:each="product: ${order.productsOfOrders}">
-                        <a th:href="@{/product/{id}(id=${product.product.id})}" th:text="${product.product.name}"></a>
-                        <h5 th:text="'Count: ' + ${product.numberProduct}"></h5>
-                        <h5 th:text="'Size:' + ${product.size}"></h5>
+<body>
+<div class="wrapper wrapper-background">
+    <div th:insert="~{/elements/header :: header_only_navbar}"></div>
+    <main class="main">
+        <div class="main__container container">
+            <div class="main__content content">
+                <form class="products-form" method="get" th:action="@{/admin/order/find}">
+                    <input class="product-fields" placeholder="Search by username" name="username" type="text">
+                    <button class="product-button" type="submit">Search</button>
+                </form>
+                <ul class="admin-orders">
+                    <li class="admin-orders__item orders__item" th:each="order: ${orders}">
+                        <h3 class="orders__item-date" th:text="${order.dateOfCreate}"></h3>
+                        <a class="orders-item-products-item__user" th:href="@{/admin/user/{id}(id=${order.user.id})}" th:text="'User: ' + ${order.user.fullName}"></a>
+                        <h2 class="orders-item-products-item__status" th:text="'Status: ' + ${order.statusOfOrder}"></h2>
+                        <h2 class="orders-item-products-item__status" th:text="'Total sum: ' + ${order.priceOfOrder} + '$'"></h2>
+                        <div class="orders-item__list">
+                            <ul class="orders-item-products">
+                                <li class="orders-item-products-item" th:each="product: ${order.productsOfOrders}">
+                                    <a th:href="@{/product/{id}(id=${product.product.id})}" class="orders-item-products-item__title-product" th:text="${product.product.name}"></a>
+                                    <h4 class="orders-item-products-item__title"  th:text="${product.product.priceAfterDiscount()} + '$'"></h4>
+                                    <h4 class="orders-item-products-item__title" th:text="${product.product.discount} + '%'"></h4>
+                                    <h4 class="orders-item-products-item__title" th:text="${product.numberProduct}"></h4>
+                                    <h4 class="orders-item-products-item__title" th:text="${product.size}"></h4>
+                                </li>
+                            </ul>
+                        </div>
+                        <a class="orders-item-products-item__button" th:href="@{/admin/order/{id}(id=${order.id})}">Read more</a>
                     </li>
-                    <h5 th:text="${order.statusOfOrder}"></h5>
-                    <h4 th:text="'Sum: ' + ${order.priceOfOrder} + '$'"></h4>
                 </ul>
-                <form th:if="${order.statusOfOrder != T(com.example.GeekShop.model.order.StatusOfOrder).Completed}"
-                      th:method="patch"
-                      th:action="@{/admin/order/{id}/change_status(id=${order.id})}">
-                    <select name="status">
-                        <option th:each="value: ${T(com.example.GeekShop.model.order.StatusOfOrder).values()}"
-                            th:text="${value.name()}"
-                            th:value="${value.name()}">
-                        </option>
-                    </select>
-                    <button type="submit">Change the status</button>
-                </form>
-                <form th:method="delete" th:action="@{/admin/order/{id}(id=${order.id})}">
-                    <button type="submit">Delete</button>
-                </form>
-                <a th:href="@{/admin/order/{id}(id=${order.id})}">Read more</a>
-            </li>
-        </ul>
-    </body>
+            </div>
+        </div>
+    </main>
+    <div th:insert="~{/elements/footer :: footer}"></div>
+</div>
+</body>
+<script th:src="@{/script/script.js}"></script>
 </html>

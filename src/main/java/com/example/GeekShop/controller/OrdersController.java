@@ -33,12 +33,6 @@ public class OrdersController {
         this.order = order;
         this.orderService = orderService;
     }
-    @GetMapping
-    public String pageOfOrders(@NonNull Model model, Principal principal) {
-        User user = userService.findByEmail(principal.getName());
-        model.addAttribute("all_order", user.getOrders());
-        return "/order/all_order";
-    }
     @GetMapping("/{id}")
     public String pageOfSelectedProduct(@PathVariable Long id, @NonNull Model model, Principal principal) {
         User user = userService.findByEmail(principal.getName());
