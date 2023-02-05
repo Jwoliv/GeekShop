@@ -13,8 +13,12 @@
     <main class="main">
         <div class="main__container container">
             <div class="main__content content">
+                <form th:if="${url == 'product'}" class="products-form" method="get" th:action="@{/admin/{url}/find(url=${url})}">
+                    <input class="product-fields" th:value="${name}" placeholder="Search..." name="name" type="text">
+                    <button class="product-button" type="submit">Search</button>
+                </form>
                 <a th:href="@{/product/new}" class="create-new-product admin-product__link">New product</a>
-                <ul class="admin-products" th:if="${all_elements != null}">
+                <ul class="admin-products" th:if="${all_elements.size() != 0}">
                     <li class="admin-products__product admin-product" th:each="element: ${all_elements}">
                         <div class="admin-product-info">
                             <a th:href="@{/{url}/{id}(url=${url}, id=${element.id})}" th:text="${element.name}" class="admin-product__link"></a>
