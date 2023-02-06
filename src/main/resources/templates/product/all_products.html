@@ -23,7 +23,8 @@
                 <img class="item__img" th:src="@{/product/images/{id}(id=${product.previewsId})}" alt="Error image">
                 <div class="header__item">
                   <h4 class="item__discount" th:if="${product.discount != 0}" th:text="${product.discount} + '%'"></h4>
-                  <h4 class="item__ends" th:if="${product.numberProduct <= 10}">ends</h4>
+                  <h4 class="item__ends" th:if="${product.numberProduct <= 10 && product.numberProduct != 0}">ends</h4>
+                  <h4 class="item__ends" th:if="${product.numberProduct == 0}">ended</h4>
                 </div>
                 <div class="footer__item">
                   <div class="footer__white">

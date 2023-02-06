@@ -2,14 +2,43 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Users</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Users for admin</title>
+    <link rel="stylesheet" th:href="@{/style/css/style.css}">
 </head>
     <body>
-        <ul>
-            <li th:each="user: ${users}">
-                <a th:href="@{/admin/user/{id}(id=${user.id})}" th:text="${user.getFullName()}"></a>
-                <h4 th:text="${user.getRole()}"></h4>
-            </li>
-        </ul>
+        <div class="wrapper wrapper-background">
+            <main class="main">
+                <div th:insert="~{/elements/header :: header_only_navbar}"></div>
+                <div class="main__container container">
+                    <div class="main__content content">
+                        <form class="products-form" method="get" th:action="@{/admin/user/find}">
+                            <input th:value="${find_name}" class="product-fields" placeholder="Search..." name="name" type="text">
+                            <button class="product-button" type="submit">Search</button>
+                        </form>
+                        <table th:if="${users.size() != 0}" class="admin-user__table">
+                            <tr class="admin-user__table-header">
+                                <td class="admin-user__table-header-title">Username</td>
+                                <td class="admin-user__table-header-title">Email</td>
+                                <td class="admin-user__table-header-title">Spend money</td>
+                                <td class="admin-user__table-header-title">Bonus points</td>
+                            </tr>
+                            <tr class="admin-user__table-item" th:each="user: ${users}">
+                                <td class="admin-user__table-header-title">
+                                    <a class="admin-user__table-link" th:href="@{/admin/user/{id}(id=${user.id})}" th:text="${user.fullName}"></a>
+                                </td>
+                                <td class="admin-user__table-title" th:text="${user.email}">lishchukbogdan@gmail.com</td>
+                                <td class="admin-user__table-title" th:text="${user.spendMoney} + '$'"></td>
+                                <td class="admin-user__table-title" th:text="${user.bonusPoints}"></td>
+                            </tr>
+                        </table>
+                        <div th:if="${users.size() != 0}" class="admin-user__show-more">Show more</div>
+                    </div>
+                </div>
+            </main>
+            <div th:insert="~{/elements/footer :: footer}"></div>
+        </div>
     </body>
+<script th:src="@{/script/script.js}"></script>
 </html>

@@ -117,3 +117,32 @@ const pressProfileButton = (button, index) => {
 	});
 };
 buttonsOfProductRow.forEach(pressProfileButton);
+
+// Set active class for users in the page of admin all_user
+const listOfUsersInTheAdminPage = Array.from(document.querySelectorAll(".admin-user__table-item"));
+const buttonShowMoreUser = document.querySelector(".admin-user__show-more");
+
+const setActiveClassForFirstUsers = (lengthSet) => {
+	if (listOfUsersInTheAdminPage.length === 0) return;
+	let length = lengthSet;
+	if (length > listOfUsersInTheAdminPage.length) length = listOfUsersInTheAdminPage.length;
+	for (let i = 0; i < length; i++) {
+		listOfUsersInTheAdminPage[i].classList.add("_active");
+	}
+};
+setActiveClassForFirstUsers(15);
+
+const pressShowMoreUsers = () => {
+	buttonShowMoreUser.addEventListener("click", () => {
+			const indexOfLastShowedComment = Array.from(document.getElementsByClassName("_active")).length - 1;
+			let lengthActiveList = indexOfLastShowedComment + 10;
+			if (lengthActiveList + 10 > listOfUsersInTheAdminPage.length) {
+				lengthActiveList = listOfUsersInTheAdminPage.length;
+			}
+			for (let i = indexOfLastShowedComment; i < lengthActiveList; i++) {
+				listOfUsersInTheAdminPage[i].classList.add("_active");
+			}
+		}
+	);
+};
+pressShowMoreUsers();
