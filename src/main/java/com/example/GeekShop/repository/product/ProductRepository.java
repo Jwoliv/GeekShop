@@ -1,5 +1,6 @@
 package com.example.GeekShop.repository.product;
 
+import com.example.GeekShop.model.product.Gender;
 import com.example.GeekShop.model.product.Product;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -12,4 +13,5 @@ import java.util.List;
 public interface ProductRepository extends JpaRepository<Product, Long> {
     @Query("SELECT P FROM Product AS P WHERE UPPER(P.name) LIKE %:name%")
     List<Product> findProductsByName(@Param("name") String name);
+    List<Product> findProductsByGender(Gender gender);
 }

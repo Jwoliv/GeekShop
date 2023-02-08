@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Choice gender</title>
+    <link rel="stylesheet" th:href="@{/style/css/style.css}">
+</head>
+<body>
+<div class="wrapper wrapper-background">
+    <div th:insert="~{/elements/header :: header_with_img}"></div>
+    <main class="main">
+        <div class="main__container container">
+            <div class="main__content content">
+                <div class="gender__row">
+                    <div class="gender__item">
+                        <img class="gender__img" src="/img/gender/female.jpg" alt="">
+                        <a th:href="@{/product/for-female}" class="gender__link">Women's clothes</a>
+                    </div>
+                    <div class="gender__item">
+                        <img class="gender__img" src="/img/gender/male.jpg" alt="">
+                        <a th:href="@{/product/for-male}" class="gender__link">Men's clothes</a>
+                    </div>
+                    <div class="gender__item gender__bellow-item">
+                        <img class="gender__img" src="/img/gender/unisex.avif" alt="">
+                        <a th:href="@{/product/unisex}" class="gender__link">Unisex clothes</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+    <div th:insert="~{/elements/footer :: footer}"></div>
+</div>
+</body>
+<script th:src="@{/script/script.js}"></script>
+</html>

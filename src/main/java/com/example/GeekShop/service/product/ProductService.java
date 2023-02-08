@@ -1,5 +1,6 @@
 package com.example.GeekShop.service.product;
 
+import com.example.GeekShop.model.product.Gender;
 import com.example.GeekShop.model.product.Product;
 import com.example.GeekShop.model.user.User;
 import com.example.GeekShop.repository.product.ProductRepository;
@@ -43,6 +44,9 @@ public class ProductService {
             }
         }
         return products;
+    }
+    public List<Product> findProductsByGender(Gender gender) {
+        return productRepository.findProductsByGender(gender);
     }
     public Product findById(Long id) {
         return productRepository.findById(id).orElse(null);

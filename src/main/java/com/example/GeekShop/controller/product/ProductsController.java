@@ -1,10 +1,7 @@
 package com.example.GeekShop.controller.product;
 
 import com.example.GeekShop.model.images.ImageProduct;
-import com.example.GeekShop.model.product.Comment;
-import com.example.GeekShop.model.product.Product;
-import com.example.GeekShop.model.product.ProductByBasket;
-import com.example.GeekShop.model.product.SizeOfProduct;
+import com.example.GeekShop.model.product.*;
 import com.example.GeekShop.model.user.User;
 import com.example.GeekShop.service.product.ImageProductService;
 import com.example.GeekShop.service.product.ProductService;
@@ -58,6 +55,37 @@ public class ProductsController {
         model.addAttribute("all_products", productService.findAll());
         return "product/all_products";
     }
+    @GetMapping("/for-male")
+    public String productForMale(@NonNull Model model, Principal principal) {
+        addTheCommonValuesInTheControllerOfChoiceGender(
+                model,
+                principal,
+                Gender.Male,
+                "Men's clothing"
+        );
+        return "product/all_products";
+    }
+    @GetMapping("/for-female")
+    public String productForFemale(@NonNull Model model, Principal principal) {
+        addTheCommonValuesInTheControllerOfChoiceGender(
+                model,
+                principal,
+                Gender.Female,
+                "Women's clothing"
+        );
+        return "product/all_products";
+    }
+    @GetMapping("/unisex")
+    public String productForUniSex(@NonNull Model model, Principal principal) {
+        addTheCommonValuesInTheControllerOfChoiceGender(
+                model,
+                principal,
+                Gender.Unisex,
+                "Unisex clothing"
+        );
+        return "product/all_products";
+    }
+
     @GetMapping("/find")
     public String pageOfProductsLikeName(
             @PathParam("name") String name,
@@ -320,5 +348,11 @@ public class ProductsController {
             user.getViewedProducts().add(product);
             userService.saveAfterChange(user);
         }
+    }
+    public void addTheCommonValuesInTheControllerOfChoiceGender(Model model, Principal principal, Gender gender, String nameOfPage) {
+        model.addAttribute("all_products", productService.findProductsByGender(gender));
+        model.addAttribute("genderClothesIsEquals", true);
+        model.addAttribute("principal", principal);
+        model.addAttribute("nameOfPage", nameOfPage);
     }
 }

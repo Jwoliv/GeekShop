@@ -17,6 +17,7 @@
               <input th:value="*{find_content}" class="product-fields" placeholder="Search..." name="name" type="text">
               <button class="product-button" type="submit">Search</button>
             </form>
+            <a th:if="${genderClothesIsEquals != true}" class="product-button product-button-link" th:href="@{/gender}">Choose clothes for gender</a>
             <h5 class="not-found" th:if="${find_content != null && all_products.size() == 0}">Not found</h5>
             <div class="main__items">
               <div class="main__item item" th:each="product: ${all_products}">

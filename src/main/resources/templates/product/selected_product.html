@@ -36,15 +36,13 @@
               <div class="product-row-right-size product-right-side">
                 <h1 class="product-right-side-title" th:text="${product.name}"></h1>
                 <div class="product-right-side-block">
-                  <p class="product-right-side-text">
-                    Lorem Ipsum is simply dummy text of the printing and typesetting industry.
-                    Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of typ
-                  </p>
+                  <p class="product-right-side-text" th:text="${product.describe}"></p>
                   <ul class="product-right-side-list">
                     <li class="product-right-side-item">Category: <a th:href="@{/category/{id}(id=${product.category.id})}" class="product-right-side-link" th:text="${product.category.name}"></a></li>
                     <li class="product-right-side-item">Theme: <a th:href="@{/theme/{id}(id=${product.theme.id})}" class="product-right-side-link" th:text="${product.theme.name}"></a></li>
                     <li class="product-right-side-item">Season: <a th:href="@{/season/{id}(id=${product.season.id})}" class="product-right-side-link" th:text="${product.season.name}"></a></li>
                     <li class="product-right-side-item">Available sizes: <th:block th:each="size: ${product.sizes}" th:text="${size} + ' '"/></li>
+                    <li class="product-right-side-item">Gender: <th:block th:text="${product.gender}"/></li>
                     <li class="product-right-side-item">Color: <th:block th:text="${product.color}"/></li>
                     <li class="product-right-side-item">Rating: <th:block th:text="${product.rating}"/></li>
                     <li class="product-right-side-item new-price" th:text="'Price: ' + ${product.price - (product.price * product.discount) / 100} + '$'"></li>

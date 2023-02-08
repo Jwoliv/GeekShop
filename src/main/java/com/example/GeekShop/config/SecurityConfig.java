@@ -32,7 +32,8 @@ public class SecurityConfig {
                         .requestMatchers(
                                 "/",
                                 "/registration",
-                                "/product",
+                                "/gender",
+                                "/product", "/product/for-male", "/product/for-female", "/product/unisex",
                                 "/product/find",
                                 "/theme",
                                 "/season",

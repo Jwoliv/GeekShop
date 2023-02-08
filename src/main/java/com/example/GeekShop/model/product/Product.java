@@ -1,20 +1,19 @@
 package com.example.GeekShop.model.product;
 
 import com.example.GeekShop.model.images.ImageProduct;
-import com.example.GeekShop.model.order.Order;
 import com.example.GeekShop.model.product_fields.Category;
 import com.example.GeekShop.model.product_fields.Season;
 import com.example.GeekShop.model.product_fields.Theme;
 import com.example.GeekShop.model.user.User;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Max;
-import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.*;
 import lombok.*;
 import org.springframework.stereotype.Component;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 @Entity
 @Getter
@@ -41,6 +40,8 @@ public class Product {
     private Integer numberProduct;
     private Float rating;
     private Long previewsId;
+    @Size(min = 10, max = 500)
+    private String describe;
     @ManyToOne
     @JoinColumn(name = "theme_id")
     private Theme theme;
@@ -52,6 +53,8 @@ public class Product {
     private Season season;
     @Enumerated(EnumType.STRING)
     private Color color;
+    @Enumerated(EnumType.STRING)
+    private Gender gender;
     @ElementCollection(targetClass = SizeOfProduct.class)
     @CollectionTable(name = "product_size", joinColumns = @JoinColumn(name = "product_id"))
     @Enumerated(EnumType.STRING)

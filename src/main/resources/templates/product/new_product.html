@@ -10,6 +10,7 @@
   <label><input type="text" th:field="${product.price}" placeholder="Price"></label>
   <label><input type="text" th:field="${product.discount}" placeholder="Discount"></label>
   <label><input type="text" th:field="${product.numberProduct}" placeholder="Number product"></label>
+  <label><textarea th:field="${product.describe}" placeholder="Describe of the product"></textarea></label>
   <label>
     <select th:field="${product.theme}">
       <option th:each="theme: ${themes}" th:value="${theme.id}" th:text="${theme.name}"/>
@@ -40,6 +41,10 @@
   <label>
     <input type="radio" name="size5" th:value="${T(com.example.GeekShop.model.product.SizeOfProduct).XXL}" th:text="XXL">
   </label>
+  <select th:field="${product.gender}">
+    <option th:each="gender : ${T(com.example.GeekShop.model.product.Gender).values()}"
+            th:value="${gender}" th:text="${gender}"></option>
+  </select>
   <select th:field="${product.color}">
     <option th:each="color : ${T(com.example.GeekShop.model.product.Color).values()}"
             th:value="${color}" th:text="${color}"></option>
