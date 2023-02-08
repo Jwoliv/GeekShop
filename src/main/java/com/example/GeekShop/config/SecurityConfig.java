@@ -46,7 +46,7 @@ public class SecurityConfig {
                                 "/season/images/**"
                         ).permitAll()
                         .requestMatchers(
-                                "/admin/**",
+                                "/admin/*/**",
                                  "/product/new", "/product/*/edit",
                                  "/theme/new", "/theme/*/edit",
                                  "/season/new", "/season/*/edit",

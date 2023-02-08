@@ -1,0 +1,137 @@
+.selected-order {
+  background-color: #ffffff;
+  border-radius: 15px;
+  padding: 20px;
+  margin-top: 20px;
+  &__date {
+    font-size: 30px;
+    margin-bottom: 10px;
+    color: #ff0024;
+    @media (max-width: 767px) {
+      font-size: 25px;
+    }
+  }
+
+  &__user {
+    font-size: 30px;
+    margin-bottom: 10px;
+    @media (max-width: 767px) {
+      font-size: 25px;
+    }
+  }
+
+  &__code {
+    font-size: 20px;
+    margin-bottom: 5px;
+    @media (max-width: 767px) {
+      font-size: 15px;
+    }
+  }
+
+  &__status {
+    font-size: 20px;
+    margin-bottom: 10px;
+    @media (max-width: 767px) {
+      font-size: 15px;
+    }
+  }
+
+  &__products {
+  }
+
+  &__product {
+    display: grid;
+    grid-template-columns: 4fr 2fr 1fr 1fr 1fr;
+    height: 60px;
+    padding: 0px 10px;
+    color: #000000;
+    border: 1px solid #000000;
+    align-items: center;
+    border-radius: 10px;
+    margin-bottom: 10px;
+    &:last-child {
+      margin-bottom: 20px;
+    }
+    @media (max-width: 546px) {
+      padding: 0px 5px;
+      height: 40px;
+    }
+  }
+
+  &__link {
+    display: block;
+    font-size: 25px;
+    position: relative;
+    color: #000000;
+    transition-duration: .3s;
+    &:hover {
+      transition-duration: .3s;
+      color: #ff0024;
+    }
+  }
+
+  &__text {
+    font-size: 25px;
+    @media (max-width: 767px) {
+      font-size: 20px;
+    }
+    @media (max-width: 546px) {
+      font-size: 15px;
+    }
+  }
+
+  &__form {
+    display: flex;
+    justify-content: space-between;
+    height: 40px;
+    align-items: center;
+    gap: 10px;
+  }
+
+  &__list {
+    width: 200px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #000000;
+    color: #ffffff;
+    font-size: 20px;
+  }
+
+  &__option {
+  }
+
+  &__change-status {
+    width: 200px;
+    height: 40px;
+    background-color: #ff0024;
+    color: #ffffff;
+    font-size: 20px;
+    border-radius: 20px;
+    transition-duration: .3s;
+    @media (max-width: 767px) {
+      max-width: 200px;
+      height: 40px;
+      font-size: 15px;
+    }
+    &:hover {
+      transition-duration: .3s;
+      background-color: #000000;
+      color: #ffffff;
+    }
+    &:active {
+      transition-duration: .3s;
+      background-color: #ffffff;
+      color: #000000;
+      outline: 1px solid #000000;
+    }
+  }
+  &__total-bill {
+    font-size: 25px;
+    margin-top: 10px;
+    @media (max-width: 767px) {
+      font-size: 20px;
+    }
+  }
+}

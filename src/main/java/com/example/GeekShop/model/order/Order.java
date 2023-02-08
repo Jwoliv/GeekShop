@@ -27,6 +27,7 @@ public class Order {
     @ManyToOne
     private User user;
     private Date dateOfCreate;
+    private Long codeOfOrder;
     @Enumerated(EnumType.STRING)
     private StatusOfOrder statusOfOrder;
     private Integer priceOfOrder;

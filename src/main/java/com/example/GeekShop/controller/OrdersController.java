@@ -9,12 +9,8 @@ import com.example.GeekShop.service.user.UserService;
 import lombok.NonNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
 import java.util.ArrayList;
@@ -41,6 +37,7 @@ public class OrdersController {
             model.addAttribute("model", order);
             model.addAttribute("principal", principal);
             model.addAttribute("user", user);
+            model.addAttribute("order", orderService.findById(id));
         }
         return "/order/selected_order";
     }
@@ -56,12 +53,45 @@ public class OrdersController {
         setFieldsForUserAfterCreateOrder(user, order);
         return "redirect:/profile";
     }
+    @DeleteMapping("/{id}")
+    public String deleteOrder(@PathVariable Long id) {
+        deleteOrderById(id);
+        return "redirect:/admin/order";
+    }
+    @PatchMapping("/{id}/change_status")
+    public String changeStatusOfOrder(
+            @PathVariable Long id,
+            @RequestParam StatusOfOrder status
+    ) {
+        Order order = orderService.findById(id);
+        order.setStatusOfOrder(status);
+        orderService.save(order);
+        if (status == StatusOfOrder.Completed) {
+            setFieldsForUserAfterCloseOrder(order);
+        }
+        return "redirect:/admin/order/{id}";
+    }
+    public void deleteOrderById(Long id) {
+        Order order = orderService.findById(id);
+        User user = order.getUser();
+        user.getOrders().remove(order);
+        userService.saveAfterChange(user);
+        orderService.deleteById(id);
+    }
+    public void setFieldsForUserAfterCloseOrder(Order order) {
+        User user = order.getUser();
+        user.setSpendMoney(user.getSpendMoney() + order.getPriceOfOrder());
+        user.setBonusPoints(order.getPriceOfOrder() / 100);
+        user.selectLevelOfSupport();
+        userService.saveAfterChange(user);
+    }
     public void setFieldsForOrder(User user, Order order) {
         order.setProductsOfOrders(user.getBasketOfProducts());
         order.setStatusOfOrder(StatusOfOrder.Processed);
         order.setDateOfCreate(new Date());
         order.setUser(user);
         order.setPriceOfOrder(user.getTotalBillOfBasket());
+        order.setCodeOfOrder(generateCodeForOrder());
         for (ProductByBasket productByBasket: order.getProductsOfOrders()) {
             productByBasket.getOrders().add(order);
         }
@@ -71,5 +101,11 @@ public class OrdersController {
         user.setBasketOfProducts(new ArrayList<>());
         user.setBonusPoints(0);
         userService.saveAfterChange(user);
+    }
+    public Long generateCodeForOrder() {
+        long min = 10000000000000L;
+        long max = 99999999999999L;
+        max -= min;
+        return (long) (Math.random() * ++max) + min;
     }
 }

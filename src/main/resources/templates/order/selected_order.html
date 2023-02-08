@@ -1,10 +1,42 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Selected order</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="'Orders of ' + ${user.fullName}"></title>
+    <link rel="stylesheet" th:href="@{/style/css/style.css}">
 </head>
-  <body>
-
-  </body>
+<body>
+<div class="wrapper wrapper-background">
+    <div th:insert="~{/elements/header :: header_only_navbar}"></div>
+    <main class="main">
+        <div class="main__container container">
+            <div class="main__content content">
+                <div class="selected-order">
+                    <h4 class="selected-order__date" th:text="${order.dateOfCreate}"></h4>
+                    <h4 class="selected-order__user"  th:text="${order.user.fullName}"></h4>
+                    <h4 class="selected-order__code" th:text="'Code: ' + ${order.codeOfOrder}"></h4>
+                    <h4 class="selected-order__status" th:text="'Status: ' + ${order.statusOfOrder}"></h4>
+                    <ul class="selected-order__products" th:each="product: ${order.getProductsOfOrders()}">
+                        <li class="selected-order__product">
+                            <a class="selected-order__link selected-order__text" href="#" th:text="${product.product.name}"></a>
+                            <h4 class="selected-order__text" th:text="${product.product.priceAfterDiscount()} + '$'"></h4>
+                            <h4 class="selected-order__text" th:text="${product.product.discount} + '%'"></h4>
+                            <h4 class="selected-order__text" th:text="${product.numberProduct}"></h4>
+                            <h4 class="selected-order__text" th:text="${product.size}"></h4>
+                        </li>
+                    </ul>
+                    <form class="selected-order__form" th:action="@{/order/{id}/(id=${order.id})}" th:method="delete">
+                        <button class="selected-order__change-status" type="submit">Delete</button>
+                    </form>
+                    <div class="selected-order__total-bill" th:text="'Price of order: ' + ${order.priceOfOrder} + '$'"></div>
+                </div>
+            </div>
+        </div>
+    </main>
+    <div th:insert="~{/elements/footer :: footer}"></div>
+</div>
+</body>
+<script th:src="@{/script/script.js}"></script>
 </html>

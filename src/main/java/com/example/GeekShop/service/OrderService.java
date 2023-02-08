@@ -25,6 +25,9 @@ public class OrderService {
     public List<Order> findByUsername(String name) {
         return orderRepository.findByUsername(name);
     }
+    public List<Order> findByCode(Long code) {
+        return orderRepository.findByCode(String.valueOf(code));
+    }
     @Transactional
     public void save(Order order) {
         orderRepository.save(order);
