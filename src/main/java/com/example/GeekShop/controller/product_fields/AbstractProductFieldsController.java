@@ -146,7 +146,6 @@ public abstract class AbstractProductFieldsController<
     @Override
     public String formEditElement(@PathVariable Long id, @NonNull Model model) {
         model.addAttribute("element", getService().findById(id));
-        model.addAttribute("nameOfPage", nameSingle);
         model.addAttribute("url", url);
         return "product_fields/edit_element";
     }

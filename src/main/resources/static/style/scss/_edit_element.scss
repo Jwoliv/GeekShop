@@ -1,0 +1,39 @@
+.edit-element {
+  margin-top: 10px;
+  &__input {
+    width: 100%;
+    height: 50px;
+    padding: 10px;
+    font-size: 20px;
+    border-radius: 15px;
+    margin-bottom: 10px;
+    transition-duration: .3s;
+    &:focus {
+      transition-duration: .3s;
+      box-shadow: 0px 0px 10px 1px #ffffff;
+    }
+  }
+
+  &__button {
+    height: 50px;
+    display: flex;
+    border-radius: 10px;
+    align-items: center;
+    justify-content: center;
+    background-color: #ff0024;
+    color: #ffffff;
+    font-size: 20px;
+    width: 100%;
+    transition-duration: .3s;
+    &:hover {
+      transition-duration: .3s;
+      background-color: #000000;
+      color: #ffffff;
+    }
+    &:active {
+      background-color: #ffffff;
+      color: #000000;
+      outline: 3px solid #000000;
+    }
+  }
+}

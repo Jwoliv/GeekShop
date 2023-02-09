@@ -1,19 +1,32 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title th:text="${nameOfPage}"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit element</title>
+     <link rel="stylesheet" th:href="@{/style/css/style.css}">
 </head>
-  <body>
-      <form method="post"  th:action="@{/{url}(url=${url})}" th:object="${element}" enctype="multipart/form-data">
-          <label>
-              <input th:field="${element.name}" type="text" placeholder="Name">
-              <div th:if="${#fields.hasErrors('name')}" th:errors="${element.name}"></div>
-          </label>
-          <input type="file" name="file1">
-          <input type="file" name="file2">
-          <input type="file" name="file3">
-          <button type="submit"><th:block th:text="${nameOfPage}"/></button>
-      </form>
-  </body>
+<body>
+<div class="wrapper wrapper-background">
+    <div th:insert="~{/elements/header :: header_only_navbar}"></div>
+    <main class="main">
+        <div class="main__container container">
+            <div class="main__content content">
+                <form class="edit-element" method="post"  th:action="@{/{url}(url=${url})}" th:object="${element}" enctype="multipart/form-data">
+                    <label>
+                        <input class="edit-element__input" th:field="${element.name}" type="text" placeholder="Name">
+                    </label>
+                    <input  class="edit-element__input" type="file" name="file1">
+                    <input  class="edit-element__input" type="file" name="file2">
+                    <input  class="edit-element__input" type="file" name="file3">
+                    <button class="edit-element__button" type="submit">New<th:block th:text="${nameOfPage}"/></button>
+                </form>
+            </div>
+        </div>
+    </main>
+    <div th:insert="~{/elements/footer :: footer}"></div>
+</div>
+</body>
+<script th:src="@{/script/script.js}"></script>
 </html>

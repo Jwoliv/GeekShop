@@ -1,19 +1,29 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Edit element</title>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Edit element</title>
+  <link rel="stylesheet" th:href="@{/style/css/style.css}">
 </head>
   <body>
-    <form th:method="patch"  th:action="@{/{url}/{id}(url=${url}, id=${element.getId()})}" th:object="${element}">
-      <label>
-        <input th:field="${element.name}" type="text" placeholder="Name">
-        <div th:if="${#fields.hasErrors('name')}" th:errors="${element.name}"></div>
-      </label>
-      <button type="submit">Edit <th:block th:text="${nameOfPage}"/></button>
-    </form>
-    <form th:method="delete"  th:action="@{/{url}/{id}(url=${url}, id=${element.getId()})}">
-      <button type="submit">Delete <th:block th:text="${nameOfPage}"/></button>
-    </form>
+    <div class="wrapper wrapper-background">
+      <div th:insert="~{/elements/header :: header_only_navbar}"></div>
+      <main class="main">
+        <div class="main__container container">
+          <div class="main__content content">
+            <form class="edit-element" th:method="patch"  th:action="@{/{url}/{id}(url=${url}, id=${element.getId()})}" th:object="${element}">
+              <label>
+                <input class="edit-element__input" th:field="${element.name}" type="text" placeholder="Name">
+              </label>
+              <button class="edit-element__button" type="submit">Edit <th:block th:text="${nameOfPage}"/></button>
+            </form>
+          </div>
+        </div>
+      </main>
+      <div th:insert="~{/elements/footer :: footer}"></div>
+    </div>
   </body>
+<script th:src="@{/script/script.js}"></script>
 </html>
