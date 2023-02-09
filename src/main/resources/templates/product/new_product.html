@@ -1,60 +1,80 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>New product</title>
+  <link rel="stylesheet" th:href="@{/style/css/style.css}">
 </head>
 <body>
-<form method="post" th:action="@{/product}" th:object="${product}" enctype="multipart/form-data">
-  <label><input type="text" th:field="${product.name}" placeholder="Name"></label>
-  <label><input type="text" th:field="${product.price}" placeholder="Price"></label>
-  <label><input type="text" th:field="${product.discount}" placeholder="Discount"></label>
-  <label><input type="text" th:field="${product.numberProduct}" placeholder="Number product"></label>
-  <label><textarea th:field="${product.describe}" placeholder="Describe of the product"></textarea></label>
-  <label>
-    <select th:field="${product.theme}">
-      <option th:each="theme: ${themes}" th:value="${theme.id}" th:text="${theme.name}"/>
-    </select>
-  </label>
-  <label>
-    <select th:field="${product.category}">
-      <option th:each="category: ${categories}" th:value="${category.id}" th:text="${category.name}"/>
-    </select>
-  </label>
-  <label>
-    <select th:field="${product.season}">
-      <option th:each="season: ${seasons}" th:value="${season.id}" th:text="${season.name}"/>
-    </select>
-  </label>
-  <label>S
-    <input type="radio" name="size1" th:value="${T(com.example.GeekShop.model.product.SizeOfProduct).L}" th:text="L">
-  </label>
-  <label>
-    <input type="radio" name="size2" th:value="${T(com.example.GeekShop.model.product.SizeOfProduct).M}" th:text="M">
-  </label>
-  <label>
-    <input type="radio" name="size3" th:value="${T(com.example.GeekShop.model.product.SizeOfProduct).S}" th:text="S">
-  </label>
-  <label>
-    <input type="radio" name="size4" th:value="${T(com.example.GeekShop.model.product.SizeOfProduct).XL}" th:text="XL">
-  </label>
-  <label>
-    <input type="radio" name="size5" th:value="${T(com.example.GeekShop.model.product.SizeOfProduct).XXL}" th:text="XXL">
-  </label>
-  <select th:field="${product.gender}">
-    <option th:each="gender : ${T(com.example.GeekShop.model.product.Gender).values()}"
-            th:value="${gender}" th:text="${gender}"></option>
-  </select>
-  <select th:field="${product.color}">
-    <option th:each="color : ${T(com.example.GeekShop.model.product.Color).values()}"
-            th:value="${color}" th:text="${color}"></option>
-  </select>
-  <input type="file" name="file1">
-  <input type="file" name="file2">
-  <input type="file" name="file3">
-  <input type="file" name="file4">
-  <input type="file" name="file5">
-  <button type="submit">New product</button>
-</form>
+<div class="wrapper wrapper-background">
+  <div th:insert="~{/elements/header :: header_only_navbar}"></div>
+  <main class="main">
+    <div class="main__container container">
+      <div class="main__content content">
+        <form class="edit-element" method="post" th:action="@{/product}" th:object="${product}" enctype="multipart/form-data">
+          <label><input  class="edit-element__input" type="text" th:field="${product.name}" placeholder="Name"></label>
+          <label><input  class="edit-element__input" type="text" th:field="${product.price}" placeholder="Price"></label>
+          <label><input  class="edit-element__input" type="text" th:field="${product.discount}" placeholder="Discount"></label>
+          <label><input  class="edit-element__input" type="text" th:field="${product.numberProduct}" placeholder="Number product"></label>
+          <label><textarea class="edit-element__input" th:field="${product.describe}" placeholder="Describe of the product"></textarea></label>
+          <div class="edit-element__list">
+            <label>
+              <select th:field="${product.theme}">
+                 <option th:each="theme: ${themes}" th:value="${theme.id}" th:text="${theme.name}"></option>
+              </select>
+            </label>
+            <label>
+              <select th:field="${product.category}">
+                 <option th:each="category: ${categories}" th:value="${category.id}" th:text="${category.name}"></option>
+              </select>
+            </label>
+            <label>
+              <select th:field="${product.season}">
+                 <option th:each="season: ${seasons}" th:value="${season.id}" th:text="${season.name}"></option>
+              </select>
+            </label>
+            <select th:field="${product.gender}">
+               <option th:each="gender : ${T(com.example.GeekShop.model.product.Gender).values()}"
+                              th:value="${gender}" th:text="${gender}"></option>
+            </select>
+            <select th:field="${product.color}">
+               <option th:each="color : ${T(com.example.GeekShop.model.product.Color).values()}"
+                              th:value="${color}" th:text="${color}"></option>
+            </select>
+          </div>
+          <div class="edit-element__radio-buttons">
+            <label  class="edit-element__radio-label">
+              <input class="edit-element__radio" type="radio" name="size1" th:value="${T(com.example.GeekShop.model.product.SizeOfProduct).L}" th:text="L">
+            </label>
+            <label  class="edit-element__radio-label">
+              <input class="edit-element__radio" type="radio" name="size2" th:value="${T(com.example.GeekShop.model.product.SizeOfProduct).M}" th:text="M">
+            </label>
+            <label  class="edit-element__radio-label">
+              <input class="edit-element__radio" type="radio" name="size3" th:value="${T(com.example.GeekShop.model.product.SizeOfProduct).S}" th:text="S">
+            </label>
+            <label  class="edit-element__radio-label">
+              <input class="edit-element__radio" type="radio" name="size4" th:value="${T(com.example.GeekShop.model.product.SizeOfProduct).XL}" th:text="XL">
+            </label>
+            <label class="edit-element__radio-label">
+              <input class="edit-element__radio"  type="radio" name="size5" th:value="${T(com.example.GeekShop.model.product.SizeOfProduct).XXL}" th:text="XXL">
+            </label>
+          </div>
+          <div class="edit-element__images">
+            <input type="file" name="file1">
+            <input type="file" name="file2">
+            <input type="file" name="file3">
+            <input type="file" name="file4">
+            <input type="file" name="file5">
+          </div>
+          <button class="edit-element__button" type="submit">New product</button>
+        </form>
+      </div>
+    </div>
+  </main>
+  <div th:insert="~{/elements/footer :: footer}"></div>
+</div>
 </body>
+<script th:src="@{/script/script.js}"></script>
 </html>

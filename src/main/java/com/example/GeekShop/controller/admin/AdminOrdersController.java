@@ -42,8 +42,9 @@ public class AdminOrdersController {
         return "/admin/all_orders";
     }
     @GetMapping("order/{id}")
-    public String pageOfSelectedOrder(@NotNull Model model, @PathVariable Long id) {
+    public String pageOfSelectedOrder(@NotNull Model model, @PathVariable Long id, Principal principal) {
         model.addAttribute("order", orderService.findById(id));
+        model.addAttribute("principal", principal);
         return "admin/selected_order";
     }
 }

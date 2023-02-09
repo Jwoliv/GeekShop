@@ -2674,12 +2674,25 @@ h1, h2, h3, h4, h5, h6 {
   padding: 10px;
   font-size: 20px;
   border-radius: 15px;
-  margin-bottom: 10px;
+  margin-bottom: 5px;
+  margin-top: 5px;
   transition-duration: 0.3s;
+  resize: none;
 }
 .edit-element__input:focus {
   transition-duration: 0.3s;
   box-shadow: 0px 0px 10px 1px #ffffff;
+}
+.edit-element textarea {
+  display: block;
+  height: 150px;
+}
+.edit-element select {
+  background-color: #000000;
+  color: #ffffff;
+  height: 40px;
+  border-radius: 15px;
+  margin-top: 10px;
 }
 .edit-element__button {
   height: 50px;
@@ -2702,6 +2715,26 @@ h1, h2, h3, h4, h5, h6 {
   background-color: #ffffff;
   color: #000000;
   outline: 3px solid #000000;
+}
+.edit-element__radio {
+  color: #ffffff;
+  width: 20px;
+  height: 20px;
+}
+.edit-element__radio-buttons {
+  display: flex;
+  margin: 10px 0px;
+  display: inline-block;
+  padding: 10px;
+  border-radius: 20px;
+  background-color: #ff0024;
+}
+.edit-element__images {
+  display: flex;
+  flex-direction: column;
+}
+.edit-element__images input {
+  margin-bottom: 10px;
 }
 
 body {

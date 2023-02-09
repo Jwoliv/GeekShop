@@ -133,11 +133,12 @@ public class ProductsController {
     }
 
     @GetMapping("/new")
-    public String formNewProduct(@NonNull Model model) {
+    public String formNewProduct(@NonNull Model model, Principal principal) {
         model.addAttribute("product", new Product());
         model.addAttribute("themes", themeService.findAll());
         model.addAttribute("categories", categoryService.findAll());
         model.addAttribute("seasons", seasonService.findAll());
+        model.addAttribute("principal", principal);
         return "product/new_product";
     }
     @PostMapping
@@ -176,8 +177,9 @@ public class ProductsController {
         return "redirect:/product";
     }
     @GetMapping("/{id}/edit")
-    public String editProduct(@PathVariable Long id, @NonNull Model model) {
+    public String editProduct(@PathVariable Long id, @NonNull Model model, Principal principal) {
         model.addAttribute("product", productService.findById(id));
+        model.addAttribute("principal", principal);
         model.addAttribute("themes", themeService.findAll());
         model.addAttribute("categories", categoryService.findAll());
         model.addAttribute("seasons", seasonService.findAll());
@@ -207,7 +209,8 @@ public class ProductsController {
         return "redirect:/product/{id}";
     }
     @GetMapping("/{id}/change_photo")
-    public String formChangePhoto(@PathVariable Long id, @NonNull Model model) {
+    public String formChangePhoto(@PathVariable Long id, @NonNull Model model, Principal principal) {
+        model.addAttribute("principal", principal);
         model.addAttribute("product", productService.findById(id));
         return "product/change_photo";
     }
