@@ -2737,6 +2737,40 @@ h1, h2, h3, h4, h5, h6 {
   margin-bottom: 10px;
 }
 
+.select-element__images {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 5px;
+  margin-top: 20px;
+}
+@media (max-width: 767px) {
+  .select-element__images {
+    display: flex;
+    flex-direction: column;
+  }
+}
+.select-element__image {
+  height: 400px;
+  width: 100%;
+  -o-object-fit: cover;
+  object-fit: cover;
+}
+@media (max-width: 1618px) {
+  .select-element__image {
+    height: 300px;
+  }
+}
+@media (max-width: 992px) {
+  .select-element__image {
+    height: 200px;
+  }
+}
+@media (max-width: 767px) {
+  .select-element__image {
+    height: 150px;
+  }
+}
+
 body {
   font-family: "Bellota";
   height: 100%;

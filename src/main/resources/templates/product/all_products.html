@@ -13,6 +13,11 @@
       <main class="main">
         <div class="main__container container">
           <div class="main__content content">
+            <div class="select-element__images" th:if="${element != null}">
+              <img class="select-element__image" th:src="@{/{url}/images/{id}(url=${url}, id=${element.previewsId})}" alt="">
+              <img class="select-element__image" th:src="@{/{url}/images/{id}(url=${url}, id=${element.previewsId + 1})}" alt="">
+              <img class="select-element__image" th:src="@{/{url}/images/{id}(url=${url}, id=${element.previewsId + 2})}" alt="">
+            </div>
             <form class="products-form" method="get" th:action="@{/product/find}">
               <input th:value="*{find_content}" class="product-fields" placeholder="Search..." name="name" type="text">
               <button class="product-button" type="submit">Search</button>

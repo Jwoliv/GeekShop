@@ -1,16 +1,19 @@
 package com.example.GeekShop.controller.product_fields;
 
 import com.example.GeekShop.model.images.ImageProductField;
+import com.example.GeekShop.model.product.Product;
 import com.example.GeekShop.model.product_fields.AbstractProductField;
 import com.example.GeekShop.repository.images_product_fields.ImageRepository;
 import com.example.GeekShop.repository.product_fields.AbstractProductFieldRepository;
 import com.example.GeekShop.service.images_product_fields.AbstractImagesService;
+import com.example.GeekShop.service.product.ProductService;
 import com.example.GeekShop.service.product_fields.AbstractProductFieldService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -21,6 +24,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.security.Principal;
 import java.util.ArrayList;
+import java.util.List;
 
 @Data
 @NoArgsConstructor
@@ -86,15 +90,16 @@ public abstract class AbstractProductFieldsController<
         model.addAttribute("url", url);
         return "product_fields/new_element";
     }
-
     @Override
-    public String pageSelectedElement(Long id, @NonNull Model model, Principal principal) {
-        model.addAttribute("url", url);
-        model.addAttribute("element", getService().findById(id));
+    public String pageSelectedElement(@PathVariable Long id, @NonNull Model model, Principal principal) {
+        E element = getService().findById(id);
+        model.addAttribute("url", getUrl());
         model.addAttribute("principal", principal);
-        return "product_fields/selected_element";
+        model.addAttribute("nameOfPage", element.getName());
+        model.addAttribute("element", element);
+        model.addAttribute("all_products", productsByProductFields(element));
+        return "/product/all_products";
     }
-
     @Override
     public String saveEditedElement(
             @ModelAttribute @Valid E element,
@@ -158,6 +163,9 @@ public abstract class AbstractProductFieldsController<
         image.setSize(file.getSize());
         image.setBytes(file.getBytes());
         return image;
+    }
+    protected List<Product> productsByProductFields(E element) {
+        return null;
     }
     private void saveImages(MultipartFile file1, MultipartFile file2, MultipartFile file3, E element) {
         element.setPreviewsId(null);

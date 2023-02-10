@@ -35,14 +35,18 @@
                  <option th:each="season: ${seasons}" th:value="${season.id}" th:text="${season.name}"></option>
               </select>
             </label>
-            <select th:field="${product.gender}">
-               <option th:each="gender : ${T(com.example.GeekShop.model.product.Gender).values()}"
-                              th:value="${gender}" th:text="${gender}"></option>
-            </select>
-            <select th:field="${product.color}">
-               <option th:each="color : ${T(com.example.GeekShop.model.product.Color).values()}"
-                              th:value="${color}" th:text="${color}"></option>
-            </select>
+            <label>
+              <select th:field="${product.gender}">
+                 <option th:each="gender : ${T(com.example.GeekShop.model.product.Gender).values()}"
+                                th:value="${gender}" th:text="${gender}"></option>
+              </select>
+            </label>
+            <label>
+              <select th:field="${product.color}">
+                 <option th:each="color : ${T(com.example.GeekShop.model.product.Color).values()}"
+                                th:value="${color}" th:text="${color}"></option>
+              </select>
+            </label>
           </div>
           <div class="edit-element__radio-buttons">
             <label  class="edit-element__radio-label">

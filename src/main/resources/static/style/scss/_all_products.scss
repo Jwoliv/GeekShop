@@ -238,3 +238,30 @@
 	height: 60px;
 	margin-bottom: -30px;
 }
+.select-element {
+
+	&__images {
+		display: grid;
+		grid-template-columns: repeat(3, 1fr);
+		gap: 5px;
+		margin-top: 20px;
+		@media (max-width: 767px) {
+			display: flex;
+			flex-direction: column;
+		}
+	}
+	&__image {
+		height: 400px;
+		width: 100%;
+		object-fit: cover;
+		@media (max-width: 1618px) {
+			height: 300px;
+		}
+		@media (max-width: 992px) {
+			height: 200px;
+		}
+		@media (max-width: 767px) {
+			height: 150px;
+		}
+	}
+}

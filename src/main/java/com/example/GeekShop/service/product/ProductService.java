@@ -2,6 +2,9 @@ package com.example.GeekShop.service.product;
 
 import com.example.GeekShop.model.product.Gender;
 import com.example.GeekShop.model.product.Product;
+import com.example.GeekShop.model.product_fields.Category;
+import com.example.GeekShop.model.product_fields.Season;
+import com.example.GeekShop.model.product_fields.Theme;
 import com.example.GeekShop.model.user.User;
 import com.example.GeekShop.repository.product.ProductRepository;
 import com.example.GeekShop.service.user.UserService;
@@ -59,5 +62,15 @@ public class ProductService {
     @Transactional
     public void deleteById(Long id) {
         productRepository.deleteById(id);
+    }
+
+    public List<Product> findProductsByCategory(Category category) {
+        return productRepository.findProductsByCategory(category);
+    }
+    public List<Product> findProductsByTheme(Theme theme) {
+        return productRepository.findProductsByTheme(theme);
+    }
+    public List<Product> findProductsBySeason(Season season) {
+        return productRepository.findProductsBySeason(season);
     }
 }
