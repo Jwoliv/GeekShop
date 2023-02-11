@@ -22,6 +22,26 @@
               <input th:value="*{find_content}" class="product-fields" placeholder="Search..." name="name" type="text">
               <button class="product-button" type="submit">Search</button>
             </form>
+            <div th:if="${productByForm != true}" class="product-button search-product-use-main-form">Show main form</div>
+            <form th:if="${productByForm != true}" class="products-main-form" method="get" th:action="@{/product/find-by-all}">
+              <select name="categoryId" class="products-form__list">
+                <option th:each="category: ${categories}" th:value="${category.id}" th:text="${category.name}"></option>
+              </select>
+              <select name="themeId" class="products-form__list">
+                <option th:each="theme: ${themes}" th:value="${theme.id}" th:text="${theme.name}"></option>
+              </select>
+              <select  name="seasonId" class="products-form__list">
+                <option th:each="season: ${seasons}" th:value="${season.id}" th:text="${season.name}"></option>
+              </select>
+              <select  name="gender" class="products-form__list">
+                <option th:each="gender: ${T(com.example.GeekShop.model.product.Gender).values()}" th:value="${gender}" th:text="${gender}"></option>
+              </select>
+              <div class="products-form__row">
+                <input name="min"  placeholder="Min" class="products-form__number" type="number">
+                <input name="max" placeholder="Max" class="products-form__number" type="number">
+              </div>
+              <button class="products-form__button" type="submit">Search</button>
+            </form>
             <a th:if="${genderClothesIsEquals != true}" class="product-button product-button-link" th:href="@{/gender}">Choose clothes for gender</a>
             <h5 class="not-found" th:if="${find_content != null && all_products.size() == 0}">Not found</h5>
             <div class="main__items">

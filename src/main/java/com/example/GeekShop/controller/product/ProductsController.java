@@ -53,6 +53,7 @@ public class ProductsController {
         model.addAttribute("principal", principal);
         model.addAttribute("nameOfPage", "Products");
         model.addAttribute("all_products", productService.findAll());
+        addTheProductFieldsToTheModel(model);
         return "product/all_products";
     }
     @GetMapping("/for-male")
@@ -63,6 +64,7 @@ public class ProductsController {
                 Gender.Male,
                 "Men's clothing"
         );
+        addTheProductFieldsToTheModel(model);
         return "product/all_products";
     }
     @GetMapping("/for-female")
@@ -73,6 +75,7 @@ public class ProductsController {
                 Gender.Female,
                 "Women's clothing"
         );
+        addTheProductFieldsToTheModel(model);
         return "product/all_products";
     }
     @GetMapping("/unisex")
@@ -97,6 +100,24 @@ public class ProductsController {
         model.addAttribute("all_products", productService.findProductsByName(name.toUpperCase(Locale.ROOT)));
         model.addAttribute("find_content", name);
         return "product/all_products";
+    }
+    @GetMapping("/find-by-all")
+    public String pageOfSearchProductsByAllFields(
+            @PathParam("categoryId") Long categoryId,
+            @PathParam("themeId") Long themeId,
+            @PathParam("seasonId") Long seasonId,
+            @PathParam("gender") Gender gender,
+            @PathParam("min") Integer min,
+            @PathParam("max") Integer max,
+            Model model
+
+    ) {
+        model.addAttribute("all_products", productService.findProductsInTheMainForm(
+                categoryId, themeId, seasonId, gender, min, max
+        ));
+        model.addAttribute("nameOfPage", "Products");
+        model.addAttribute("productByForm", true);
+        return "/product/all_products";
     }
     @GetMapping("/{id}")
     public String pageSelectedProduct(
@@ -359,5 +380,10 @@ public class ProductsController {
         model.addAttribute("genderClothesIsEquals", true);
         model.addAttribute("principal", principal);
         model.addAttribute("nameOfPage", nameOfPage);
+    }
+    public void addTheProductFieldsToTheModel(Model model) {
+        model.addAttribute("themes", themeService.findAll());
+        model.addAttribute("categories", categoryService.findAll());
+        model.addAttribute("seasons", seasonService.findAll());
     }
 }

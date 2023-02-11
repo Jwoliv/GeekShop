@@ -35,6 +35,7 @@ public class SecurityConfig {
                                 "/gender",
                                 "/product", "/product/for-male", "/product/for-female", "/product/unisex",
                                 "/product/find",
+                                "/product/find-by-all",
                                 "/theme/**",
                                 "/season/**",
                                 "/category/**",

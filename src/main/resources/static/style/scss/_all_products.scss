@@ -265,3 +265,41 @@
 		}
 	}
 }
+.products-form {
+	&__list {
+		background-color: #000000;
+		color: #ffffff;
+		height: 30px;
+		font-size: 20px;
+		margin-bottom: 10px;
+	}
+	&__row {
+		@media (max-width: 767px) {
+			display: flex;
+			flex-direction: column;
+			gap: 5px;
+		}
+	}
+	&__button {
+		background-color: #ff0024;
+		color: #ffffff;
+		padding: 10px 0px;
+		margin-top: 10px;
+		border-radius: 10px;
+	}
+	&__number {
+		height: 30px;
+		padding: 10px;
+		background-color: #000000;
+		color: #ffffff;
+	}
+}
+.products-main-form {
+	margin-top: 10px;
+}
+.products-main-form._show {
+	display: flex;
+}
+.search-product-use-main-form._hidden {
+	display: none;
+}

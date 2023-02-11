@@ -20,7 +20,7 @@
                     <h4 class="selected-order__status" th:text="'Status: ' + ${order.statusOfOrder}"></h4>
                     <ul class="selected-order__products" th:each="product: ${order.getProductsOfOrders()}">
                         <li class="selected-order__product">
-                            <a class="selected-order__link selected-order__text" href="#" th:text="${product.product.name}"></a>
+                            <a class="selected-order__link selected-order__text" th:href="@{/product/{id}(id=${product.product.id})}" th:text="${product.product.name}"></a>
                             <h4 class="selected-order__text" th:text="${product.product.priceAfterDiscount()} + '$'"></h4>
                             <h4 class="selected-order__text" th:text="${product.product.discount} + '%'"></h4>
                             <h4 class="selected-order__text" th:text="${product.numberProduct}"></h4>

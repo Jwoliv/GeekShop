@@ -2,6 +2,7 @@ package com.example.GeekShop.service.product;
 
 import com.example.GeekShop.model.product.Gender;
 import com.example.GeekShop.model.product.Product;
+import com.example.GeekShop.model.product.SizeOfProduct;
 import com.example.GeekShop.model.product_fields.Category;
 import com.example.GeekShop.model.product_fields.Season;
 import com.example.GeekShop.model.product_fields.Theme;
@@ -72,5 +73,15 @@ public class ProductService {
     }
     public List<Product> findProductsBySeason(Season season) {
         return productRepository.findProductsBySeason(season);
+    }
+    public List<Product> findProductsInTheMainForm(
+            Long categoryId,
+            Long themeId,
+            Long seasonId,
+            Gender gender,
+            Integer min,
+            Integer max
+    ) {
+        return productRepository.findProductsInTheMainForm(categoryId, themeId, seasonId, gender, min, max);
     }
 }

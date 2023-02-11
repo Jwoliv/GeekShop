@@ -11,7 +11,7 @@
         <main class="main">
             <div class="main__container container">
                 <div class="main__content content">
-                    <a th:href="@{/message/new}">Create a new message</a>
+                    <a class="message-create-button info-user__button" th:href="@{/message/new}">Create a new message</a>
                     <ul class="admin__messages messages">
                         <li class="messages__item messages-item" th:each="message: ${messages}">
                             <h3 class="messages-item__title" th:text="${message.title}"></h3>

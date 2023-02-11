@@ -133,16 +133,31 @@ const setActiveClassForFirstUsers = (lengthSet) => {
 setActiveClassForFirstUsers(15);
 
 const pressShowMoreUsers = () => {
-	buttonShowMoreUser.addEventListener("click", () => {
-			const indexOfLastShowedComment = Array.from(document.getElementsByClassName("_active")).length - 1;
-			let lengthActiveList = indexOfLastShowedComment + 10;
-			if (lengthActiveList + 10 > listOfUsersInTheAdminPage.length) {
-				lengthActiveList = listOfUsersInTheAdminPage.length;
+	if (buttonShowMoreUser != null) {
+		buttonShowMoreUser.addEventListener("click", () => {
+				const indexOfLastShowedComment = Array.from(document.getElementsByClassName("_active")).length - 1;
+				let lengthActiveList = indexOfLastShowedComment + 10;
+				if (lengthActiveList + 10 > listOfUsersInTheAdminPage.length) {
+					lengthActiveList = listOfUsersInTheAdminPage.length;
+				}
+				for (let i = indexOfLastShowedComment; i < lengthActiveList; i++) {
+					listOfUsersInTheAdminPage[i].classList.add("_active");
+				}
 			}
-			for (let i = indexOfLastShowedComment; i < lengthActiveList; i++) {
-				listOfUsersInTheAdminPage[i].classList.add("_active");
-			}
-		}
-	);
+		);
+	}
 };
 pressShowMoreUsers();
+
+// Show main form of product
+
+const buttonShowMainForm = document.querySelector(".search-product-use-main-form");
+const mainForm = document.querySelector(".products-main-form");
+
+const showMainForm = () => {
+	buttonShowMainForm.addEventListener("click", () => {
+		buttonShowMainForm.classList.add("_hidden");
+		mainForm.classList.add("_show");
+	});
+};
+showMainForm();

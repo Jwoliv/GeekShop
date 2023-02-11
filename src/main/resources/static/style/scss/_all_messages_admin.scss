@@ -117,3 +117,12 @@
     }
   }
 }
+.message-create-button {
+  display: flex;
+  min-height: 40px;
+  width: 300px;
+  margin-top: 10px;
+  align-items: center;
+  justify-content: center;
+  font-size: 25px;
+}
