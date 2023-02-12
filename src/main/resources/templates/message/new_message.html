@@ -2,17 +2,32 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Support</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>New message</title>
+    <link rel="stylesheet" th:href="@{/style/css/style.css}">
 </head>
-    <body>
-        <form method="post" th:action="@{/message}" th:object="${message}">
-            <input th:field="*{title}" type="text">
-            <textarea th:field="*{text}" style="resize: none; height: 200px; width: 300px;"></textarea>
-            <select th:field="*{typeOfMessage}">
-                <option th:each="value: ${T(com.example.GeekShop.model.message.TypeOfMessage).values()}"
-                        th:value="${value}" th:text="${value}"></option>
-            </select>
-            <button type="submit">Send message</button>
-        </form>
-    </body>
+<body>
+    <div class="wrapper wrapper-background">
+        <div th:insert="~{/elements/header :: header_only_navbar}"></div>
+        <main class="main">
+            <div class="main__container container">
+                <div class="main__content content">
+                    <form class="new-message__form" method="post" th:action="@{/message}" th:object="${message}">
+                        <input placeholder="Title of message..." class="new-message__input" th:field="*{title}" type="text">
+                        <textarea placeholder="Text of message..." class="new-message__textarea" th:field="*{text}" style="resize: none; height: 200px; width: 300px;"></textarea>
+                        <select class="new-message__list" th:field="*{typeOfMessage}">
+                            <option th:each="value: ${T(com.example.GeekShop.model.message.TypeOfMessage).values()}"
+                                    th:value="${value}" th:text="${value}"></option>
+
+                        </select>
+                        <button class="new-message__button" type="submit">Send message</button>
+                    </form>
+                </div>
+            </div>
+        </main>
+        <div th:insert="~{/elements/footer :: footer}"></div>
+    </div>
+</body>
+<script th:src="@{/script/script.js}"></script>
 </html>

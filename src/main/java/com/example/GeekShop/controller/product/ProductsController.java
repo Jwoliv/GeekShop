@@ -116,7 +116,6 @@ public class ProductsController {
                 categoryId, themeId, seasonId, gender, min, max
         ));
         model.addAttribute("nameOfPage", "Products");
-        model.addAttribute("productByForm", true);
         return "/product/all_products";
     }
     @GetMapping("/{id}")

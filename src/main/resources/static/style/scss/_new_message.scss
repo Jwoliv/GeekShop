@@ -1,0 +1,58 @@
+.new-message {
+
+  &__form {
+    background-color: #ffffff;
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
+    border-radius: 10px;
+    margin-top: 10px;
+  }
+
+  &__input {
+    border: 1px solid #000000;
+    height: 40px;
+    margin-bottom: 10px;
+    padding: 10px;
+    border-radius: 10px;
+    font-size: 20px;
+  }
+
+  &__textarea {
+    display: block;
+    border: 1px solid #000000;
+    border-radius: 10px;
+    font-size: 20px;
+    min-width: 100%;
+    resize: none;
+    padding: 10px;
+    margin-bottom: 10px;
+  }
+
+  &__list {
+    color: #ffffff;
+    background-color: #000000;
+    margin-bottom: 10px;
+    height: 30px;
+    font-size: 20px;
+  }
+
+  &__button {
+    background-color: #ff0024;
+    height: 40px;
+    font-size: 20px;
+    color: #ffffff;
+    border-radius: 10px;
+    transition-duration: .3s;
+    &:hover {
+      transition-duration: .3s;
+      background-color: #ffffff;
+      outline: 1px solid #000000;
+      color: #000000;
+    }
+    &:active {
+      background-color: #000000;
+      color: #ffffff;
+    }
+  }
+}

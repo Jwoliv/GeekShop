@@ -22,8 +22,8 @@
               <input th:value="*{find_content}" class="product-fields" placeholder="Search..." name="name" type="text">
               <button class="product-button" type="submit">Search</button>
             </form>
-            <div th:if="${productByForm != true}" class="product-button search-product-use-main-form">Show main form</div>
-            <form th:if="${productByForm != true}" class="products-main-form" method="get" th:action="@{/product/find-by-all}">
+            <div th:if="${categories != null && themes != null && seasons != null}"  class="product-button search-product-use-main-form">Show main form</div>
+            <form th:if="${categories != null && themes != null && seasons != null}" class="products-main-form" method="get" th:action="@{/product/find-by-all}">
               <select name="categoryId" class="products-form__list">
                 <option th:each="category: ${categories}" th:value="${category.id}" th:text="${category.name}"></option>
               </select>

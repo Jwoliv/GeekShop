@@ -27,9 +27,6 @@
                             <h4 class="selected-order__text" th:text="${product.size}"></h4>
                         </li>
                     </ul>
-                    <form class="selected-order__form" th:action="@{/order/{id}/(id=${order.id})}" th:method="delete">
-                        <button class="selected-order__change-status" type="submit">Delete</button>
-                    </form>
                     <div class="selected-order__total-bill" th:text="'Price of order: ' + ${order.priceOfOrder} + '$'"></div>
                 </div>
             </div>

@@ -760,10 +760,10 @@ h1, h2, h3, h4, h5, h6 {
 .search-product-use-main-form {
   background-color: #ff0024;
   display: flex;
-  max-width: 150px;
+  max-width: 300px;
   border-radius: 15px;
-  font-size: 15px;
-  height: 40px;
+  font-size: 20px;
+  height: 60px;
   align-items: center;
   justify-content: center;
   color: #ffffff;
@@ -815,6 +815,7 @@ h1, h2, h3, h4, h5, h6 {
   padding: 10px 0px;
   margin-top: 10px;
   border-radius: 10px;
+  font-size: 25px;
 }
 .products-form__number {
   height: 30px;
@@ -2849,6 +2850,58 @@ h1, h2, h3, h4, h5, h6 {
   .select-element__image {
     height: 150px;
   }
+}
+
+.new-message__form {
+  background-color: #ffffff;
+  display: flex;
+  flex-direction: column;
+  padding: 10px;
+  border-radius: 10px;
+  margin-top: 10px;
+}
+.new-message__input {
+  border: 1px solid #000000;
+  height: 40px;
+  margin-bottom: 10px;
+  padding: 10px;
+  border-radius: 10px;
+  font-size: 20px;
+}
+.new-message__textarea {
+  display: block;
+  border: 1px solid #000000;
+  border-radius: 10px;
+  font-size: 20px;
+  min-width: 100%;
+  resize: none;
+  padding: 10px;
+  margin-bottom: 10px;
+}
+.new-message__list {
+  color: #ffffff;
+  background-color: #000000;
+  margin-bottom: 10px;
+  height: 30px;
+  font-size: 20px;
+}
+.new-message__button {
+  background-color: #ff0024;
+  height: 40px;
+  font-size: 20px;
+  color: #ffffff;
+  border-radius: 10px;
+  transition-duration: 0.3s;
+}
+.new-message__button:hover {
+  transition-duration: 0.3s;
+  background-color: #ffffff;
+  outline: 1px solid #000000;
+  color: #000000;
+}
+.new-message__button:active {
+  background-color: #000000;
+  color: #ffffff;
 }
 
 body {
