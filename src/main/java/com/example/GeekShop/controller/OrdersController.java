@@ -42,12 +42,15 @@ public class OrdersController {
         return "/order/selected_order";
     }
     @GetMapping("/new")
-    public String mainPageOfOrders() {
+    public String mainPageOfOrders(@NonNull Model model, Principal principal) {
+        User user = userService.findByEmail(principal.getName());
+        model.addAttribute("order", new Order());
+        model.addAttribute("user", user);
         return "/order/new_order";
     }
 
     @PostMapping
-    public String formNewOrder(Principal principal) {
+    public String formNewOrder(Principal principal, Order order) {
         User user = userService.findByEmail(principal.getName());
         setFieldsForOrder(user, order);
         setFieldsForUserAfterCreateOrder(user, order);
@@ -71,6 +74,20 @@ public class OrdersController {
         }
         return "redirect:/admin/order/{id}";
     }
+    @PatchMapping("/{id}/set_code")
+    public String setCodeForOrder(@PathVariable Long id, @RequestParam("code_of_mail") Long code) {
+        Order orderById = orderService.findById(id);
+        orderById.setCodeOfInvoice(code);
+        orderService.save(orderById);
+        return "redirect:/admin/order/{id}";
+    }
+    @PatchMapping("/{id}/is_verify")
+    public String setVerifyStatus(@PathVariable Long id) {
+        Order orderById = orderService.findById(id);
+        orderById.setIsVerify(true);
+        orderService.save(orderById);
+        return "redirect:/admin/order/{id}";
+    }
     public void deleteOrderById(Long id) {
         Order order = orderService.findById(id);
         User user = order.getUser();
@@ -92,6 +109,7 @@ public class OrdersController {
         order.setUser(user);
         order.setPriceOfOrder(user.getTotalBillOfBasket());
         order.setCodeOfOrder(generateCodeForOrder());
+        order.setIsVerify(false);
         for (ProductByBasket productByBasket: order.getProductsOfOrders()) {
             productByBasket.getOrders().add(order);
         }

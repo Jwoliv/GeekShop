@@ -33,12 +33,14 @@ public class AdminOrdersController {
     public String searchByName(@PathParam("username") String username, @NonNull Model model, Principal principal) {
         model.addAttribute("orders", orderService.findByUsername(username));
         model.addAttribute("principal", principal);
+        model.addAttribute("username", username);
         return "admin/all_orders";
     }
     @GetMapping("/order/find-code")
     public String searchByCode(@PathParam("code") Long code, Principal principal, @NonNull Model model) {
         model.addAttribute("orders", orderService.findByCode(code));
         model.addAttribute("principal", principal);
+        model.addAttribute("code", code);
         return "/admin/all_orders";
     }
     @GetMapping("order/{id}")

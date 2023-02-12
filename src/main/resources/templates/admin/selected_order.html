@@ -16,8 +16,15 @@
                 <div class="selected-order">
                     <h4 class="selected-order__date" th:text="${order.dateOfCreate}"></h4>
                     <h4 class="selected-order__user"  th:text="${order.user.fullName}"></h4>
-                    <h4 class="selected-order__code" th:text="'Code: ' + ${order.codeOfOrder}"></h4>
+                    <h4 class="selected-order__status" th:text="'Code: ' + ${order.codeOfOrder}"></h4>
+                    <h4 class="selected-order__status" th:if="${order.codeOfInvoice != null}" th:text="'Code for mail: ' + ${order.codeOfInvoice}"></h4>
+                    <h4 class="selected-order__status" th:text="'Recipient: ' + ${order.firstnameOfRecipient + ' ' + order.lastnameOfRecipient + ' ' + order.surnameOfRecipient}"></h4>
                     <h4 class="selected-order__status" th:text="'Status: ' + ${order.statusOfOrder}"></h4>
+                    <h4 class="selected-order__status" th:text="'Confirmed: ' + ${order.isVerify}"></h4>
+                    <h4 class="selected-order__status" th:text="'Region: ' + ${order.regionOfCountry}"></h4>
+                    <h4 class="selected-order__status" th:text="'City: ' + ${order.city}"></h4>
+                    <h4 class="selected-order__status" th:text="'Number of post office: ' + ${order.numberOfPostOffice}"></h4>
+                    <h4 class="selected-order__status" th:text="'Number of phone: ' + ${order.numberOfPhone}"></h4>
                     <ul class="selected-order__products" th:each="product: ${order.getProductsOfOrders()}">
                         <li class="selected-order__product">
                             <a class="selected-order__link selected-order__text" th:href="@{/product/{id}(id=${product.product.id})}" th:text="${product.product.name}"></a>
@@ -27,7 +34,14 @@
                             <h4 class="selected-order__text" th:text="${product.size}"></h4>
                         </li>
                     </ul>
-                    <form class="selected-order__form" th:action="@{/order/{id}/change_status(id=${order.id})}" th:method="patch">
+                    <form style="margin-bottom: 10px;" th:if="${order.isVerify == false}" class="selected-order__form" th:action="@{/order/{id}/is_verify(id=${order.id})}" th:method="patch">
+                        <button class="selected-order__change-status" type="submit">Set a verify status</button>
+                    </form>
+                    <form style="margin-bottom: 10px;" th:if="${order.codeOfInvoice == null && order.isVerify == true}" class="selected-order__form" th:action="@{/order/{id}/set_code(id=${order.id})}" th:method="patch">
+                        <input name="code_of_mail" class="selected-order__list" type="number">
+                        <button class="selected-order__change-status" type="submit">Set code</button>
+                    </form>
+                    <form th:if="${order.statusOfOrder.name() != 'Completed'}" class="selected-order__form" th:action="@{/order/{id}/change_status(id=${order.id})}" th:method="patch">
                         <select name="status" class="selected-order__list">
                             <option th:value="${order.statusOfOrder}" th:text="${order.statusOfOrder}"></option>
                             <option th:each="status: ${T(com.example.GeekShop.model.order.StatusOfOrder).values()}"
@@ -42,8 +56,8 @@
                 </div>
             </div>
         </div>
-        <div th:insert="~{/elements/footer :: footer}"></div>
     </main>
+    <div th:insert="~{/elements/footer :: footer}"></div>
 </div>
 </body>
 <script th:src="@{/script/script.js}"></script>

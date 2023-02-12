@@ -14,17 +14,18 @@
         <div class="main__container container">
             <div class="main__content content">
                 <form class="products-form" method="get" th:action="@{/admin/order/find}">
-                    <input class="product-fields" placeholder="Search by username" name="username" type="text">
+                    <input th:value="${username}" class="product-fields" placeholder="Search by username" name="username" type="text">
                     <button class="product-button" type="submit">Search by username</button>
                 </form>
                 <form class="products-form" method="get" th:action="@{/admin/order/find-code}">
-                    <input class="product-fields" placeholder="Search by code of order" name="code" type="number">
+                    <input th:value="${code}" class="product-fields" placeholder="Search by code of order" name="code" type="number">
                     <button class="product-button" type="submit">Search by code of order</button>
                 </form>
                 <ul class="admin-orders">
                     <li class="admin-orders__item orders__item"
                         th:each="order: ${orders}"
-                        th:if="${order.statusOfOrder.name() != 'Completed'}">
+                        th:if="${order.statusOfOrder.name() != 'Completed' ||
+                        (order.statusOfOrder.name() == 'Completed' && username != null || code != null)}">
                         <h3 class="orders__item-date" th:text="${order.dateOfCreate}"></h3>
                         <a class="orders-item-products-item__user" th:href="@{/admin/user/{id}(id=${order.user.id})}" th:text="'User: ' + ${order.user.fullName}"></a>
                         <h2 class="orders-item-products-item__status" th:text="'Status: ' + ${order.statusOfOrder}"></h2>

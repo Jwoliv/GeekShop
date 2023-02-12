@@ -3,6 +3,8 @@ package com.example.GeekShop.model.order;
 import com.example.GeekShop.model.product.ProductByBasket;
 import com.example.GeekShop.model.user.User;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import org.hibernate.Hibernate;
 import org.springframework.stereotype.Component;
@@ -31,6 +33,28 @@ public class Order {
     @Enumerated(EnumType.STRING)
     private StatusOfOrder statusOfOrder;
     private Integer priceOfOrder;
+    @NotNull
+    private String firstnameOfRecipient;
+    @NotNull
+    private String lastnameOfRecipient;
+    @NotNull
+    private String surnameOfRecipient;
+    private Long codeOfInvoice;
+    @NotNull
+    private String numberOfPhone;
+    @NotNull
+    private String city;
+    @Email
+    @NotNull
+    private String email;
+    @NotNull
+    private Integer numberOfPostOffice;
+    @Enumerated(EnumType.STRING)
+    private TypePostOffice typePostOffice;
+    @Enumerated(EnumType.STRING)
+    private RegionOfCountry regionOfCountry;
+    @NotNull
+    private Boolean isVerify;
     @ManyToMany(mappedBy = "orders", cascade = CascadeType.ALL)
     @ToString.Exclude
     private List<ProductByBasket> productsOfOrders = new ArrayList<>();

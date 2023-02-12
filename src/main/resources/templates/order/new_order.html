@@ -1,12 +1,58 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>New order</title>
+    <link rel="stylesheet" th:href="@{/style/css/style.css}">
 </head>
-  <body>
-    <form method="post" th:action="@{/order}">
-      <button type="submit">Create order</button>
-    </form>
-  </body>
+<body>
+<div class="wrapper wrapper-background">
+    <div th:insert="~{/elements/header :: header_only_navbar}"></div>
+    <main class="main">
+        <div class="main__container container">
+            <div class="main__content content">
+                <form class="new-order__form" method="post" th:action="@{/order}" th:object="${order}">
+                    <h3 class="new-order__title">Recipient</h3>
+                    <input class="new-order__fields" placeholder="Firstname" type="text"  th:field="${order.firstnameOfRecipient}">
+                    <input class="new-order__fields" placeholder="Lastname" type="text" th:field="${order.lastnameOfRecipient}">
+                    <input class="new-order__fields" placeholder="Surname" type="text" th:field="${order.surnameOfRecipient}">
+                    <h3 class="new-order__title">Contact information</h3>
+                    <input class="new-order__fields" placeholder="Number phone" type="tel" th:field="${order.numberOfPhone}">
+                    <input class="new-order__fields" placeholder="Email" type="email"  th:field="${order.email}">
+                    <h3 class="new-order__title">Receiving address</h3>
+                    <select class="new-order__list" th:field="${order.typePostOffice}">
+                        <option th:each="postOffice: ${T(com.example.GeekShop.model.order.TypePostOffice).values()}"
+                                th:value="${postOffice.name()}"
+                                th:text="${postOffice.name()}">
+                        </option>
+                    </select>
+                    <select class="new-order__list" th:field="${order.regionOfCountry}">
+                        <option th:each="region: ${T(com.example.GeekShop.model.order.RegionOfCountry).values()}"
+                                th:value="${region.name()}"
+                                th:text="${region.name()}">
+                        </option>
+                    </select>
+                    <input class="new-order__fields" placeholder="City" type="text" name="numberOfPhone" th:field="${order.city}">
+                    <input class="new-order__fields" placeholder="Department number " type="number" th:field="${order.numberOfPostOffice}">
+                    <h3 class="new-order__title">Products of the order</h3>
+                    <ul class="new-order__products">
+                        <li class="new-order__product" th:each="product: ${user.basketOfProducts}">
+                            <a th:href="@{/product/{id}(id=${product.product.id})}" class="new-order__title-product" th:text="${product.product.name}"></a>
+                            <h3 class="new-order__title-product" th:text="${product.product.priceAfterDiscount() + '$'}"></h3>
+                            <h3 class="new-order__title-product" th:text="${product.numberProduct}"></h3>
+                            <h3 class="new-order__title-product" th:text="${product.size}"></h3>
+                            <h3 class="new-order__title-product" th:if="${product.product.discount != 0}" th:text="${product.product.discount} + '%'"></h3>
+                        </li>
+                    </ul>
+                    <button class="new-order__button" type="submit">Create order</button>
+                </form>
+            </div>
+        </div>
+    </main>
+    <div th:insert="~{/elements/footer :: footer}"></div>
+</div>
+</body>
+<script th:src="@{/script/script.js}"></script>
 </html>
