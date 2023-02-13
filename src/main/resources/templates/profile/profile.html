@@ -21,7 +21,7 @@
                             <li class="info-user__item" th:text="'Email: ' + ${user.email}"></li>
                             <li class="info-user__item" th:text="'Spend money: ' + ${user.spendMoney} + '$'"></li>
                             <li class="info-user__item" th:text="'Bonus points: ' + ${user.bonusPoints}"></li>
-                            <li class="info-user__item" th:text="'Level support: ' + ${user.levelSupport}"></li>
+                            <li class="info-user__item" th:text="'Level support: ' + ${user.levelSupport.getDisplayValue()}"></li>
                         </ul>
                         <a th:href="@{/profile/settings}" class="info-user__button">Settings</a>
                         <br>
@@ -40,7 +40,7 @@
                     <div class="lists__list _active">
                         <h4 class="list-is-empty" th:if="${user.getBasketOfProducts().isEmpty()}">This list is empty</h4>
                         <div class="liked-list-item item-product-profile" th:each="product: ${user.basketOfProducts}">
-                            <a th:href="@{/product/{id}(id=${product.id})}" class="item-product-profile__title" th:text="${product.product.name} + ' (' + ${product.numberProduct}  + ', ' + ${product.size} + ')'"></a>
+                            <a th:href="@{/product/{id}(id=${product.product.id})}" class="item-product-profile__title" th:text="${product.product.name} + ' (' + ${product.numberProduct}  + ', ' + ${product.size} + ')'"></a>
                             <h4 class="item-product-profile__price" th:if="${product.product.discount == 0}" th:text="${product.product.price * product.numberProduct} + '$'"></h4>
                             <h4 class="item-product-profile__price" th:if="${product.product.discount != 0}"  th:text="${(product.product.price - (product.product.price * product.product.discount) / 100) * product.numberProduct} + '$'"></h4>
                             <form method="post" th:action="@{/profile/{id}/delete_product_from_basket(id=${product.id})}">

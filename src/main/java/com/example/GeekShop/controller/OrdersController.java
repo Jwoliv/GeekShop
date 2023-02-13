@@ -20,13 +20,11 @@ import java.util.Date;
 @RequestMapping("/order")
 public class OrdersController {
     private final UserService userService;
-    private final Order order;
     private final OrderService orderService;
 
     @Autowired
-    public OrdersController(UserService userService, Order order, OrderService orderService) {
+    public OrdersController(UserService userService, OrderService orderService) {
         this.userService = userService;
-        this.order = order;
         this.orderService = orderService;
     }
     @GetMapping("/{id}")
@@ -46,6 +44,7 @@ public class OrdersController {
         User user = userService.findByEmail(principal.getName());
         model.addAttribute("order", new Order());
         model.addAttribute("user", user);
+        model.addAttribute("principal", principal);
         return "/order/new_order";
     }
 

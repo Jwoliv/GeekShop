@@ -21,7 +21,8 @@
                     <h4 class="selected-order__status" th:text="'Recipient: ' + ${order.firstnameOfRecipient + ' ' + order.lastnameOfRecipient + ' ' + order.surnameOfRecipient}"></h4>
                     <h4 class="selected-order__status" th:text="'Status: ' + ${order.statusOfOrder}"></h4>
                     <h4 class="selected-order__status" th:text="'Confirmed: ' + ${order.isVerify}"></h4>
-                    <h4 class="selected-order__status" th:text="'Region: ' + ${order.regionOfCountry}"></h4>
+                    <h4 class="selected-order__status" th:text="'Type of post office: ' + ${order.typePostOffice.getDisplayValue()}"></h4>
+                    <h4 class="selected-order__status" th:text="'Region: ' + ${order.regionOfCountry.getDisplayValue()}"></h4>
                     <h4 class="selected-order__status" th:text="'City: ' + ${order.city}"></h4>
                     <h4 class="selected-order__status" th:text="'Number of post office: ' + ${order.numberOfPostOffice}"></h4>
                     <h4 class="selected-order__status" th:text="'Number of phone: ' + ${order.numberOfPhone}"></h4>

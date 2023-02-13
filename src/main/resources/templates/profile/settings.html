@@ -2,18 +2,51 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Settings</title>
+    <link rel="stylesheet" th:href="@{/style/css/style.css}">
 </head>
-  <body>
-    <form th:method="patch" th:action="@{/profile}" th:object="${user}">
-        <input name="firstname" th:value="${user.firstname}" type="text">
-        <input name="lastname" th:value="${user.lastname}" type="text">
-        <button type="submit">Set updates</button>
-    </form>
-    <form th:method="patch" th:action="@{/profile/settings/change_password}">
-        <input name="newPassword" type="password">
-        <input name="newPasswordRepeat" type="password">
-        <button type="submit">Change password</button>
-    </form>
-  </body>
+<body>
+<div class="wrapper wrapper-background">
+    <main class="main">
+        <div class="main__container container">
+            <div th:insert="~{/elements/header :: header_only_navbar}"></div>
+            <div class="main__content content">
+                <div class="form-row">
+                    <div class="form-settings__titles">
+                        <h3 class="form-settings__title">Change name</h3>
+                        <h3 class="form-settings__title">Change password</h3>
+                        <h3 class="form-settings__title">Delete account</h3>
+                        <h3 class="form-settings__title">Change email</h3>
+                    </div>
+                    <form class="form-settings" th:method="patch" th:action="@{/profile/settings/change_name}" th:object="${user}">
+                        <input class="form-settings__field" placeholder="Firstname" th:field="${user.firstname}" type="text">
+                        <input class="form-settings__field" placeholder="Lastname"  th:field="${user.lastname}" type="text">
+                        <button class="form-settings__button" type="submit">Change names</button>
+                    </form>
+                    <form class="form-settings" th:method="patch" th:action="@{/profile/settings/change_password}">
+                        <input placeholder="New password" class="form-settings__field" name="newPassword" type="password">
+                        <input placeholder="Repeat new password" class="form-settings__field" name="newPasswordRepeat" type="password">
+                        <button class="form-settings__button" type="submit">Change password</button>
+                    </form>
+
+                    <form class="form-settings"  th:method="delete" th:action="@{/profile}">
+                        <h5 class="form-settings__requirement">If the user has orders he must have in each of orders status: Completed</h5>
+                        <button class="form-settings__button" type="submit">Delete account</button>
+                    </form>
+
+                    <form class="form-settings" th:method="patch" th:action="@{/profile/settings/change_email}">
+                        <input placeholder="New email" class="form-settings__field" th:value="${user.email}" name="email" type="email">
+                        <button class="form-settings__button" type="submit">Change email</button>
+                    </form>
+
+                </div>
+            </div>
+        </div>
+    </main>
+    <div th:insert="~{/elements/footer :: footer}"></div>
+</div>
+</body>
+<script th:src="@{/script/script.js}"></script>
 </html>

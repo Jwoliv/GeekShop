@@ -6,5 +6,13 @@ public enum LevelSupport {
     Ultra("Ultra"),
     UltraPlus("Ultra+");
 
-    LevelSupport(String name) {}
+    private final String displayValue;
+
+    LevelSupport(String displayValue) {
+        this.displayValue = displayValue;
+    }
+
+    public String getDisplayValue() {
+        return displayValue;
+    }
 }

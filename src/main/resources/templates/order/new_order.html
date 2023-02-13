@@ -25,13 +25,13 @@
                     <select class="new-order__list" th:field="${order.typePostOffice}">
                         <option th:each="postOffice: ${T(com.example.GeekShop.model.order.TypePostOffice).values()}"
                                 th:value="${postOffice.name()}"
-                                th:text="${postOffice.name()}">
+                                th:text="${postOffice.getDisplayValue()}">
                         </option>
                     </select>
                     <select class="new-order__list" th:field="${order.regionOfCountry}">
                         <option th:each="region: ${T(com.example.GeekShop.model.order.RegionOfCountry).values()}"
                                 th:value="${region.name()}"
-                                th:text="${region.name()}">
+                                th:text="${region.getDisplayValue()}">
                         </option>
                     </select>
                     <input class="new-order__fields" placeholder="City" type="text" name="numberOfPhone" th:field="${order.city}">

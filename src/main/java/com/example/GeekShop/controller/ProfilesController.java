@@ -1,5 +1,7 @@
 package com.example.GeekShop.controller;
 
+import com.example.GeekShop.model.order.Order;
+import com.example.GeekShop.model.order.StatusOfOrder;
 import com.example.GeekShop.model.product.Product;
 import com.example.GeekShop.model.product.ProductByBasket;
 import com.example.GeekShop.model.user.User;
@@ -38,6 +40,7 @@ public class ProfilesController {
     @GetMapping
     public String pageOfProfile(Principal principal, @NonNull Model model) {
         User user = userService.findByEmail(principal.getName());
+        user.getOrders().sort((x1, x2) -> x2.getDateOfCreate().compareTo(x1.getDateOfCreate()));
         model.addAttribute("user", user);
         model.addAttribute("totalBill", user.getTotalBillOfBasket());
         model.addAttribute("principal", principal);
@@ -71,9 +74,10 @@ public class ProfilesController {
     public String formSettingsUser(Principal principal, @NonNull Model model) {
         User user = userService.findByEmail(principal.getName());
         model.addAttribute("user", user);
+        model.addAttribute("principal", principal);
         return "/profile/settings";
     }
-    @PatchMapping
+    @PatchMapping("/settings/change_name")
     public String saveUpdatedUser(
             Principal principal,
             @RequestParam String firstname,
@@ -101,5 +105,47 @@ public class ProfilesController {
         user.setPassword(passwordEncoder.encode(newPassword));
         userService.saveAfterChange(user);
         return "redirect:/profile";
+    }
+    @PatchMapping("/settings/change_email")
+    public String saveUserAfterChangeEmail(@RequestParam("email") String email, Principal principal) {
+        if (email == null) {
+            return "redirect:/profile/settings";
+        }
+        changeEmailForUser(email, principal);
+
+        return "redirect:/login";
+    }
+    @DeleteMapping
+    public String deleteUserAccount(Principal principal) {
+        if (checkOrderDoesNotHasCompletedStatus(principal)) {
+            return "redirect:/profile/settings";
+        }
+        cleanBasketOfProduct(principal);
+        userService.deleteByEmail(principal.getName());
+        return "redirect:/registration";
+    }
+    public void changeEmailForUser(String email, Principal principal) {
+        User user = userService.findByEmail(principal.getName());
+        user.setEmail(email);
+        for (Order order: user.getOrders()) {
+            order.setEmail(email);
+        }
+        userService.saveAfterChange(user);
+    }
+    public Boolean checkOrderDoesNotHasCompletedStatus(Principal principal) {
+        User user = userService.findByEmail(principal.getName());
+        if (user.getOrders() == null) return false;
+        for (Order orderFromList: user.getOrders()) {
+            if (!orderFromList.getStatusOfOrder().equals(StatusOfOrder.Completed)) return true;
+        }
+        return false;
+    }
+    public void cleanBasketOfProduct(Principal principal) {
+        User user = userService.findByEmail(principal.getName());
+        for (ProductByBasket product: user.getBasketOfProducts()) {
+            product.getProduct().setNumberProduct(product.getNumberProduct() + product.getProduct().getNumberProduct());
+            user.getBasketOfProducts().remove(product);
+            productService.save(product.getProduct());
+        }
     }
 }

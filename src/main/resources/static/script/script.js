@@ -155,9 +155,27 @@ const buttonShowMainForm = document.querySelector(".search-product-use-main-form
 const mainForm = document.querySelector(".products-main-form");
 
 const showMainForm = () => {
-	buttonShowMainForm.addEventListener("click", () => {
-		buttonShowMainForm.classList.add("_hidden");
-		mainForm.classList.add("_show");
-	});
+	if (buttonShowMainForm != null) {
+		buttonShowMainForm.addEventListener("click", () => {
+			buttonShowMainForm.classList.add("_hidden");
+			mainForm.classList.add("_show");
+		});
+	}
 };
 showMainForm();
+
+// Code for settings page
+const pointsOfSettingsForm = Array.from(document.querySelectorAll(".form-settings__title"));
+const formsOfSettings = Array.from(document.querySelectorAll(".form-settings"));
+
+const showFormsOfSettings = (button, index) => {
+	button.addEventListener("click", () => {
+		for (let i = 0; i < pointsOfSettingsForm.length; i++) {
+			pointsOfSettingsForm[i].classList.remove("_selected");
+			formsOfSettings[i].classList.remove("_show");
+		}
+		pointsOfSettingsForm[index].classList.add("_selected");
+		formsOfSettings[index].classList.add("_show");
+	});
+};
+pointsOfSettingsForm.forEach(showFormsOfSettings);
