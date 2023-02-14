@@ -492,3 +492,16 @@
     align-items: center;
   }
 }
+.buy-list {
+  background-color: #000000;
+  color: #ffffff;
+  height: 40px;
+  margin: 10px 0px;
+  border-radius: 10px;
+  transition-duration: .3s;
+  &:hover {
+    background-color: #ffffff;
+    color: #000000;
+    transition-duration: .3s;
+  }
+}

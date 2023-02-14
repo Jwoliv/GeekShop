@@ -25,13 +25,22 @@ public class AdminOrdersController {
 
     @GetMapping("/order")
     public String pageOfAllOrders(@NotNull Model model, Principal principal) {
-        model.addAttribute("orders", orderService.findAll());
+        model.addAttribute("orders",
+                orderService.findAll().stream().sorted(
+                    (x1, x2) -> x2.getDateOfCreate().compareTo(x1.getDateOfCreate())
+                )
+        );
         model.addAttribute("principal", principal);
         return "admin/all_orders";
     }
     @GetMapping("/order/find")
     public String searchByName(@PathParam("username") String username, @NonNull Model model, Principal principal) {
-        model.addAttribute("orders", orderService.findByUsername(username));
+        model.addAttribute(
+                "orders",
+                orderService.findByUsername(username).stream().sorted(
+                        (x1, x2) -> x2.getDateOfCreate().compareTo(x1.getDateOfCreate())
+                )
+        );
         model.addAttribute("principal", principal);
         model.addAttribute("username", username);
         return "admin/all_orders";

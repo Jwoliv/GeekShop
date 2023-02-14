@@ -42,7 +42,7 @@
                         <input name="code_of_mail" class="selected-order__list" type="number">
                         <button class="selected-order__change-status" type="submit">Set code</button>
                     </form>
-                    <form th:if="${order.statusOfOrder.name() != 'Completed'}" class="selected-order__form" th:action="@{/order/{id}/change_status(id=${order.id})}" th:method="patch">
+                    <form th:if="${order.statusOfOrder.name() != 'Completed' && order.isVerify}" class="selected-order__form" th:action="@{/order/{id}/change_status(id=${order.id})}" th:method="patch">
                         <select name="status" class="selected-order__list">
                             <option th:value="${order.statusOfOrder}" th:text="${order.statusOfOrder}"></option>
                             <option th:each="status: ${T(com.example.GeekShop.model.order.StatusOfOrder).values()}"

@@ -1535,6 +1535,21 @@ h1, h2, h3, h4, h5, h6 {
   }
 }
 
+.buy-list {
+  background-color: #000000;
+  color: #ffffff;
+  height: 40px;
+  margin: 10px 0px;
+  border-radius: 10px;
+  transition-duration: 0.3s;
+  width: 100px;
+}
+.buy-list:hover {
+  background-color: #ffffff;
+  color: #000000;
+  transition-duration: 0.3s;
+}
+
 .text-block__title {
   font-weight: 300;
   font-size: 64px;
