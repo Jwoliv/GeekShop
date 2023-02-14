@@ -21,8 +21,17 @@
                             <li class="info-user__item" th:text="'Email: ' + ${user.email}"></li>
                             <li class="info-user__item" th:text="'Spend money: ' + ${user.spendMoney} + '$'"></li>
                             <li class="info-user__item" th:text="'Bonus points: ' + ${user.bonusPoints}"></li>
-                            <li class="info-user__item" th:text="'Level support: ' + ${user.levelSupport}"></li>
+                            <li class="info-user__item" th:text="'Level support: ' + ${user.levelSupport.getDisplayValue()}"></li>
                         </ul>
+                        <form class="set-role__form" th:if="${user.getRole() != T(com.example.GeekShop.model.user.Role).ADMIN}" th:method="patch" th:action="@{/admin/user/{id}/change_role(id=${user.id})}">
+                            <select class="set-role__list" name="role">
+                                <option th:text="${user.role}" th:value="${user.role}"></option>
+                                <option th:each="value: ${T(com.example.GeekShop.model.user.Role).values()}"
+                                        th:value="${value.name()}"
+                                        th:text="${value}"></option>
+                            </select>
+                            <button class="set-role__button">Change status</button>
+                        </form>
                     </div>
                 </div>
                 <div class="info-user__lists lists">

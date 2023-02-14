@@ -271,3 +271,39 @@
   display: flex;
   justify-content: center;
 }
+.set-role {
+
+  &__form {
+    display: flex;
+    gap: 10px;
+  }
+
+  &__list {
+    background-color: #000000;
+    color: #ffffff;
+    height: 40px;
+    padding: 0px 20px;
+    font-size: 25px;
+    border-radius: 10px;
+    transition-duration: .3s;
+    &:hover {
+      transition-duration: .3s;
+      background-color: #ffffff;
+      color: #000000;
+    }
+  }
+
+  &__button {
+    border-radius: 10px;
+    background-color: #ff0024;
+    padding: 0px 20px;
+    height: 40px;
+    color: #ffffff;
+    transition-duration: .3s;
+    &:hover {
+      transition-duration: .3s;
+      background-color: #ffffff;
+      color: #000000;
+    }
+  }
+}

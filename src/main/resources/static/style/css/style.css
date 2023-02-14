@@ -1542,7 +1542,6 @@ h1, h2, h3, h4, h5, h6 {
   margin: 10px 0px;
   border-radius: 10px;
   transition-duration: 0.3s;
-  width: 100px;
 }
 .buy-list:hover {
   background-color: #ffffff;
@@ -2002,6 +2001,39 @@ h1, h2, h3, h4, h5, h6 {
   font-size: 40px;
   display: flex;
   justify-content: center;
+}
+
+.set-role__form {
+  display: flex;
+  gap: 10px;
+}
+.set-role__list {
+  background-color: #000000;
+  color: #ffffff;
+  height: 40px;
+  padding: 0px 20px;
+  font-size: 25px;
+  border-radius: 10px;
+  transition-duration: 0.3s;
+}
+.set-role__list:hover {
+  transition-duration: 0.3s;
+  background-color: #ffffff;
+  color: #000000;
+}
+.set-role__button {
+  font-size: 25px;
+  border-radius: 10px;
+  background-color: #ff0024;
+  padding: 0px 20px;
+  height: 40px;
+  color: #ffffff;
+  transition-duration: 0.3s;
+}
+.set-role__button:hover {
+  transition-duration: 0.3s;
+  background-color: #ffffff;
+  color: #000000;
 }
 
 .messages {

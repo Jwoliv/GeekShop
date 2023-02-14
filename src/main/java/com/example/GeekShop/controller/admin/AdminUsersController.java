@@ -1,5 +1,6 @@
 package com.example.GeekShop.controller.admin;
 
+import com.example.GeekShop.model.user.Role;
 import com.example.GeekShop.model.user.User;
 import com.example.GeekShop.service.user.UserService;
 import jakarta.validation.constraints.NotNull;
@@ -8,9 +9,7 @@ import lombok.NonNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
 import java.util.Locale;
@@ -38,6 +37,13 @@ public class AdminUsersController {
         model.addAttribute("totalBill", user.getTotalBillOfBasket());
         model.addAttribute("principal", principal);
         return "/admin/selected_user";
+    }
+    @PatchMapping("/{id}/change_role")
+    public String changeRoleForUser(@PathVariable Long id, @RequestParam("role") Role role) {
+        User user = userService.findById(id);
+        user.setRole(role);
+        userService.saveAfterChange(user);
+        return "redirect:/admin/user/{id}";
     }
     @GetMapping("/find")
     public String findProductsByName(@PathParam("name") String name, @NonNull Model model, Principal principal) {
