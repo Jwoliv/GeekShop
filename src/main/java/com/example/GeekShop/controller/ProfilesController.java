@@ -1,16 +1,10 @@
 package com.example.GeekShop.controller;
 
-import com.example.GeekShop.model.order.Order;
-import com.example.GeekShop.model.order.StatusOfOrder;
-import com.example.GeekShop.model.product.Product;
-import com.example.GeekShop.model.product.ProductByBasket;
 import com.example.GeekShop.model.user.User;
-import com.example.GeekShop.service.product.ProductByBasketService;
 import com.example.GeekShop.service.product.ProductService;
 import com.example.GeekShop.service.user.UserService;
 import lombok.NonNull;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -22,19 +16,13 @@ import java.security.Principal;
 public class ProfilesController {
     private final UserService userService;
     private final ProductService productService;
-    private final ProductByBasketService productByBasketService;
-    private final BCryptPasswordEncoder passwordEncoder;
     @Autowired
     public ProfilesController(
             UserService userService,
-            ProductService productService,
-            ProductByBasketService productByBasketService,
-            BCryptPasswordEncoder passwordEncoder
+            ProductService productService
     ) {
         this.userService = userService;
         this.productService = productService;
-        this.productByBasketService = productByBasketService;
-        this.passwordEncoder = passwordEncoder;
     }
 
     @GetMapping
@@ -51,13 +39,7 @@ public class ProfilesController {
             @PathVariable Long id,
             Principal principal
     ) {
-        User user = userService.findByEmail(principal.getName());
-        ProductByBasket productByBasket = productByBasketService.findById(id);
-        Product product = productService.findById(productByBasket.getProduct().getId());
-        product.setNumberProduct(product.getNumberProduct() + productByBasket.getNumberProduct());
-        user.getBasketOfProducts().remove(productByBasket);
-        productByBasketService.deleteById(id);
-        userService.saveAfterChange(user);
+        productService.deleteProductFromBasketById(principal, id);
         return "redirect:/profile";
     }
     @PostMapping("/{id}/delete_product_from_liked")
@@ -86,10 +68,7 @@ public class ProfilesController {
         if (firstname == null || lastname == null) {
             return "redirect:/profile";
         }
-        User user = userService.findByEmail(principal.getName());
-        user.setLastname(lastname);
-        user.setFirstname(firstname);
-        userService.saveAfterChange(user);
+        userService.changeName(principal, lastname, firstname);
         return "redirect:/profile";
     }
     @PatchMapping("/settings/change_password")
@@ -102,8 +81,7 @@ public class ProfilesController {
         if (newPassword == null || !newPassword.equals(newPasswordRepeat)) {
             return "redirect:/profile/settings";
         }
-        user.setPassword(passwordEncoder.encode(newPassword));
-        userService.saveAfterChange(user);
+        userService.changePassword(user, newPassword);
         return "redirect:/profile";
     }
     @PatchMapping("/settings/change_email")
@@ -111,41 +89,16 @@ public class ProfilesController {
         if (email == null) {
             return "redirect:/profile/settings";
         }
-        changeEmailForUser(email, principal);
-
+        userService.changeEmailForUser(email, principal);
         return "redirect:/login";
     }
     @DeleteMapping
     public String deleteUserAccount(Principal principal) {
-        if (checkOrderDoesNotHasCompletedStatus(principal)) {
+        if (userService.checkOrderDoesNotHasCompletedStatus(principal)) {
             return "redirect:/profile/settings";
         }
-        cleanBasketOfProduct(principal);
+        productService.cleanUsersBasketOfProduct(principal);
         userService.deleteByEmail(principal.getName());
         return "redirect:/registration";
-    }
-    public void changeEmailForUser(String email, Principal principal) {
-        User user = userService.findByEmail(principal.getName());
-        user.setEmail(email);
-        for (Order order: user.getOrders()) {
-            order.setEmail(email);
-        }
-        userService.saveAfterChange(user);
-    }
-    public Boolean checkOrderDoesNotHasCompletedStatus(Principal principal) {
-        User user = userService.findByEmail(principal.getName());
-        if (user.getOrders() == null) return false;
-        for (Order orderFromList: user.getOrders()) {
-            if (!orderFromList.getStatusOfOrder().equals(StatusOfOrder.Completed)) return true;
-        }
-        return false;
-    }
-    public void cleanBasketOfProduct(Principal principal) {
-        User user = userService.findByEmail(principal.getName());
-        for (ProductByBasket product: user.getBasketOfProducts()) {
-            product.getProduct().setNumberProduct(product.getNumberProduct() + product.getProduct().getNumberProduct());
-            user.getBasketOfProducts().remove(product);
-            productService.save(product.getProduct());
-        }
     }
 }

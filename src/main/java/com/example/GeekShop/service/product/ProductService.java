@@ -2,7 +2,7 @@ package com.example.GeekShop.service.product;
 
 import com.example.GeekShop.model.product.Gender;
 import com.example.GeekShop.model.product.Product;
-import com.example.GeekShop.model.product.SizeOfProduct;
+import com.example.GeekShop.model.product.ProductByBasket;
 import com.example.GeekShop.model.product_fields.Category;
 import com.example.GeekShop.model.product_fields.Season;
 import com.example.GeekShop.model.product_fields.Theme;
@@ -23,10 +23,12 @@ import java.util.Random;
 public class ProductService {
     private final ProductRepository productRepository;
     private final UserService userService;
+    private final ProductByBasketService productByBasketService;
     @Autowired
-    public ProductService(ProductRepository productRepository, UserService userService) {
+    public ProductService(ProductRepository productRepository, UserService userService, ProductByBasketService productByBasketService) {
         this.productRepository = productRepository;
         this.userService = userService;
+        this.productByBasketService = productByBasketService;
     }
     public List<Product> findProductsByName(String name) {
         return productRepository.findProductsByName(name);
@@ -75,13 +77,32 @@ public class ProductService {
         return productRepository.findProductsBySeason(season);
     }
     public List<Product> findProductsInTheMainForm(
-            Long categoryId,
-            Long themeId,
-            Long seasonId,
-            Gender gender,
-            Integer min,
-            Integer max
+            Long categoryId, Long themeId, Long seasonId,
+            Gender gender, Integer min, Integer max
     ) {
         return productRepository.findProductsInTheMainForm(categoryId, themeId, seasonId, gender, min, max);
+    }
+    @Transactional
+    public void cleanUsersBasketOfProduct(Principal principal) {
+        if (principal != null) {
+            User user = userService.findByEmail(principal.getName());
+            for (ProductByBasket product : user.getBasketOfProducts()) {
+                product.getProduct().setNumberProduct(product.getNumberProduct() + product.getProduct().getNumberProduct());
+                user.getBasketOfProducts().remove(product);
+                save(product.getProduct());
+            }
+        }
+    }
+    @Transactional
+    public void deleteProductFromBasketById(Principal principal, Long productId) {
+        if (principal != null) {
+            User user = userService.findByEmail(principal.getName());
+            ProductByBasket productByBasket =  productByBasketService.findById(productId);
+            Product product = findById(productByBasket.getProduct().getId());
+            product.setNumberProduct(product.getNumberProduct() + productByBasket.getNumberProduct());
+            user.getBasketOfProducts().remove(productByBasket);
+            productByBasketService.deleteById(productId);
+            userService.saveAfterChange(user);
+        }
     }
 }

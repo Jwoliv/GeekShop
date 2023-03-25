@@ -1,15 +1,18 @@
 package com.example.GeekShop.service.user;
 
 import com.example.GeekShop.model.order.Order;
+import com.example.GeekShop.model.order.StatusOfOrder;
 import com.example.GeekShop.model.user.Role;
 import com.example.GeekShop.model.user.User;
 import com.example.GeekShop.repository.UserRepository;
+import com.example.GeekShop.service.product.ProductByBasketService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,7 +23,11 @@ public class UserService {
     private final UserRepository userRepository;
     private final BCryptPasswordEncoder passwordEncoder;
     @Autowired
-    public UserService(UserRepository userRepository, BCryptPasswordEncoder passwordEncoder) {
+    public UserService(
+            UserRepository userRepository,
+            BCryptPasswordEncoder passwordEncoder,
+            ProductByBasketService productByBasketService
+    ) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
     }
@@ -74,5 +81,41 @@ public class UserService {
         user.setBonusPoints(order.getPriceOfOrder() / 100);
         user.selectLevelOfSupport();
         saveAfterChange(user);
+    }
+    @Transactional
+    public void changeName(Principal principal, String lastname, String firstname) {
+        if (principal != null) {
+            User user = findByEmail(principal.getName());
+            user.setLastname(lastname);
+            user.setFirstname(firstname);
+            saveAfterChange(user);
+        }
+    }
+    @Transactional
+    public void changePassword(User user, String newPassword) {
+        if (user != null) {
+            user.setPassword(passwordEncoder.encode(newPassword));
+            saveAfterChange(user);
+        }
+    }
+    @Transactional
+    public void changeEmailForUser(String email, Principal principal) {
+        if (principal != null) {
+            User user = findByEmail(principal.getName());
+            user.setEmail(email);
+            for (Order order : user.getOrders()) {
+                order.setEmail(email);
+            }
+            saveAfterChange(user);
+        }
+    }
+    @Transactional
+    public Boolean checkOrderDoesNotHasCompletedStatus(Principal principal) {
+        User user = findByEmail(principal.getName());
+        if (user.getOrders() == null) return false;
+        for (Order orderFromList: user.getOrders()) {
+            if (!orderFromList.getStatusOfOrder().equals(StatusOfOrder.Completed)) return true;
+        }
+        return false;
     }
 }
