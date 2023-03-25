@@ -6,7 +6,8 @@ import com.example.GeekShop.model.product.Product;
 import com.example.GeekShop.model.user.Role;
 import com.example.GeekShop.model.user.User;
 import com.example.GeekShop.repository.UserRepository;
-import com.example.GeekShop.service.product.ProductByBasketService;
+import com.example.GeekShop.repository.product.ProductByBasketRepository;
+import com.example.GeekShop.repository.product.ProductRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -21,15 +22,20 @@ import java.util.List;
 @Slf4j
 @Transactional(readOnly = true)
 public class UserService {
+    private final ProductRepository productRepository;
+    private final ProductByBasketRepository productByBasketRepository;
     private final UserRepository userRepository;
     private final BCryptPasswordEncoder passwordEncoder;
     @Autowired
     public UserService(
             UserRepository userRepository,
-            BCryptPasswordEncoder passwordEncoder
-    ) {
+            BCryptPasswordEncoder passwordEncoder,
+            ProductByBasketRepository productByBasketRepository,
+            ProductRepository productRepository) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
+        this.productByBasketRepository = productByBasketRepository;
+        this.productRepository = productRepository;
     }
     public List<User> findAll() {
         return userRepository.findAll();
@@ -121,6 +127,16 @@ public class UserService {
     @Transactional
     public void removeProductInTheUser(Product product) {
         for (User user: findAll()) {
+            user.getBasketOfProducts()
+                    .stream()
+                    .filter(wpr -> wpr.getProduct().equals(product))
+                    .forEach(wpr -> {
+                        wpr.setProduct(null);
+                        productByBasketRepository.save(wpr);
+                        productByBasketRepository.deleteAll(user.getBasketOfProducts());
+                    });
+            saveAfterChange(user);
+
             user.getViewedProducts().remove(product);
             user.getListOfLikedProducts().remove(product);
             saveAfterChange(user);

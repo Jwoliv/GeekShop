@@ -21,7 +21,10 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.security.Principal;
+import java.util.List;
 import java.util.Locale;
+import java.util.Objects;
+import java.util.stream.Stream;
 
 @Controller
 @RequestMapping("/product")
@@ -116,7 +119,7 @@ public class ProductsController {
     public String deleteProduct(@PathVariable Long id) {
         userService.removeProductInTheUser(productService.findById(id));
         productService.deleteById(id);
-        return "redirect:/product";
+        return "redirect:/admin/product";
     }
     @GetMapping("/new")
     public String formNewProduct(@NonNull Model model, Principal principal) {
@@ -152,12 +155,11 @@ public class ProductsController {
             model.addAttribute("seasons", seasonService.findAll());
             return "product/new_product";
         }
-        product.getSizeForCheck(size1, size2, size3, size4, size5);
-        productService.save(product);
-        imageProductService.saveImages(file1, file2, file3, file4, file5, product);
-        productService.save(product);
-        product.setPreviewsId(productService.findById(product.getId()).getPreviewsId());
-        productService.save(product);
+        productService.saveProductWithAllFields(
+                product,
+                Stream.of(size1, size2, size3, size4, size5).filter(Objects::nonNull).toList(),
+                List.of(file1, file2, file3, file4, file5)
+        );
         return "redirect:/product";
     }
     @GetMapping("/{id}/edit")
@@ -187,9 +189,9 @@ public class ProductsController {
             model.addAttribute("seasons", seasonService.findAll());
             return "product/edit_product";
         }
-        product.getSizeForCheck(size1, size2, size3, size4, size5);
-        product.setPreviewsId(productService.findById(id).getPreviewsId());
-        productService.save(product);
+        productService.updateProductAfterChanges(
+                id, product, Stream.of(size1, size2, size3, size4, size5).filter(Objects::nonNull).toList()
+        );
         return "redirect:/product/{id}";
     }
     @GetMapping("/{id}/change_photo")
@@ -212,7 +214,7 @@ public class ProductsController {
             model.addAttribute("product", productService.findById(id));
             return "product/change_photo";
         }
-        imageProductService.saveImages(file1, file2, file3, file4, file5, productService.findById(id));
+        imageProductService.saveImages(List.of(file1, file2, file3, file4, file5), productService.findById(id));
         return "redirect:/product/{id}";
     }
     @PostMapping("/{id}/add_to_basket")

@@ -11,15 +11,14 @@ import lombok.*;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 @Entity
 @Getter
 @Setter
 @ToString
 @Component
+@EqualsAndHashCode
 @NoArgsConstructor
 @AllArgsConstructor
 public class Product {
@@ -59,7 +58,7 @@ public class Product {
     @CollectionTable(name = "product_size", joinColumns = @JoinColumn(name = "product_id"))
     @Enumerated(EnumType.STRING)
     @Column(name = "size_id")
-    private Set<SizeOfProduct> sizes = new HashSet<>();
+    private List<SizeOfProduct> sizes = new ArrayList<>();
     @OneToMany(mappedBy = "element", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @ToString.Exclude
     private List<ImageProduct> images = new ArrayList<>();
@@ -92,18 +91,8 @@ public class Product {
         rating = Math.round(rating * 100.0F) / 100.0F;
         setRating(rating);
     }
-    public void getSizeForCheck(
-            SizeOfProduct size1,
-            SizeOfProduct size2,
-            SizeOfProduct size3,
-            SizeOfProduct size4,
-            SizeOfProduct size5
-    ) {
-        addSizeToCollection(size1);
-        addSizeToCollection(size2);
-        addSizeToCollection(size3);
-        addSizeToCollection(size4);
-        addSizeToCollection(size5);
+    public void getSizeForCheck(List<SizeOfProduct> sizes) {
+        sizes.forEach(this::addSizeToCollection);
     }
     public void addSizeToCollection(SizeOfProduct size) {
         if (size != null) {
@@ -111,9 +100,7 @@ public class Product {
         }
     }
     public Integer priceAfterDiscount() {
-        if (discount != 0) {
-            return price - (price * discount / 100);
-        }
+        if (discount != 0) return price - (price * discount / 100);
         return price;
     }
 }

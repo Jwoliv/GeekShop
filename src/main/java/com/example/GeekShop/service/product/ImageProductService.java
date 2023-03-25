@@ -11,18 +11,21 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 @Service
 @Data
 public class ImageProductService {
     private ImageProductRepository repository;
-    private final ProductService productService;
+    private ProductService productService;
     @Autowired
-    public ImageProductService(ImageProductRepository repository, ProductService productService) {
+    public ImageProductService(ImageProductRepository repository) {
         this.repository = repository;
+    }
+    @Autowired
+    public void setProductService(ProductService productService) {
         this.productService = productService;
     }
-
     public ImageProduct findById(Long id) {
         return repository.findById(id).orElse(null);
     }
@@ -49,23 +52,21 @@ public class ImageProductService {
         }
     }
     public void saveImages(
-            MultipartFile file1, MultipartFile file2, MultipartFile file3, MultipartFile file4, MultipartFile file5, Product element
+            List<MultipartFile> files, Product element
     ) {
         element.setPreviewsId(null);
         element.setImages(new ArrayList<>());
         deleteAllByElement(element);
         try {
-            ImageProduct image1 = toImageEntity(file1);
+            ImageProduct image1 = toImageEntity(files.get(0));
             image1.setIsPreviews(true);
             element.addImages(image1, element);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        addImageForElement(element, file1);
-        addImageForElement(element, file2);
-        addImageForElement(element, file3);
-        addImageForElement(element, file4);
-        addImageForElement(element, file5);
+        for (int i = 1; i < 5; i++) {
+            addImageForElement(element, files.get(i));
+        }
         productService.save(element);
         element.setPreviewsId(element.getImages().get(0).getId());
         productService.save(element);

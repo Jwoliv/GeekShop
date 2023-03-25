@@ -8,8 +8,10 @@ import com.example.GeekShop.model.user.User;
 import com.example.GeekShop.repository.product.ProductRepository;
 import com.example.GeekShop.service.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.security.Principal;
 import java.util.ArrayList;
@@ -23,12 +25,23 @@ public class ProductService {
     private final ProductRepository productRepository;
     private final UserService userService;
     private final ProductByBasketService productByBasketService;
+    private ImageProductService imageProductService;
     @Autowired
-    public ProductService(ProductRepository productRepository, UserService userService, ProductByBasketService productByBasketService) {
+    public ProductService(
+            ProductRepository productRepository,
+            UserService userService,
+            ProductByBasketService productByBasketService
+    ) {
         this.productRepository = productRepository;
         this.userService = userService;
         this.productByBasketService = productByBasketService;
     }
+    @Autowired
+    @Lazy
+    public void setImageProductService(ImageProductService imageProductService) {
+        this.imageProductService = imageProductService;
+    }
+
     public List<Product> findProductsByName(String name) {
         return productRepository.findProductsByName(name);
     }
@@ -165,5 +178,22 @@ public class ProductService {
         if (product == null) return;
         product.calculateRating();
         save(product);
+    }
+    @Transactional
+    public void updateProductAfterChanges(Long id, Product product, List<SizeOfProduct> sizesOfProducts) {
+        product.getSizeForCheck(sizesOfProducts);
+        product.setPreviewsId(findById(id).getPreviewsId());
+        save(product);
+    }
+    @Transactional
+    public void saveProductWithAllFields(Product product, List<SizeOfProduct> sizesOfProduct, List<MultipartFile> files) {
+        if (product != null) {
+            product.getSizeForCheck(sizesOfProduct);
+            save(product);
+            imageProductService.saveImages(files, product);
+            save(product);
+            product.setPreviewsId(findById(product.getId()).getPreviewsId());
+            save(product);
+        }
     }
 }
