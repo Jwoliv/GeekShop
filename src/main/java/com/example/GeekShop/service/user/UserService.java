@@ -2,6 +2,7 @@ package com.example.GeekShop.service.user;
 
 import com.example.GeekShop.model.order.Order;
 import com.example.GeekShop.model.order.StatusOfOrder;
+import com.example.GeekShop.model.product.Product;
 import com.example.GeekShop.model.user.Role;
 import com.example.GeekShop.model.user.User;
 import com.example.GeekShop.repository.UserRepository;
@@ -25,8 +26,7 @@ public class UserService {
     @Autowired
     public UserService(
             UserRepository userRepository,
-            BCryptPasswordEncoder passwordEncoder,
-            ProductByBasketService productByBasketService
+            BCryptPasswordEncoder passwordEncoder
     ) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
@@ -117,5 +117,13 @@ public class UserService {
             if (!orderFromList.getStatusOfOrder().equals(StatusOfOrder.Completed)) return true;
         }
         return false;
+    }
+    @Transactional
+    public void removeProductInTheUser(Product product) {
+        for (User user: findAll()) {
+            user.getViewedProducts().remove(product);
+            user.getListOfLikedProducts().remove(product);
+            saveAfterChange(user);
+        }
     }
 }

@@ -160,4 +160,10 @@ public class ProductService {
             userService.saveAfterChange(user);
         }
     }
+    @Transactional
+    public void refreshRatingOfProduct(Product product) {
+        if (product == null) return;
+        product.calculateRating();
+        save(product);
+    }
 }

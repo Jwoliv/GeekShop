@@ -1,6 +1,5 @@
 package com.example.GeekShop.controller.product;
 
-import com.example.GeekShop.model.images.ImageProduct;
 import com.example.GeekShop.model.product.Comment;
 import com.example.GeekShop.model.product.Gender;
 import com.example.GeekShop.model.product.Product;
@@ -21,9 +20,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
 import java.security.Principal;
-import java.util.ArrayList;
 import java.util.Locale;
 
 @Controller
@@ -61,10 +58,7 @@ public class ProductsController {
     @GetMapping("/for-male")
     public String productForMale(@NonNull Model model, Principal principal) {
         addTheCommonValuesInTheControllerOfChoiceGender(
-                model,
-                principal,
-                Gender.Male,
-                "Men's clothing"
+                model, principal, Gender.Male, "Men's clothing"
         );
         addTheProductFieldsToTheModel(model);
         return "product/all_products";
@@ -72,10 +66,7 @@ public class ProductsController {
     @GetMapping("/for-female")
     public String productForFemale(@NonNull Model model, Principal principal) {
         addTheCommonValuesInTheControllerOfChoiceGender(
-                model,
-                principal,
-                Gender.Female,
-                "Women's clothing"
+                model, principal, Gender.Female, "Women's clothing"
         );
         addTheProductFieldsToTheModel(model);
         return "product/all_products";
@@ -83,20 +74,12 @@ public class ProductsController {
     @GetMapping("/unisex")
     public String productForUniSex(@NonNull Model model, Principal principal) {
         addTheCommonValuesInTheControllerOfChoiceGender(
-                model,
-                principal,
-                Gender.Unisex,
-                "Unisex clothing"
+                model, principal, Gender.Unisex, "Unisex clothing"
         );
         return "product/all_products";
     }
-
     @GetMapping("/find")
-    public String pageOfProductsLikeName(
-            @PathParam("name") String name,
-            @NonNull Model model,
-            Principal principal
-    ) {
+    public String pageOfProductsLikeName(@PathParam("name") String name, @NonNull Model model, Principal principal) {
         model.addAttribute("principal", principal);
         model.addAttribute("nameOfPage", "Products");
         model.addAttribute("all_products", productService.findProductsByName(name.toUpperCase(Locale.ROOT)));
@@ -105,13 +88,9 @@ public class ProductsController {
     }
     @GetMapping("/find-by-all")
     public String pageOfSearchProductsByAllFields(
-            @PathParam("categoryId") Long categoryId,
-            @PathParam("themeId") Long themeId,
-            @PathParam("seasonId") Long seasonId,
-            @PathParam("gender") Gender gender,
-            @PathParam("min") Integer min,
-            @PathParam("max") Integer max,
-            Model model
+            @PathParam("categoryId") Long categoryId, @PathParam("themeId") Long themeId,
+            @PathParam("seasonId") Long seasonId, @PathParam("gender") Gender gender,
+            @PathParam("min") Integer min, @PathParam("max") Integer max, Model model
 
     ) {
         model.addAttribute("all_products", productService.findProductsInTheMainForm(
@@ -121,39 +100,24 @@ public class ProductsController {
         return "/product/all_products";
     }
     @GetMapping("/{id}")
-    public String pageSelectedProduct(
-            @PathVariable Long id,
-            @NonNull Model model,
-            Principal principal
-    ) {
+    public String pageSelectedProduct(@PathVariable Long id, @NonNull Model model, Principal principal) {
         Product product = productService.findById(id);
-        product.calculateRating();
-        productService.save(product);
+        productService.refreshRatingOfProduct(product);
+        refreshListOfViewedProductOfUser(principal, product);
         model.addAttribute("principal", principal);
         model.addAttribute("isLikedProduct", userService.findByEmail(principal.getName()).getListOfLikedProducts().contains(product));
         model.addAttribute("comment", new Comment());
         model.addAttribute("product", product);
         model.addAttribute("recommended_products", productService.findRecommendedProduct(principal));
         model.addAttribute("isNotAvailiable", product.getNumberProduct() == 0);
-        User user = userService.findByEmail(principal.getName());
-        productService.addProductToTheViewProducts(user, product);
         return "product/selected_product";
     }
     @DeleteMapping("/{id}")
     public String deleteProduct(@PathVariable Long id) {
-        removeProductInTheUser(productService.findById(id));
+        userService.removeProductInTheUser(productService.findById(id));
         productService.deleteById(id);
         return "redirect:/product";
     }
-
-    private void removeProductInTheUser(Product product) {
-        for (User user: userService.findAll()) {
-            user.getViewedProducts().remove(product);
-            user.getListOfLikedProducts().remove(product);
-            userService.saveAfterChange(user);
-        }
-    }
-
     @GetMapping("/new")
     public String formNewProduct(@NonNull Model model, Principal principal) {
         model.addAttribute("product", new Product());
@@ -179,9 +143,7 @@ public class ProductsController {
             BindingResult bindingResult,
             @NonNull Model model
     ) {
-        if (
-                bindingResult.hasErrors() || file1.isEmpty() ||
-                file2.isEmpty() || file3.isEmpty() ||
+        if (bindingResult.hasErrors() || file1.isEmpty() || file2.isEmpty() || file3.isEmpty() ||
                 file4.isEmpty() || file5.isEmpty()
         ) {
             model.addAttribute("product", new Product());
@@ -192,7 +154,7 @@ public class ProductsController {
         }
         product.getSizeForCheck(size1, size2, size3, size4, size5);
         productService.save(product);
-        saveImages(file1, file2, file3, file4, file5, product);
+        imageProductService.saveImages(file1, file2, file3, file4, file5, product);
         productService.save(product);
         product.setPreviewsId(productService.findById(product.getId()).getPreviewsId());
         productService.save(product);
@@ -250,14 +212,13 @@ public class ProductsController {
             model.addAttribute("product", productService.findById(id));
             return "product/change_photo";
         }
-        saveImages(file1, file2, file3, file4, file5, productService.findById(id));
+        imageProductService.saveImages(file1, file2, file3, file4, file5, productService.findById(id));
         return "redirect:/product/{id}";
     }
     @PostMapping("/{id}/add_to_basket")
     public String addProductToBasket(
             @RequestParam Integer numberProduct, @RequestParam SizeOfProduct sizeOfProduct,
-            @PathVariable Long id,
-            Principal principal
+            @PathVariable Long id, Principal principal
     ) {
         Product product = productService.findById(id);
         User user = userService.findByEmail(principal.getName());
@@ -271,8 +232,7 @@ public class ProductsController {
     }
     @PostMapping("/{id}/add_comment")
     private String addComment(
-            @PathVariable Long id, Principal principal,
-            @ModelAttribute @Valid Comment comment, BindingResult bindingResult
+            @PathVariable Long id, Principal principal, @ModelAttribute @Valid Comment comment, BindingResult bindingResult
     ) {
         User user = userService.findByEmail(principal.getName());
         Product product = productService.findById(id);
@@ -282,48 +242,7 @@ public class ProductsController {
         productService.addCommentToProduct(product, user, comment);
         return "redirect:/product/{id}";
     }
-    private ImageProduct toImageEntity(MultipartFile file) throws IOException {
-        ImageProduct image = new ImageProduct();
-        image.setName(file.getName());
-        image.setOriginalName(file.getOriginalFilename());
-        image.setContentType(file.getContentType());
-        image.setSize(file.getSize());
-        image.setBytes(file.getBytes());
-        return image;
-    }
-    private void saveImages(
-            MultipartFile file1, MultipartFile file2,
-            MultipartFile file3, MultipartFile file4,
-            MultipartFile file5, Product element
-    ) {
-        element.setPreviewsId(null);
-        element.setImages(new ArrayList<>());
-        imageProductService.deleteAllByElement(element);
-        try {
-            ImageProduct image1 = toImageEntity(file1);
-            image1.setIsPreviews(true);
-            element.addImages(image1, element);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-        addImageForElement(element, file1);
-        addImageForElement(element, file2);
-        addImageForElement(element, file3);
-        addImageForElement(element, file4);
-        addImageForElement(element, file5);
-        productService.save(element);
-        element.setPreviewsId(element.getImages().get(0).getId());
-        productService.save(element);
-    }
-    private void addImageForElement(Product element, MultipartFile file) {
-        if (element != null && file != null) {
-            try {
-                element.addImages(toImageEntity(file), element);
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-        }
-    }
+
     public void addTheCommonValuesInTheControllerOfChoiceGender(Model model, Principal principal, Gender gender, String nameOfPage) {
         model.addAttribute("all_products", productService.findProductsByGender(gender));
         model.addAttribute("genderClothesIsEquals", true);
@@ -334,5 +253,10 @@ public class ProductsController {
         model.addAttribute("themes", themeService.findAll());
         model.addAttribute("categories", categoryService.findAll());
         model.addAttribute("seasons", seasonService.findAll());
+    }
+    public void refreshListOfViewedProductOfUser(Principal principal, Product product) {
+        if (product == null || principal == null) return;
+        User user = userService.findByEmail(principal.getName());
+        productService.addProductToTheViewProducts(user, product);
     }
 }
