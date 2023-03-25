@@ -1,5 +1,6 @@
 package com.example.GeekShop.service.user;
 
+import com.example.GeekShop.model.order.Order;
 import com.example.GeekShop.model.user.Role;
 import com.example.GeekShop.model.user.User;
 import com.example.GeekShop.repository.UserRepository;
@@ -9,6 +10,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -55,5 +57,22 @@ public class UserService {
     @Transactional
     public void deleteByEmail(String email) {
         userRepository.deleteUserByEmail(email);
+    }
+    @Transactional
+    public void setFieldsForUserAfterCreateOrder(User user, Order order) {
+        if (user != null && order != null) {
+            user.getOrders().add(order);
+            user.setBasketOfProducts(new ArrayList<>());
+            user.setBonusPoints(0);
+            saveAfterChange(user);
+        }
+    }
+    @Transactional
+    public void setFieldsForUserAfterCloseOrder(Order order) {
+        User user = order.getUser();
+        user.setSpendMoney(user.getSpendMoney() + order.getPriceOfOrder());
+        user.setBonusPoints(order.getPriceOfOrder() / 100);
+        user.selectLevelOfSupport();
+        saveAfterChange(user);
     }
 }

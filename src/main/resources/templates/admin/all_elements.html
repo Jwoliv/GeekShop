@@ -17,7 +17,7 @@
                     <input class="product-fields" th:value="${name}" placeholder="Search..." name="name" type="text">
                     <button class="product-button" type="submit">Search</button>
                 </form>
-                <a th:href="@{/product/new}" class="create-new-product admin-product__link">New product</a>
+                <a th:href="@{/{url}/new(url=${url})}" class="create-new-product admin-product__link">New element</a>
                 <ul class="admin-products" th:if="${all_elements.size() != 0}">
                     <li class="admin-products__product admin-product" th:each="element: ${all_elements}">
                         <div class="admin-product-info">
