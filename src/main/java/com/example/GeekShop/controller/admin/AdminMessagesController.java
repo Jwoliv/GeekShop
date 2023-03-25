@@ -1,6 +1,5 @@
 package com.example.GeekShop.controller.admin;
 
-import com.example.GeekShop.model.message.Message;
 import com.example.GeekShop.service.MessageService;
 import jakarta.validation.constraints.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,9 +27,7 @@ public class AdminMessagesController {
     }
     @PatchMapping("/{id}")
     public String updateMessage(@PathVariable Long id, @RequestParam String adminAnswer) {
-        Message message = messageService.findById(id);
-        message.setAdminAnswer(adminAnswer);
-        messageService.save(message);
+        messageService.updateAfterGetAdminAnswer(id, adminAnswer);
         return "redirect:/admin/message";
     }
     @DeleteMapping("/{id}")

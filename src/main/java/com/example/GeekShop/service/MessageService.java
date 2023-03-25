@@ -31,4 +31,10 @@ public class MessageService {
     public void deleteById(Long id) {
         messageRepository.deleteById(id);
     }
+    @Transactional
+    public void updateAfterGetAdminAnswer(Long id, String adminAnswer) {
+        Message message = findById(id);
+        message.setAdminAnswer(adminAnswer);
+        save(message);
+    }
 }

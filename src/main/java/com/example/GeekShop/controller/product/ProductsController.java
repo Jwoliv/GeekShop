@@ -1,7 +1,10 @@
 package com.example.GeekShop.controller.product;
 
 import com.example.GeekShop.model.images.ImageProduct;
-import com.example.GeekShop.model.product.*;
+import com.example.GeekShop.model.product.Comment;
+import com.example.GeekShop.model.product.Gender;
+import com.example.GeekShop.model.product.Product;
+import com.example.GeekShop.model.product.SizeOfProduct;
 import com.example.GeekShop.model.user.User;
 import com.example.GeekShop.service.product.ImageProductService;
 import com.example.GeekShop.service.product.ProductService;
@@ -22,7 +25,6 @@ import java.io.IOException;
 import java.security.Principal;
 import java.util.ArrayList;
 import java.util.Locale;
-import java.util.Objects;
 
 @Controller
 @RequestMapping("/product")
@@ -134,7 +136,7 @@ public class ProductsController {
         model.addAttribute("recommended_products", productService.findRecommendedProduct(principal));
         model.addAttribute("isNotAvailiable", product.getNumberProduct() == 0);
         User user = userService.findByEmail(principal.getName());
-        addProductToTheViewProducts(user, product);
+        productService.addProductToTheViewProducts(user, product);
         return "product/selected_product";
     }
     @DeleteMapping("/{id}")
@@ -253,63 +255,31 @@ public class ProductsController {
     }
     @PostMapping("/{id}/add_to_basket")
     public String addProductToBasket(
-            @RequestParam Integer numberProduct,
-            @RequestParam SizeOfProduct sizeOfProduct,
+            @RequestParam Integer numberProduct, @RequestParam SizeOfProduct sizeOfProduct,
             @PathVariable Long id,
             Principal principal
     ) {
         Product product = productService.findById(id);
         User user = userService.findByEmail(principal.getName());
-        if (user != null || product != null) {
-            ProductByBasket productByBasket = Objects.requireNonNull(user)
-                    .getProductByBasketIfItExist(product, sizeOfProduct);
-            product.setNumberProduct(product.getNumberProduct() - numberProduct);
-            if (productByBasket != null) {
-                productByBasket.setNumberProduct(productByBasket.getNumberProduct() + numberProduct);
-                userService.saveAfterChange(user);
-            }
-            else {
-                setFieldsForProductByBasket(product, numberProduct, user, sizeOfProduct);
-                userService.saveAfterChange(user);
-            }
-        }
+        productService.addProductToBasketOfUser(user, product, sizeOfProduct, numberProduct);
         return "redirect:/product/{id}";
     }
-
     @PostMapping("/{id}/liked_product")
     public String addProductToLikedList(@PathVariable Long id, Principal principal) {
-        Product product = productService.findById(id);
-        User user = userService.findByEmail(principal.getName());
-        if (productService.findById(id) != null && user != null) {
-            if (user.getListOfLikedProducts().contains(product)) {
-                user.getListOfLikedProducts().remove(product);
-            }
-            else {
-                user.getListOfLikedProducts().add(product);
-            }
-            userService.saveAfterChange(user);
-        }
+        productService.likeProduct(id, userService.findByEmail(principal.getName()), productService.findById(id));
         return "redirect:/product/{id}";
     }
     @PostMapping("/{id}/add_comment")
     private String addComment(
-            @PathVariable Long id,
-            Principal principal,
-            @ModelAttribute @Valid Comment comment,
-            BindingResult bindingResult
+            @PathVariable Long id, Principal principal,
+            @ModelAttribute @Valid Comment comment, BindingResult bindingResult
     ) {
         User user = userService.findByEmail(principal.getName());
         Product product = productService.findById(id);
         if (comment == null || product == null || bindingResult.hasErrors() || user == null) {
             return "redirect:/product/{id}";
         }
-        comment.setId(null);
-        comment.setProduct(product);
-        comment.setUser(user);
-        product.getComments().add(comment);
-        productService.save(product);
-        product.calculateRating();
-        productService.save(product);
+        productService.addCommentToProduct(product, user, comment);
         return "redirect:/product/{id}";
     }
     private ImageProduct toImageEntity(MultipartFile file) throws IOException {
@@ -346,32 +316,12 @@ public class ProductsController {
         productService.save(element);
     }
     private void addImageForElement(Product element, MultipartFile file) {
-        try {
-            element.addImages(toImageEntity(file), element);
-        }
-        catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-    }
-    private void setFieldsForProductByBasket(
-            Product product,
-            Integer numberProduct,
-            User user,
-            SizeOfProduct sizeOfProduct
-    ) {
-        ProductByBasket newProductByBasket = new ProductByBasket();
-        newProductByBasket.setProduct(product);
-        newProductByBasket.setNumberProduct(numberProduct);
-        Objects.requireNonNull(user).getBasketOfProducts().add(newProductByBasket);
-        newProductByBasket.setSize(sizeOfProduct);
-    }
-    private void addProductToTheViewProducts(User user, Product product) {
-        if (user != null && !user.getViewedProducts().contains(product)) {
-            if (user.getViewedProducts().size() == 40) {
-                user.getViewedProducts().remove(0);
+        if (element != null && file != null) {
+            try {
+                element.addImages(toImageEntity(file), element);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
             }
-            user.getViewedProducts().add(product);
-            userService.saveAfterChange(user);
         }
     }
     public void addTheCommonValuesInTheControllerOfChoiceGender(Model model, Principal principal, Gender gender, String nameOfPage) {
