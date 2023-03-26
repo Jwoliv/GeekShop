@@ -4,10 +4,7 @@ import com.example.GeekShop.model.product.Product;
 import com.example.GeekShop.model.images.ImageProductField;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 
 import java.io.Serializable;
 import java.util.ArrayList;

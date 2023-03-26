@@ -18,6 +18,7 @@ import java.util.Objects;
 @Component
 @Getter
 @Setter
+@EqualsAndHashCode
 @RequiredArgsConstructor
 @ToString
 @AllArgsConstructor

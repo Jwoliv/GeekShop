@@ -10,6 +10,7 @@ import org.springframework.stereotype.Component;
 @Component
 @Getter
 @Setter
+@EqualsAndHashCode
 @NoArgsConstructor
 @AllArgsConstructor
 public class Comment {

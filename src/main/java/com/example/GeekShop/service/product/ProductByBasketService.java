@@ -30,6 +30,9 @@ public class ProductByBasketService {
     }
     @Transactional
     public void deleteById(Long id) {
+        ProductByBasket productByBasket = findById(id);
+        productByBasket.setProduct(null);
+        save(productByBasket);
         productRepository.deleteById(id);
     }
 }

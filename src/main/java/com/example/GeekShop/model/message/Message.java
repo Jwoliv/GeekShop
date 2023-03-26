@@ -12,6 +12,7 @@ import org.springframework.stereotype.Component;
 @Setter
 @Getter
 @ToString
+@EqualsAndHashCode
 @NoArgsConstructor
 @AllArgsConstructor
 public class Message {

@@ -13,6 +13,7 @@ import java.util.List;
 @Getter
 @ToString
 @Component
+@EqualsAndHashCode
 @NoArgsConstructor
 @AllArgsConstructor
 public class ProductByBasket {

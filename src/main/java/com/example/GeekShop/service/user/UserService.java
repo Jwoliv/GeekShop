@@ -6,8 +6,7 @@ import com.example.GeekShop.model.product.Product;
 import com.example.GeekShop.model.user.Role;
 import com.example.GeekShop.model.user.User;
 import com.example.GeekShop.repository.UserRepository;
-import com.example.GeekShop.repository.product.ProductByBasketRepository;
-import com.example.GeekShop.repository.product.ProductRepository;
+import com.example.GeekShop.service.product.ProductByBasketService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -22,20 +21,17 @@ import java.util.List;
 @Slf4j
 @Transactional(readOnly = true)
 public class UserService {
-    private final ProductRepository productRepository;
-    private final ProductByBasketRepository productByBasketRepository;
+    private final ProductByBasketService productByBasketService;
     private final UserRepository userRepository;
     private final BCryptPasswordEncoder passwordEncoder;
     @Autowired
     public UserService(
-            UserRepository userRepository,
-            BCryptPasswordEncoder passwordEncoder,
-            ProductByBasketRepository productByBasketRepository,
-            ProductRepository productRepository) {
+            ProductByBasketService productByBasketService, UserRepository userRepository,
+            BCryptPasswordEncoder passwordEncoder
+    ) {
+        this.productByBasketService = productByBasketService;
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
-        this.productByBasketRepository = productByBasketRepository;
-        this.productRepository = productRepository;
     }
     public List<User> findAll() {
         return userRepository.findAll();
@@ -51,13 +47,15 @@ public class UserService {
     }
     @Transactional
     public void save(User user) {
-        user.setActive(true);
-        user.setRole(Role.USER);
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
-        user.setSpendMoney(0);
-        user.setBonusPoints(0);
-        user.selectLevelOfSupport();
-        userRepository.save(user);
+        if (user != null) {
+            user.setActive(true);
+            user.setRole(Role.USER);
+            user.setPassword(passwordEncoder.encode(user.getPassword()));
+            user.setSpendMoney(0);
+            user.setBonusPoints(0);
+            user.selectLevelOfSupport();
+            userRepository.save(user);
+        }
     }
     @Transactional
     public void saveAfterChange(User user) {
@@ -82,11 +80,13 @@ public class UserService {
     }
     @Transactional
     public void setFieldsForUserAfterCloseOrder(Order order) {
-        User user = order.getUser();
-        user.setSpendMoney(user.getSpendMoney() + order.getPriceOfOrder());
-        user.setBonusPoints(order.getPriceOfOrder() / 100);
-        user.selectLevelOfSupport();
-        saveAfterChange(user);
+        if (order != null) {
+            User user = order.getUser();
+            user.setSpendMoney(user.getSpendMoney() + order.getPriceOfOrder());
+            user.setBonusPoints(order.getPriceOfOrder() / 100);
+            user.selectLevelOfSupport();
+            saveAfterChange(user);
+        }
     }
     @Transactional
     public void changeName(Principal principal, String lastname, String firstname) {
@@ -117,10 +117,12 @@ public class UserService {
     }
     @Transactional
     public Boolean checkOrderDoesNotHasCompletedStatus(Principal principal) {
-        User user = findByEmail(principal.getName());
-        if (user.getOrders() == null) return false;
-        for (Order orderFromList: user.getOrders()) {
-            if (!orderFromList.getStatusOfOrder().equals(StatusOfOrder.Completed)) return true;
+        if (principal != null) {
+            User user = findByEmail(principal.getName());
+            if (user.getOrders() == null) return false;
+            for (Order orderFromList : user.getOrders()) {
+                if (!orderFromList.getStatusOfOrder().equals(StatusOfOrder.Completed)) return true;
+            }
         }
         return false;
     }
@@ -130,13 +132,8 @@ public class UserService {
             user.getBasketOfProducts()
                     .stream()
                     .filter(wpr -> wpr.getProduct().equals(product))
-                    .forEach(wpr -> {
-                        wpr.setProduct(null);
-                        productByBasketRepository.save(wpr);
-                        productByBasketRepository.deleteAll(user.getBasketOfProducts());
-                    });
+                    .forEach(wpr -> productByBasketService.deleteById(wpr.getId()));
             saveAfterChange(user);
-
             user.getViewedProducts().remove(product);
             user.getListOfLikedProducts().remove(product);
             saveAfterChange(user);

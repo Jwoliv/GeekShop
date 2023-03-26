@@ -32,11 +32,7 @@ public class AdminProductsController {
         return "/admin/all_elements";
     }
     @GetMapping("/find")
-    public String findByNameOfProduct(
-            @PathParam("name") String name,
-            @NonNull Model model,
-            Principal principal
-    ) {
+    public String findByNameOfProduct(@PathParam("name") String name, @NonNull Model model, Principal principal) {
         model.addAttribute("url", "product");
         model.addAttribute("principal", principal);
         model.addAttribute("title", "Products");

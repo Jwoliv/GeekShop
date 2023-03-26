@@ -60,11 +60,7 @@ public class ProfilesController {
         return "/profile/settings";
     }
     @PatchMapping("/settings/change_name")
-    public String saveUpdatedUser(
-            Principal principal,
-            @RequestParam String firstname,
-            @RequestParam String lastname
-    ) {
+    public String saveUpdatedUser(Principal principal, @RequestParam String firstname, @RequestParam String lastname) {
         if (firstname == null || lastname == null) {
             return "redirect:/profile";
         }
