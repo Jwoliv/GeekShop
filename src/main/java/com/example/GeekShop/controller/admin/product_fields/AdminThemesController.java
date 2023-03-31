@@ -11,11 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 @RequestMapping("/admin/theme")
 public class AdminThemesController extends AdminAbstractProductsFieldsController<
-            ImageTheme,
-            Theme,
-            ThemeRepository,
-            ThemeService
-        > {
+        ImageTheme, Theme, ThemeRepository, ThemeService> {
     @Autowired
     public AdminThemesController(ThemeService themeService) {
         this.setService(themeService);

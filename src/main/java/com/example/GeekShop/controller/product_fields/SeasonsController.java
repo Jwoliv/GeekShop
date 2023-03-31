@@ -32,11 +32,7 @@ public class SeasonsController extends AbstractProductFieldsController<
     private final ImageSeasonService imageSeasonService;
     private final ProductService productService;
     @Autowired
-    public SeasonsController(
-            SeasonService seasonService,
-            ImageSeasonService imageSeasonService,
-            ProductService productService
-    ) {
+    public SeasonsController(SeasonService seasonService, ImageSeasonService imageSeasonService, ProductService productService) {
         this.seasonService = seasonService;
         this.imageSeasonService = imageSeasonService;
         this.productService = productService;

@@ -11,11 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 @RequestMapping("/admin/season")
 public class AdminSeasonsController extends AdminAbstractProductsFieldsController<
-        ImageSeason,
-        Season,
-        SeasonRepository,
-        SeasonService
-        > {
+        ImageSeason, Season, SeasonRepository, SeasonService> {
     @Autowired
     public AdminSeasonsController(SeasonService seasonService) {
         this.setService(seasonService);

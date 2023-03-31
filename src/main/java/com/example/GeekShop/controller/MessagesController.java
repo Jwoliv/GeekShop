@@ -41,12 +41,7 @@ public class MessagesController {
         return "/message/new_message";
     }
     @PostMapping
-    public String saveNewMessage(
-            Principal principal,
-            @NonNull Model model,
-            @ModelAttribute @Valid Message message,
-            BindingResult bindingResult
-    ) {
+    public String saveNewMessage(Principal principal, @NonNull Model model, @ModelAttribute @Valid Message message, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             model.addAttribute("principal", principal);
             model.addAttribute("message", new Message());

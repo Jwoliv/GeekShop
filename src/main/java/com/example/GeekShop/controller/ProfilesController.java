@@ -1,5 +1,6 @@
 package com.example.GeekShop.controller;
 
+import com.example.GeekShop.model.order.Order;
 import com.example.GeekShop.model.user.User;
 import com.example.GeekShop.service.product.ProductService;
 import com.example.GeekShop.service.user.UserService;
@@ -10,6 +11,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
+import java.util.Comparator;
 
 @Controller
 @RequestMapping("/profile")
@@ -28,25 +30,19 @@ public class ProfilesController {
     @GetMapping
     public String pageOfProfile(Principal principal, @NonNull Model model) {
         User user = userService.findByEmail(principal.getName());
-        user.getOrders().sort((x1, x2) -> x2.getDateOfCreate().compareTo(x1.getDateOfCreate()));
+        user.getOrders().sort(Comparator.comparing(Order::getDateOfCreate).reversed());
         model.addAttribute("user", user);
         model.addAttribute("totalBill", user.getTotalBillOfBasket());
         model.addAttribute("principal", principal);
         return "profile/profile";
     }
     @PostMapping("/{id}/delete_product_from_basket")
-    public String deleteProductFromBasket(
-            @PathVariable Long id,
-            Principal principal
-    ) {
+    public String deleteProductFromBasket(@PathVariable Long id, Principal principal) {
         productService.deleteProductFromBasketById(principal, id);
         return "redirect:/profile";
     }
     @PostMapping("/{id}/delete_product_from_liked")
-    public String deleteProductFromLikedList(
-            @PathVariable Long id,
-            Principal principal
-    ) {
+    public String deleteProductFromLikedList(@PathVariable Long id, Principal principal) {
         User user = userService.findByEmail(principal.getName());
         user.getListOfLikedProducts().remove(productService.findById(id));
         userService.saveAfterChange(user);
@@ -68,11 +64,7 @@ public class ProfilesController {
         return "redirect:/profile";
     }
     @PatchMapping("/settings/change_password")
-    public String saveUserAfterChangePassword(
-            @RequestParam String newPassword,
-            @RequestParam String newPasswordRepeat,
-            Principal principal
-    ) {
+    public String saveUserAfterChangePassword(@RequestParam String newPassword, @RequestParam String newPasswordRepeat, Principal principal) {
         User user = userService.findByEmail(principal.getName());
         if (newPassword == null || !newPassword.equals(newPasswordRepeat)) {
             return "redirect:/profile/settings";

@@ -107,6 +107,7 @@ public class ProductsController {
         Product product = productService.findById(id);
         productService.refreshRatingOfProduct(product);
         refreshListOfViewedProductOfUser(principal, product);
+
         model.addAttribute("principal", principal);
         model.addAttribute("isLikedProduct", userService.findByEmail(principal.getName()).getListOfLikedProducts().contains(product));
         model.addAttribute("comment", new Comment());
@@ -156,9 +157,7 @@ public class ProductsController {
             return "product/new_product";
         }
         productService.saveProductWithAllFields(
-                product,
-                Stream.of(size1, size2, size3, size4, size5).filter(Objects::nonNull).toList(),
-                List.of(file1, file2, file3, file4, file5)
+                product, Stream.of(size1, size2, size3, size4, size5).filter(Objects::nonNull).toList(), List.of(file1, file2, file3, file4, file5)
         );
         return "redirect:/product";
     }

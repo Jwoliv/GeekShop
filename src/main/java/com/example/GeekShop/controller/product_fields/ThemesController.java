@@ -33,11 +33,7 @@ public class ThemesController extends AbstractProductFieldsController<
     private final ProductService productService;
 
     @Autowired
-    public ThemesController(
-            ThemeService themeService,
-            ImageThemeService imageThemeService,
-            ProductService productService
-    ) {
+    public ThemesController(ThemeService themeService, ImageThemeService imageThemeService, ProductService productService) {
         this.themeService = themeService;
         this.imageThemeService = imageThemeService;
         this.productService = productService;

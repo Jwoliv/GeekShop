@@ -1,5 +1,6 @@
 package com.example.GeekShop.controller.admin;
 
+import com.example.GeekShop.model.order.Order;
 import com.example.GeekShop.service.OrderService;
 import jakarta.validation.constraints.NotNull;
 import jakarta.websocket.server.PathParam;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.security.Principal;
+import java.util.Comparator;
 
 @Controller
 @RequestMapping("/admin")
@@ -25,9 +27,9 @@ public class AdminOrdersController {
 
     @GetMapping("/order")
     public String pageOfAllOrders(@NotNull Model model, Principal principal) {
-        model.addAttribute("orders",
-                orderService.findAll().stream().sorted(
-                    (x1, x2) -> x2.getDateOfCreate().compareTo(x1.getDateOfCreate())
+        model.addAttribute(
+                "orders",
+                orderService.findAll().stream().sorted(Comparator.comparing(Order::getDateOfCreate).reversed()
                 )
         );
         model.addAttribute("principal", principal);
@@ -37,8 +39,7 @@ public class AdminOrdersController {
     public String searchByName(@PathParam("username") String username, @NonNull Model model, Principal principal) {
         model.addAttribute(
                 "orders",
-                orderService.findByUsername(username).stream().sorted(
-                        (x1, x2) -> x2.getDateOfCreate().compareTo(x1.getDateOfCreate())
+                orderService.findByUsername(username).stream().sorted(Comparator.comparing(Order::getDateOfCreate).reversed()
                 )
         );
         model.addAttribute("principal", principal);

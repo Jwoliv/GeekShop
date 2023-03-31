@@ -11,11 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 @RequestMapping("/admin/category")
 public class AdminCategoriesController extends AdminAbstractProductsFieldsController<
-            ImageCategory,
-            Category,
-            CategoryRepository,
-            CategoryService
-        > {
+        ImageCategory, Category, CategoryRepository, CategoryService> {
     @Autowired
     public AdminCategoriesController(CategoryService categoryService) {
         this.setService(categoryService);
