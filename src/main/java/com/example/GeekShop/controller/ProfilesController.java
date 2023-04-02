@@ -19,10 +19,7 @@ public class ProfilesController {
     private final UserService userService;
     private final ProductService productService;
     @Autowired
-    public ProfilesController(
-            UserService userService,
-            ProductService productService
-    ) {
+    public ProfilesController(UserService userService, ProductService productService) {
         this.userService = userService;
         this.productService = productService;
     }
@@ -43,9 +40,7 @@ public class ProfilesController {
     }
     @PostMapping("/{id}/delete_product_from_liked")
     public String deleteProductFromLikedList(@PathVariable Long id, Principal principal) {
-        User user = userService.findByEmail(principal.getName());
-        user.getListOfLikedProducts().remove(productService.findById(id));
-        userService.saveAfterChange(user);
+        productService.removeLikedProductFromUserList(principal, id);
         return "redirect:/profile";
     }
     @GetMapping("/settings")

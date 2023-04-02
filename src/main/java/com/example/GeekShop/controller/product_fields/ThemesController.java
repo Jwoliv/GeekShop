@@ -20,14 +20,7 @@ import java.util.List;
 @Getter
 @Setter
 @RequestMapping("/theme")
-public class ThemesController extends AbstractProductFieldsController<
-        Theme,
-        ImageTheme,
-        ImageThemeRepository,
-        ImageThemeService,
-        ThemeRepository,
-        ThemeService
-        > {
+public class ThemesController extends AbstractProductFieldsController<Theme, ImageTheme, ImageThemeRepository, ImageThemeService, ThemeRepository, ThemeService> {
     private final ThemeService themeService;
     private final ImageThemeService imageThemeService;
     private final ProductService productService;

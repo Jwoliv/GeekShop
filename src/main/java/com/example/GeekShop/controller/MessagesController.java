@@ -47,8 +47,7 @@ public class MessagesController {
             model.addAttribute("message", new Message());
             return "/message/new_message";
         }
-        message.setUser(userService.findByEmail(principal.getName()));
-        messageService.save(message);
+        messageService.setUserAndSaveMessage(message, principal);
         return "redirect:/message";
     }
     @DeleteMapping("/{id}")

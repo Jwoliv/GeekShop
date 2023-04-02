@@ -99,11 +99,7 @@ public abstract class AbstractProductFieldsController<
         return "/product/all_products";
     }
     @Override
-    public String saveEditedElement(
-            @ModelAttribute @Valid E element,
-            BindingResult bindingResult,
-            @NonNull Model model
-    ) {
+    public String saveEditedElement(@ModelAttribute @Valid E element, BindingResult bindingResult, @NonNull Model model) {
         if (bindingResult.hasErrors()) {
             model.addAttribute("nameOfPage", "New " + nameSingle);
             model.addAttribute("element", newElement);
@@ -123,13 +119,7 @@ public abstract class AbstractProductFieldsController<
     }
 
     @Override
-    public String savePhotos(
-            @PathVariable Long id,
-            @RequestParam MultipartFile file1,
-            @RequestParam MultipartFile file2,
-            @RequestParam MultipartFile file3,
-            @NonNull Model model
-    ) {
+    public String savePhotos(@PathVariable Long id, @RequestParam MultipartFile file1, @RequestParam MultipartFile file2, @RequestParam MultipartFile file3, @NonNull Model model) {
         if (file1.isEmpty() || file2.isEmpty() || file3.isEmpty()) {
             model.addAttribute("element", getService().findById(id));
             model.addAttribute("url", url);

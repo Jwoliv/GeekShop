@@ -36,12 +36,8 @@ public class ProductsController {
     private final CategoryService categoryService;
     private final UserService userService;
     public ProductsController(
-            ProductService productService,
-            ImageProductService imageProductService,
-            ThemeService themeService,
-            SeasonService seasonService,
-            CategoryService categoryService,
-            UserService userService
+            ProductService productService, ImageProductService imageProductService, ThemeService themeService,
+            SeasonService seasonService, CategoryService categoryService, UserService userService
     ) {
         this.productService = productService;
         this.imageProductService = imageProductService;
@@ -118,8 +114,7 @@ public class ProductsController {
     }
     @DeleteMapping("/{id}")
     public String deleteProduct(@PathVariable Long id) {
-        userService.removeProductInTheUser(productService.findById(id));
-        productService.deleteById(id);
+        productService.removeProductFromUserAndDatabase(id);
         return "redirect:/admin/product";
     }
     @GetMapping("/new")

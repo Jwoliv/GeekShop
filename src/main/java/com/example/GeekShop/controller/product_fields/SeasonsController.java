@@ -20,14 +20,7 @@ import java.util.List;
 @Getter
 @Setter
 @RequestMapping("/season")
-public class SeasonsController extends AbstractProductFieldsController<
-        Season,
-        ImageSeason,
-        ImageSeasonRepository,
-        ImageSeasonService,
-        SeasonRepository,
-        SeasonService
-        > {
+public class SeasonsController extends AbstractProductFieldsController<Season, ImageSeason, ImageSeasonRepository, ImageSeasonService, SeasonRepository, SeasonService> {
     private final SeasonService seasonService;
     private final ImageSeasonService imageSeasonService;
     private final ProductService productService;

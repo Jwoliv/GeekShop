@@ -26,12 +26,9 @@ public class ProductService {
     private final UserService userService;
     private final ProductByBasketService productByBasketService;
     private ImageProductService imageProductService;
+
     @Autowired
-    public ProductService(
-            ProductRepository productRepository,
-            UserService userService,
-            ProductByBasketService productByBasketService
-    ) {
+    public ProductService(ProductRepository productRepository, UserService userService, ProductByBasketService productByBasketService) {
         this.productRepository = productRepository;
         this.userService = userService;
         this.productByBasketService = productByBasketService;
@@ -78,7 +75,6 @@ public class ProductService {
     public void deleteById(Long id) {
         productRepository.deleteById(id);
     }
-
     public List<Product> findProductsByCategory(Category category) {
         return productRepository.findProductsByCategory(category);
     }
@@ -88,10 +84,7 @@ public class ProductService {
     public List<Product> findProductsBySeason(Season season) {
         return productRepository.findProductsBySeason(season);
     }
-    public List<Product> findProductsInTheMainForm(
-            Long categoryId, Long themeId, Long seasonId,
-            Gender gender, Integer min, Integer max
-    ) {
+    public List<Product> findProductsInTheMainForm(Long categoryId, Long themeId, Long seasonId, Gender gender, Integer min, Integer max) {
         return productRepository.findProductsInTheMainForm(categoryId, themeId, seasonId, gender, min, max);
     }
     @Transactional
@@ -181,9 +174,11 @@ public class ProductService {
     }
     @Transactional
     public void updateProductAfterChanges(Long id, Product product, List<SizeOfProduct> sizesOfProducts) {
-        product.getSizeForCheck(sizesOfProducts);
-        product.setPreviewsId(findById(id).getPreviewsId());
-        save(product);
+        if (product != null) {
+            product.getSizeForCheck(sizesOfProducts);
+            product.setPreviewsId(findById(id).getPreviewsId());
+            save(product);
+        }
     }
     @Transactional
     public void saveProductWithAllFields(Product product, List<SizeOfProduct> sizesOfProduct, List<MultipartFile> files) {
@@ -195,5 +190,19 @@ public class ProductService {
             product.setPreviewsId(findById(product.getId()).getPreviewsId());
             save(product);
         }
+    }
+    @Transactional
+    public void removeLikedProductFromUserList(Principal principal, Long id) {
+        Product product = findById(id);
+        if (principal != null && product != null) {
+            User user = userService.findByEmail(principal.getName());
+            user.getListOfLikedProducts().remove(product);
+            userService.saveAfterChange(user);
+        }
+    }
+    @Transactional
+    public void removeProductFromUserAndDatabase(Long id) {
+        userService.removeProductInTheUser(findById(id));
+        deleteById(id);
     }
 }

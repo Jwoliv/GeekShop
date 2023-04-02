@@ -20,14 +20,7 @@ import java.util.List;
 @Getter
 @Setter
 @RequestMapping("/category")
-public class CategoriesController extends AbstractProductFieldsController<
-        Category,
-        ImageCategory,
-        ImageCategoryRepository,
-        ImageCategoryService,
-        CategoryRepository,
-        CategoryService
-        > {
+public class CategoriesController extends AbstractProductFieldsController<Category, ImageCategory, ImageCategoryRepository, ImageCategoryService, CategoryRepository, CategoryService> {
     private final CategoryService categoryService;
     private final ImageCategoryService imageCategoryService;
     private final ProductService productService;
